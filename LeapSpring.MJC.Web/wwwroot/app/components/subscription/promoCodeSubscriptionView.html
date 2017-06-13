@@ -1,0 +1,55 @@
+﻿<div class="box-content text-center">
+    <div class="main-content remove-padding text-center">
+
+        <form name="promoCodeForm" class="position-relative" role="form" novalidate>
+
+            <div>
+                <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-cloak class="text-center send-bonus-body">
+                    <div ng-cloak class="text-center">
+                        <div class="row">
+                            <div class="remove-margin">
+                                <!--<p class="hint-title phone-hint-title remove-margin margin-bottom-12">Hi {{adminName}}!</p>
+                                <img class="add-photo-image img-profile img-circle inline-block pointer" ng-class="{'border-white':(profileUrl != '../../../images/Avatar.png')}" ng-src="{{profileUrl}}" err-src="../../../images/Avatar.png" />-->
+
+                                <p class="hint-title phone-hint-title remove-margin margin-bottom-25">Apply Promo Code</p>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="row margin-top-20 margin-bottom-20">
+                                <div class="form-group remove-margin text-center" show-errors>
+                                    <div class="position-relative inline-block">
+                                        <input type="text" style="max-width:190px;" name="promocode" class="form-control" tabindex="1"
+                                               ng-model="promoCode" placeholder="Promo code" required autocomplete="off" />
+
+                                        <p class="help-block text-nowrap" ng-show="promoCodeForm.promocode.$error.required">Promo code is required.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row remove-margin text-center">
+                                <ul class="nav nav-tabs btnSend-bonus-tab">
+                                    <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 active"><a data-toggle="tab" ng-click="validatePromoCode()" tabindex="3">{{isValidatingPromoCode?'Applying...':'Apply'}}</a></li>
+                                    <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><a data-toggle="tab" ng-click="hideModal()">Cancel</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="hideModal()">
+                <span class="glyphicon glyphicon-remove btn-close-text" />
+            </div>
+        </form>
+    </div>
+</div>

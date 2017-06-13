@@ -1,0 +1,52 @@
+﻿<div class="app-width">
+    <form name="parentForm" role="form" novalidate>
+        <div>
+            <p class="row admin-dashboard-title text-center" ng-if="AuthData.MemberType == 'Admin'">Add Parent</p>
+            <p class="row admin-dashboard-title text-center" ng-if="AuthData.MemberType == 'Parent'">Welcome {{AuthData.Lastname}}!</p>
+
+            <div class="row text-center margin-top-20">
+                <button class="add-photo-shape inline-block pointer margin-bottom-20" type="file" ngf-select="uploadImage($file)" accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*" ngf-fix-orientation="true">
+                    <div ng-if="!hasImage">
+                        <img src="../../../images/icons/camera.png" class="default-camera" />
+                        <div class="add-photo">
+                            Add<br />Photo
+                        </div>
+                    </div>
+                    <img class="row add-photo-image img-circle inline-block pointer" ng-if="hasImage" ng-src="{{imageSource}}" err-src="../../../images/Avatar.png" />
+                </button>
+
+            </div>
+
+            <p class="hint-medium text-center" ng-if="AuthData.MemberType == 'Admin'">
+                Welcome aboard! We’ll have you ready to<br />
+                assign chores in no time. Start by telling us<br />
+                what we should call you:
+            </p>
+
+            <p class="hint-medium text-center" ng-if="AuthData.MemberType == 'Parent'">
+                You're just about setup. Feel free to<br />
+                add your own photo or avatar above.<br />
+                When you're ready, let's add your<br />
+                first child.
+            </p>
+
+            <div class="row form-group text-center margin-top-51 margin-bottom-25" show-errors ng-if="AuthData.MemberType == 'Admin'">
+                <div class="col-sm-12 mjc-input-group margin-auto">
+                    <span class="color-555 max-width-300 inline-block text-left full-width input-lbl">PARENT’S NAME</span>
+                    <input type="text" name="firstName" class="form-control mjc-input remove-margin margin-auto" placeholder="Parent Name" ng-model="member.FirstName" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                    <p class="help-block" ng-if="parentForm.firstName.$error.required">Name is required.</p>
+                    <p class="help-block" ng-if="parentForm.firstName.$error.pattern">Name must be in alphabets.</p>
+                </div>
+            </div>
+
+            <div class="text-center button-center margin-top-51 inline-block" ng-if="AuthData.MemberType == 'Admin'">
+                <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue" ng-click="addParent()">{{btnContinue}}</button>
+            </div>
+
+            <div class="text-center button-center margin-top-111 inline-block" ng-if="AuthData.MemberType == 'Parent'">
+                <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue" ng-click="UploadParentImage()">{{btnContinue}}</button>
+            </div>
+        </div>
+    </form>
+
+</div>

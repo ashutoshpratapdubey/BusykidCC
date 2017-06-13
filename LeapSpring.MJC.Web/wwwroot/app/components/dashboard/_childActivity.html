@@ -1,0 +1,305 @@
+﻿<style>
+    .activity-tab-header {
+        margin-top: -4px;
+    }
+
+    .activity-sec {
+        background-color: #fff !important;
+    }
+
+    /*Activity Tabs*/
+    .nav-tabs.dashboard-activity-tabs.activity {
+        border: none;
+        border-bottom: solid 1px #0491d3;
+    }
+
+        .nav-tabs.dashboard-activity-tabs.activity > li {
+            padding: 0 !important;
+            margin-bottom: 0;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li:last-child {
+                padding-left: 3px !important;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li:first-child {
+                padding-right: 3px !important;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li > a {
+                font-size: 12px;
+                font-weight: 400;
+                text-align: center;
+                color: #fff;
+                border-radius: 0;
+                margin: 0 !important;
+                padding: 10px 0;
+                min-height: 40px;
+                background-color: #fff;
+                border: solid 1px #0491d3;
+                color: #0491d3;
+                border-bottom: none;
+                border-radius: 4px 4px 0 0;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li:last-child > a:hover,
+            .nav-tabs.dashboard-activity-tabs.activity > li.active:last-child > a:hover {
+                border: solid 1px #0491d3;
+                border-bottom: none;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li:first-child > a:hover,
+            .nav-tabs.dashboard-activity-tabs.activity > li.active:first-child > a:hover {
+                border: solid 1px #0491d3;
+                border-bottom: none;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li:last-child > a {
+                background-color: #fff;
+                border: solid 1px #0491d3;
+                border-bottom: none;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li:first-child > a {
+                background-color: #fff;
+                border: solid 1px #0491d3;
+                border-bottom: none;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li.active {
+                border: 0px;
+                color: #fff;
+            }
+
+                .nav-tabs.dashboard-activity-tabs.activity > li.active > a {
+                    background-color: #0491d3;
+                    border: solid 1px #0491d3;
+                    color: #fff;
+                    border-right: 0;
+                    border-left: 0;
+                    cursor: pointer;
+                    border-bottom: none;
+                }
+
+    .child-activity-sec .center-loading .loading-top-div {
+        height: 60vh;
+    }
+
+    /*Activity Tabs*/
+    @media screen and (min-width : 768px) {
+        html {
+            overflow-y: scroll !important;
+        }
+
+
+        .activity-tab-header {
+            margin-top: 20px;
+            border-bottom: 2px solid #0491d3;
+        }
+
+        .nav-tabs.dashboard-activity-tabs.activity {
+            border: none;
+        }
+
+        .nav-tabs.dashboard-activity-tabs > li {
+            max-width: 250px;
+        }
+
+            .nav-tabs.dashboard-activity-tabs > li.active {
+                max-width: 250px;
+                border-bottom: solid 2px #67c152;
+            }
+
+            .nav-tabs.dashboard-activity-tabs > li > a {
+                font-size: 18px;
+            }
+
+        .nav-tabs.dashboard-activity-tabs.activity > li {
+            max-width: 250px;
+        }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li.active {
+                max-width: 250px;
+            }
+
+            .nav-tabs.dashboard-activity-tabs.activity > li > a {
+                font-size: 18px;
+            }
+
+        .img-transcation {
+            width: 20px;
+            height: 20px;
+            margin-top: 15px;
+        }
+
+        .transaction-type-image {
+            height: 50px;
+            width: 50px;
+        }
+
+        .transaction-list-item-name {
+            font-size: 22px;
+        }
+
+        .child-activity-sec .text-small {
+            font-size: 14px !important;
+            color: #666666;
+        }
+    }
+</style>
+<div class="child-activity-sec">
+    <div class="text-center">
+        <!-- Activity Tabs -->
+        <div class="full-screen">
+            <div class="app-width">
+                <ul class="nav nav-tabs dashboard-activity-tabs">
+                    <li class="col-xs-4 col-sm-4 col-md-4 col-lg-4 remove-padding" ng-class="{'active':showAllTransactions}" ng-click="getAllTransactions()"><a data-toggle="tab" data-target="#allTransactions">All Transactions</a></li>
+                    <li class="col-xs-4 col-sm-4 col-md-4 col-lg-4 remove-padding" ng-class="{'active':showAllowanceIn}" ng-click="getAllowanceIn()"><a id="allowanceInTab" data-toggle="tab" data-target="#allowanceIn">Allowance In</a></li>
+                    <li class="col-xs-4 col-sm-4 col-md-4 col-lg-4 remove-padding" ng-class="{'active':showAllowanceOut}" ng-click="getAllowanceOut()"><a data-toggle="tab" data-target="#allowanceOut">Allowance Out</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content activity-content app-width">
+            <!--All transactions List-->
+            <div id="allTransactions" class="tab-pane position-relative fade dashboard-activity-content" ng-class="{'in active':showAllTransactions}">
+                <div ng-show="!isAllTransactionsLoading">
+                    <p class="text-list-hint remove-padding" ng-if="!hasAllTransactions">No transactions found!</p>
+                    <div class="transaction-list-header" ng-if="hasAllTransactions" ng-repeat="(date, transactions) in AllTransactions" ng-class="{'remove-margin-bottom': $last}">
+                        <p class="text-small text-left remove-margin">{{date| date:'MMMM dd, yyyy' | uppercase}} <span ng-if="$first" style="float:right;">* Pending</span></p>
+                        <div class="row remove-margin" ng-repeat="transaction in transactions">
+                            <div class="media transaction-list-item">
+                                <div class="media-left media-middle">
+                                    <div class="media-object img-circle inline-block pull-left transaction-type-image"
+                                         ng-class="{'back-color-white':transaction.TransactionHistoryType == 'AllowanceIn',
+                                         'back-color-save':(transaction.TransactionHistoryType == 'AllowanceOut' && transaction.TransactionOutType=='Save'),
+                                         'back-color-share':(transaction.TransactionHistoryType == 'AllowanceOut' && transaction.TransactionOutType=='Share'),
+                                         'back-color-spend':(transaction.TransactionHistoryType == 'AllowanceOut' && transaction.TransactionOutType=='Spend') }">
+                                        <img class="img-transcation" ng-src="{{transaction.ImageUrl}}" />
+                                    </div>
+                                    <!--Code Added to Show Remove Approval Link Dated:25-Apr-2017 -->
+
+                                </div>
+
+                                <div class="media-body remove-padding transaction-content">
+                                    <p class="transaction-list-item-name remove-margin text-left">{{transaction.Name}}</p>
+                                    <div style="clear:both;"></div>
+
+                                    <div ng-click="RemoveAproval(transaction.ChoreID)" ng-if="(transaction.ChrStatus =='Completed' || transaction.ChrStatus =='CompletedAndApproved' || transaction.ChrStatus =='CompletedAndPaid') && transaction.choreApprovalFlag && authData.MemberType === 'Admin' && transaction.chorePaydayApprovalFlag">
+                                        <a href="" class="pull-left" style="color:red">Disapprove</a>
+                                    </div>
+                                    <div ng-click="ApproveForPayeday(transaction.ChoreID)" ng-if="(transaction.ChrStatus =='DisApproved') && transaction.choreApprovalFlag && authData.MemberType === 'Admin' && transaction.chorePaydayApprovalFlag">
+                                        <a href="" class="pull-left" style="color:green">Approve</a>
+                                    </div>
+                                </div>
+                                <div class="media-right media-middle">
+                                    <div ng-if="transaction.ChrStatus !='DisApproved' && transaction.ChrStatus !='DisapprovedAndPending'">
+                                        <p class="transaction-list-item-name remove-margin"
+                                           ng-class="{'text-color-green':transaction.TransactionHistoryType == 'AllowanceIn', 'text-color-red':transaction.TransactionHistoryType == 'AllowanceOut'}">
+                                            {{transaction.Amount | currency:USD$:2}}<span ng-if="transaction.TransactionStatus=='Pending'">*</span>
+                                        </p>
+                                    </div>
+                                    <div ng-if="transaction.ChrStatus =='DisApproved' || transaction.ChrStatus =='DisapprovedAndPending'">
+                                        <p class="transaction-list-item-name remove-margin" style="color:red">
+                                            ({{transaction.Amount | currency:USD$:2}})<span ng-if="transaction.TransactionStatus=='Pending'">*</span><span ng-if="transaction.TransactionStatus=='Completed' && transaction.ChrStatus =='DisapprovedAndPending'">*</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-small" ng-if="!hasAllTransactions"></div>
+                </div>
+                <div ng-show="isAllTransactionsLoading" class="center-loading position-relative transaction-loading">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Allowance In List-->
+            <div id="allowanceIn" class="tab-pane position-relative fade dashboard-activity-content" ng-class="{'in active':showAllowanceIn}">
+                <div ng-show="!isAllowanceInLoading">
+                    <p class="text-list-hint remove-padding" ng-if="!hasAllowanceIn">No transactions found!</p>
+                    <div class="transaction-list-header" ng-if="hasAllowanceIn" ng-repeat="(date, transactions) in AllowanceIn" ng-class="{'remove-margin-bottom': $last}">
+                        <p class="text-small text-left remove-margin">{{date| date:'MMMM dd, yyyy' | uppercase}} <span ng-if="$first" style="float:right;">* Pending</span></p>
+                        <div class="row remove-margin" ng-repeat="transaction in transactions">
+                            <div class="media transaction-list-item">
+                                <div class="media-left media-middle">
+                                    <div class="media-object img-circle inline-block pull-left transaction-type-image back-color-white">
+                                        <img class="img-transcation" ng-src="{{transaction.ImageUrl}}" />
+                                    </div>
+                                </div>
+                                <div class="media-body remove-padding transaction-content">
+                                    <p class="transaction-list-item-name remove-margin text-left">{{transaction.Name}}</p>
+
+                                </div>
+                                <div class="media-right media-middle">
+
+                                    <p class="transaction-list-item-name remove-margin text-color-green">
+                                        {{transaction.Amount | currency:USD$:2}}<span ng-if="transaction.TransactionStatus=='Pending'">*</span>
+
+                                    </p>
+                                    <!--</p>-->
+                                    <!--<p><a href="">Remove Approval</a>  </div>-->
+
+                                </div>
+
+
+                                <!--test-->
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-small" ng-if="!hasAllowanceIn"></div>
+                </div>
+                <div ng-show="isAllowanceInLoading" class="center-loading position-relative transaction-loading">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Allowance Out List-->
+            <div id="allowanceOut" class="tab-pane position-relative fade dashboard-activity-content" ng-class="{'in active':showAllowanceOut}">
+                <div ng-show="!isAllowanceOutLoading">
+                    <p class="text-list-hint remove-padding" ng-if="!hasAllowanceOut">No transactions found!</p>
+                    <div class="transaction-list-header" ng-if="hasAllowanceOut" ng-repeat="(date, transactions) in AllowanceOut" ng-class="{'remove-margin-bottom': $last}">
+                        <p class="text-small text-left remove-margin">{{date| date:'MMMM dd, yyyy' | uppercase}} <span ng-if="$first" style="float:right;">* Pending</span></p>
+                        <div class="row remove-margin" ng-repeat="transaction in transactions">
+                            <div class="media transaction-list-item">
+                                <div class="media-left media-middle">
+                                    <div class="media-object img-circle inline-block pull-left transaction-type-image"
+                                         ng-class="{'back-color-save':transaction.TransactionOutType=='Save',
+                                         'back-color-share':transaction.TransactionOutType=='Share',
+                                         'back-color-spend':transaction.TransactionOutType=='Spend' }">
+                                        <img class="img-transcation" ng-src="{{transaction.ImageUrl}}" />
+                                    </div>
+                                </div>
+                                <div class="media-body remove-padding transaction-content">
+                                    <p class="transaction-list-item-name remove-margin text-left">{{transaction.Name}}</p>
+                                </div>
+                                <div class="media-right media-middle">
+                                    <p class="transaction-list-item-name remove-margin text-color-red">
+                                        {{transaction.Amount | currency:USD$:2}}<span ng-if="transaction.TransactionStatus=='Pending'">*</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-small" ng-if="!hasAllowanceOut"></div>
+                </div>
+                <div ng-show="isAllowanceOutLoading" class="center-loading position-relative transaction-loading">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿<div class="app-width">
+    <div class="signUp-progress">
+        <div class="signUp-progress-parnt">
+            <div class="signUp-progress-content">
+                <h3 class="hint-title">Account not fully setup</h3>
+
+                <ul class="signUp-missed-list">
+                    <li ng-if="authData.MemberType === 'Child'">
+                        <span>Your family account is not fully setup yet. Please contact your parent to complete the signup.</span>
+                    </li>
+                    <li ng-if="authData.MemberType === 'Parent'">
+                        <span>Your family account is not fully setup yet. Please contact your partner to complete the signup.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

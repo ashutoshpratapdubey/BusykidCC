@@ -1,0 +1,99 @@
+﻿<div class="app-width">
+    <div class="settings-page">
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <div ng-hide="isLoading">
+            <div class="text-center row">
+                <h3 class="title-tag">Allocation Settings</h3>
+            </div>
+            <div class="text-center">
+                <div class="img-dropdown">
+                    <button class="btn-drop-down dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img ng-src="{{selectedMember.ProfileImageUrl}}" err-src="../../../images/Avatar.png" /> {{selectedMember.Firstname}}
+                        <span class="glyphicon glyphicon-triangle-bottom pull-right"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="member in familyMembers" ng-click="changeMember(member)"><a><img ng-src="{{member.ProfileImageUrl}}" err-src="../../../images/Avatar.png" /> {{member.Firstname}}</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="hint-medium text-center">
+                Decide how you would like to allocate {{selectedMember.Firstname}}’s
+                earnings. We’ve filled in the most common
+                settings for other {{selectedMember.Age}}-year old {{selectedMember.Firstname}}.
+            </p>
+
+            <form name="settingsForm" role="form" novalidate>
+                <div class="earnings-sec">
+                    <ul class="earnings-allocate row">
+                        <li class="save col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                            <div ng-show="isSettingsLoading && !isLoading" class="center-loading transparent">
+                                <div class="loading-top-div">
+                                    <div class="loading-middle-div">
+                                        <img class="loading-icon" src="../../../images/white-loader.gif" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="earn-title">SAVE</span>
+                            <div class="percentage-input-group">
+                                <input type="text" inputmode="numeric" pattern="[0-9]*" name="save" class="form-control percentage-input"
+                                       tabindex="1" maxlength="3" autocomplete="off"
+                                       ng-model="allocationSettings.Save" ng-minlength="1" ng-maxlength="3" required />
+                                <span class="pers-icon">%</span>
+                            </div>
+                        </li>
+                        <li class="share col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                            <div ng-show="isSettingsLoading && !isLoading" class="center-loading transparent">
+                                <div class="loading-top-div">
+                                    <div class="loading-middle-div">
+                                        <img class="loading-icon" src="../../../images/white-loader.gif" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="earn-title">SHARE</span>
+                            <div class="percentage-input-group">
+                                <input type="text" inputmode="numeric" pattern="[0-9]*" name="share" class="form-control percentage-input"
+                                       tabindex="1" maxlength="3" autocomplete="off"
+                                       ng-model="allocationSettings.Share" ng-minlength="1" ng-maxlength="3" required />
+                                <span class="pers-icon">%</span>
+                            </div>
+                        </li>
+                        <li class="spend col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                            <div ng-show="isSettingsLoading && !isLoading" class="center-loading transparent">
+                                <div class="loading-top-div">
+                                    <div class="loading-middle-div">
+                                        <img class="loading-icon" src="../../../images/white-loader.gif" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="earn-title">SPEND</span>
+                            <div class="percentage-input-group">
+                                <input type="text" inputmode="numeric" pattern="[0-9]*" name="spend" class="form-control percentage-input"
+                                       tabindex="1" maxlength="3" autocomplete="off"
+                                       ng-model="allocationSettings.Spend" ng-minlength="1" ng-maxlength="3" required />
+                                <span class="pers-icon">%</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="error-div row">
+                        <p class="help-block" ng-if="settingsForm.save.$error.required || settingsForm.share.$error.required ||settingsForm.spend.$error.required">Please fill all inputs.</p>
+                        <p class="help-block" ng-if="showNotEqualErr && !(settingsForm.save.$error.required || settingsForm.share.$error.required ||settingsForm.spend.$error.required)">Input Error: Total has to equal 100%, please adjust.</p>
+                    </div>
+                </div>
+            </form>
+
+            <div class="text-center">
+                <button class="btn mjc-btn bac-color-67c152" ng-click="saveSettings();" ng-disabled="isSettingsSaving">{{btnTxt}}</button>
+                <div class="margin-top-10">
+                    <a class="link" ng-click="resetToDefault()">Reset to Default</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

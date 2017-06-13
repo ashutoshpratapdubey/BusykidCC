@@ -1,0 +1,42 @@
+﻿<div class="app-width">
+    <!--<div ng-if="memberType == 'Admin'" ng-init="progressCount=3" ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'"></div>-->
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <div class="text-center">
+        <p class="row hint-title phone-hint-title margin-bottom-12" ng-if="memberType == 'Admin'"> Welcome {{userName}}!</p>
+
+        <div class="row">
+            <button class="row add-photo-shape inline-block pointer margin-bottom-20" type="file" ng-if="!isUploading" ngf-select="uploadImage($file)" accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*" ngf-fix-orientation="true">
+                <div ng-if="!hasImage">
+                    <img src="../../../images/icons/camera.png" width="39" />
+                    <div class="add-photo">Add<br />Photo</div>
+                </div>
+                <img id="imgProfile" class="row add-photo-image img-circle inline-block pointer" ng-if="hasImage" ng-src="{{imageSource}}" err-src="../../../images/Avatar.png" />
+            </button>
+
+            <div class="row add-photo-shape inline-block pointer margin-bottom-20" ng-if="isUploading">
+                <img id="imgLoader" class="img-progress margin-top-30" width="39" src="../../../images/white-loader.gif" />
+                <!--<div class="add-photo margin-top-10">Uploading...</div>-->
+            </div>
+
+        </div>
+
+        <div ng-if="memberType == 'Admin'">
+            <p class="row hint-medium text-center phone-hint-medium" ng-if="!hasImage">
+                You're just about setup. Feel free to<br />
+                add your own photo above. When you're<br />
+                ready, let's add your first child.<br />                
+            </p>
+
+            <p class="row hint-medium text-center phone-hint-medium" ng-if="hasImage">
+                You’re all set! Let’s get started adding<br />
+                your first child.<br /><br />
+            </p>
+        </div>
+
+        <div class="text-center button-center margin-top-111 inline-block" ng-if="memberType == 'Admin'">
+            <button class="btn mjc-btn button bac-color-0491d3" ui-sref="addChild">Add My First Child</button>            
+        </div>
+    </div>
+
+</div>

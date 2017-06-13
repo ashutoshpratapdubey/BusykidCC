@@ -1,0 +1,258 @@
+﻿<style>
+    .container {
+        padding: 0;
+    }
+
+    body {
+        color: #333;
+    }
+
+    .tab-pane.dashboard-header-content.active {
+        color: #333;
+    }
+
+    .admin-dashboard-sec ul.earnings-allocate li {
+        color: #fff;
+    }
+
+    @media screen and (min-width : 768px) {
+        .modal-open {
+            overflow-y: hidden;
+        }
+    }
+</style>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 863205933;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "M_bQCMrsxW4QrfTNmwM";
+    var google_remarketing_only = false;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/863205933/?label=M_bQCMrsxW4QrfTNmwM&amp;guid=ON&amp;script=0" />
+    </div>
+</noscript>
+
+<div class="app-width admin-dashboard-sec">
+    <div class="child-dashboard-sec">
+        <div ng-show="isLoading" class="center-loading" style="z-index:11;">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <div class="text-center" ng-hide="isLoading">
+            <ul class="nav nav-tabs dashboard-header-tabs">
+                <li id="hometab" class="active" ng-click="gotoChildDashboard()"><a data-toggle="tab" data-target="#home">Home</a></li>
+                <li id="activitytab" ng-click="getAllTransactions()"><a data-toggle="tab" data-target="#activity">Activity</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="home" class="tab-pane dashboard-header-content fade in active">
+                    <div class="full-screen">
+                        <div class="app-width">
+                            <div class="row remove-margin dashboard-header">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color: #fff;">
+                        <div class="profile-page">
+                            <div>
+                                <!-- Display Child Profile -->
+                                <div class="lg-profile-sec">
+                                    <!-- Child Profile List -->
+                                    <div class="row remove-margin position-relative">
+                                        <div class="arrow-sec left-arrow-sec" ng-if="childrens.length > 1">
+                                            <div class="inner-arrow-div">
+                                                <span class="glyphicon glyphicon-chevron-left middle-arrow" ng-if="currentChildIndex!=0" ng-click="gotoPrevious()"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row remove-margin" ng-if="childrens.length > 1">
+                                            <div class="col-lg-12 remove-padding inline-block" id="scrolling">
+                                                <ul id="itemslider" class="text-center" ng-class="{'single-slider':childrens.length===1}">
+                                                    <li ng-repeat="child in childrens" style="width:160px;">
+                                                        <div class="tran-color child" ng-hide="selectedChild.Id == child.Id"></div>
+                                                        <div>
+                                                            <div class="remove-margin" style="width:160px;">
+                                                                <h3 class="title-tag">{{child.Firstname}}</h3>
+                                                                <img class="add-photo-image img-circle inline-block pointer" ng-if="!child.isUploading" ng-class="{'border-white':(child.ProfileImageUrl != '../../../images/Avatar.png')}"
+                                                                     ng-src="{{child.ProfileImageUrl}}" err-src="../../../images/Avatar.png" ng-click="selectFile(child)" />
+                                                                <div class="dashboard-img-container" style="width:160px;" ng-if="child.isUploading">
+                                                                    <img id="imgLoader" class="img-progress margin-top-30" src="../../../images/black-loader.gif" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="arrow-sec right-arrow-sec" ng-if="childrens.length > 1">
+                                            <div class="inner-arrow-div">
+                                                <span class="glyphicon glyphicon-chevron-right middle-arrow" ng-if="currentChildIndex!=childrens.length-1" ng-click="gotoNext()"></span>
+                                            </div>
+                                        </div>
+                                        <div style="padding:0 10px;" ng-if="childrens.length <= 1">
+                                            <div class="remove-margin">
+                                                <h3 class="title-tag">{{children.Firstname}}</h3>
+                                                <img class="add-photo-image img-circle inline-block pointer" ng-if="!children.isUploading" ng-class="{'border-white':(children.ProfileImageUrl != '../../../images/Avatar.png')}" ng-src="{{children.ProfileImageUrl}}" err-src="../../../images/Avatar.png" ngf-select="uploadImage($file, children)" accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*" ngf-fix-orientation="true" />
+                                                <div class="dashboard-img-container inline-block" ng-if="children.isUploading">
+                                                    <img id="imgLoader" class="img-progress margin-top-30" src="../../../images/black-loader.gif" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <img id="imageUploader" ng-hide="true" src="../../../images/Avatar.png" err-src="../../../images/Avatar.png" ngf-select="uploadImage($file)" accept="image/*"
+                                     ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*" ngf-fix-orientation="true" />
+                                <!-- Display childs payday status -->
+                                <div class="finacial-overview-sec">
+                                    <!--<span class="chores-heading">NEXT PAYDAY,&nbsp;{{FinancialOverview.NextPayDate| dateWithOrdinal:'MMMM ddoo'}}</span>-->
+                                    <!--<span class="chores-heading">NEXT PAYDAY,&nbsp;{{FinancialOverview.NextPayDate| amDateFormat:'MMMM Do'}}</span>-->
+                                    <div class="allowance position-relative">
+
+                                        <p class="next-payday-amount" ng-if="FinancialOverview.NextPayAmount < 0">
+                                            {{(FinancialOverview.NextPayAmount == undefined || FinancialOverview.NextPayAmount==null)?0: FinancialOverview.NextPayAmount | currency:USD:2}}
+                                        </p>
+                                        <p class="next-payday-amount" ng-if="FinancialOverview.NextPayAmount >= 0.00">
+                                            {{(FinancialOverview.NextPayAmount == undefined || FinancialOverview.NextPayAmount==null)?0: FinancialOverview.NextPayAmount | currency:USD:2}}
+                                            <span class="chores-heading" style="color: #67c152;">to be paid,&nbsp;{{FinancialOverview.NextPayDate}}</span>
+                                        </p>
+                                        <!--New Pending Message-->
+                                        <p style="text-align:center" ng-if="FinancialOverview.pendingChoreStatus">
+                                            <span class="chores-heading" style="color: #67c152;">You have a payday payment pending! Please check your activity tab to review pending items.</span>
+                                        </p>
+
+                                        <!--End-->
+                                        <!--<p class="next-payday-hint">Only {{daysRemain}} more {{daysRemain>1?'days':'day'}} until PayDay!</p>-->
+                                        <div ng-show="isFinancialOverviewLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                                            <div class="loading-top-div">
+                                                <div class="loading-middle-div">
+                                                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Display Child Allocation Settings-->
+                                <div class="earnings-sec" ng-show="!isLoading">
+                                    <div class="row remove-margin">
+                                        <span class="chores-heading pull-left">EARNINGS</span>
+                                        <a class="link-md pull-right" ui-sref="allocationSettings" ng-click="updateChildId()">Edit Allocation Settings</a>
+                                    </div>
+                                    <div>
+                                        <ul class="earnings-allocate row">
+                                            <li class="save col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="middle">
+                                                    <span class="earn-title">SAVE</span>
+                                                    <div class="earn-amount position-relative earnings-loader">
+                                                        <div class="inner-div">
+                                                            <span class="earn-amount" ng-show="!isEarningsLoading">{{(childEarnings==undefined || childEarnings==null) ? 0 : childEarnings.Save | currency}}</span>
+                                                            <div class="loading-top-div earnings-progress" ng-show="isEarningsLoading">
+                                                                <div class="loading-middle-div">
+                                                                    <img class="loading-icon" src="../../../images/white-loader.gif" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="share col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="middle">
+                                                    <span class="earn-title">SHARE</span>
+                                                    <div class="earn-amount position-relative earnings-loader">
+                                                        <div class="inner-div">
+                                                            <span class="earn-amount" ng-show="!isEarningsLoading">{{(childEarnings==undefined || childEarnings==null) ? 0 : childEarnings.Share | currency}}</span>
+                                                            <div class="loading-top-div earnings-progress" ng-show="isEarningsLoading">
+                                                                <div class="loading-middle-div">
+                                                                    <img class="loading-icon" src="../../../images/white-loader.gif" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="spend col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="middle">
+                                                    <span class="earn-title">SPEND</span>
+                                                    <div class="earn-amount position-relative earnings-loader">
+                                                        <div class="inner-div">
+                                                            <span class="earn-amount" ng-show="!isEarningsLoading">{{(childEarnings==undefined || childEarnings==null) ? 0 : childEarnings.Spend | currency}}</span>
+                                                            <div class="loading-top-div earnings-progress" ng-show="isEarningsLoading">
+                                                                <div class="loading-middle-div">
+                                                                    <img class="loading-icon" src="../../../images/white-loader.gif" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="row remove-margin text-center">
+                                            <ul class="nav nav-tabs dashboard-button-tab">
+                                                <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 active"><a data-toggle="tab" ui-sref="suggestedChore({id:selectedChild.Id})">Add Chores</a></li>
+                                                <!--<li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 active"><a data-toggle="tab" ui-sref="subscription">Add Chores</a></li>-->
+                                                <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><a data-toggle="tab" ng-click="sendBonus()">Send a Bonus</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Display Chores-->
+                                <div ng-show="!isLoading">
+                                    <!--<span class="chores-heading remove-margin">CHORES</span>-->
+                                    <div class="row remove-margin">
+                                        <span class="chores-heading pull-left">CHORES</span>
+                                    </div>
+                                    <div class="row">
+                                        <ul class="text-center week-days">
+                                            <li class="pointer inline-block" ng-click="toggleWeekDay(weekDay)" ng-repeat="weekDay in weekDays">
+                                                <button class="btn-week-days chore-buttons" ng-class="{'active': weekDay.IsDaySelected, 'today':weekDay.IsToday }">{{weekDay.Name | limitTo : 1}}</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="choreDue remove-margin">
+                                        <div ng-show="isChoresLoading" class="center-loading">
+                                            <div class="loading-top-div">
+                                                <div class="loading-middle-div">
+                                                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="choredue-padding chore-line" ng-repeat="chore in chores" ng-click="editChore(chore)">
+                                            <div class="inline-block">
+                                                <div class="media chore-item">
+                                                    <div class="media-body remove-padding transaction-content chore-item-name" style="text-align: left;">
+                                                        <span>{{chore.Name}}</span>
+                                                        <div class="media-bottom remove-padding transaction-content chore-item-value">
+                                                            {{chore.Frequency}} <span ng-bind="chore.Value | currency:USD$:2"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="choredue-empty chore-line" ng-if="chores.length==0">No chores found{{selectedWeekDay.IsToday?' today':'' }}!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Activity Tabs -->
+                <div id="activity" class="tab-pane dashboard-header-content fade in">
+                    <div ng-include src="'/app/components/dashboard/_childActivity.html'" ng-controller="childActivityController"></div>
+                </div>
+                <!-- Activity Tabs -->
+                <!--<div ng-init="getInclude()"></div>-->
+                <div id="divpixel"></div>
+
+            </div>
+        </div>
+    </div>
+</div>

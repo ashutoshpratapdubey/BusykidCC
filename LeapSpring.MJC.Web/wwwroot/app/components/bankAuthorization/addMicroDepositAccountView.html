@@ -1,0 +1,116 @@
+﻿<style>
+    .microDepositPage input {
+        max-width: 350px;
+        width: 300px;
+    }
+
+    .microDepositPage .note.bankname {
+        font-size: 15px;
+        margin: 0 10px;
+    }
+
+    .microDepositPage .note {
+        margin-top: 50px;
+        color: #666666;
+    }
+
+    .microDepositPage, .microDepositPage .radio-label {
+        color: #000;
+    }
+
+    .microDepositPage {
+        padding: 0 10px;
+    }
+
+        .microDepositPage .hint-medium {
+            margin-bottom: 30px;
+            padding: 0;
+        }
+
+        .microDepositPage .dollor-input {
+            max-width: 80px;
+            padding-left: 25px;
+        }
+
+        .microDepositPage .signup-btn-margins {
+            margin: 20px 0 0 0;
+        }
+
+        .microDepositPage .btn-drop-down {
+            padding: 7px 0px;
+            font-size: 16px;
+            width: 300px;
+            border-bottom: 1px solid #0491d3;
+        }
+
+        .microDepositPage .img-dropdown .btn-drop-down .glyphicon-triangle-bottom {
+            margin-top: 8px;
+        }
+
+        .microDepositPage .input-margin-bottom {
+            margin-bottom: 7px !important;
+        }
+
+        .microDepositPage .img-dropdown .dropdown-menu {
+            max-width: 300px;
+        }
+</style>
+
+<div class="app-width microDepositPage text-center">
+    <div class="margin-top-10">
+        <p class="note text-center">
+            Link Your Bank Account
+        </p>
+    </div>
+    <form name="linkMicroDepositForm" role="form" novalidate>
+        <div class="row">
+            <div class="row input-margin-bottom">
+                <div class="form-group signup-input-margin-bottom inline-block" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl pull-left">Account Number</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <div class="position-relative">
+                            <input type="text" name="accountNumber" class="form-control mjc-input remove-margin margin-auto" placeholder="Account Number" ng-model="account.AccountNumber" required autocomplete="off" />
+                            <p class="help-block" ng-if="linkMicroDepositForm.accountNumber.$error.required">Account Number is required.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row input-margin-bottom">
+                <div class="form-group signup-input-margin-bottom inline-block" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl pull-left">Routing Number</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <div class="position-relative">
+                            <input type="text" name="routingNumber" class="form-control mjc-input remove-margin margin-auto" placeholder="Routing Number" ng-model="account.RoutingNumber" required autocomplete="off" />
+                            <p class="help-block" ng-if="linkMicroDepositForm.routingNumber.$error.required">Routing Number is required.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row signup-input-margin-bottom">
+                <div class="form-group signup-input-margin-bottom inline-block">
+                    <div class="cols-sm-2 signup-input-lbl pull-left">Account Type</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <div class="position-relative">
+                            <div class="text-center">
+                                <div class="img-dropdown">
+                                    <button class="btn-drop-down dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{account.SelectedAccountType}}
+                                        <span class="glyphicon glyphicon-triangle-bottom pull-right"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li ng-repeat="accountType in accountTypes" ng-click="changeAccountType(accountType)">{{accountType}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center signup-btn-margins">
+            <button class="btn mjc-btn bac-color-67c152" ng-disabled="isProcessing" ng-click="createMicroDepositAccount()">{{isProcessing?"Processing...":"Continue"}}</button>
+        </div>
+    </form>
+</div>

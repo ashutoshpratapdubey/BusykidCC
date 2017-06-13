@@ -1,0 +1,63 @@
+﻿
+<div class="box-content text-center purchase-stock-sec position-relative" ng-class="{'background-green': showSuccessMessage }">
+    <div class="main-content remove-padding text-center scroll-popup">
+
+        <form name="purchaseStockForm" class="position-relative" role="form" novalidate>
+
+            <div>
+                <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-cloak class="text-center">
+                    <div ng-cloak class="text-center stock-sec">
+                        <div class="row stock-image-sec">
+                            <div class="inline-block">
+                                <img class="add-photo-image stock-image inline-block remove-margin" ng-src="{{giftCardPreview.CoverImageUrl}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+
+                    <!--<p class="row remove-margin bonus-text">How much would you like to purchase?</p>-->
+                    <div class="row remove-margin margin-top-10">
+                        <div class="numeric-updown-group">
+                            <button class="btn mjc-btn numeric-updown-button negative-icon" ng-disabled="selectedIndex<=0" ng-click="previousGiftCard();"><span class="glyphicon glyphicon-minus btn-negative-icon"></span></button>
+                            <button class="numeric-updown-button numeric-updown-value" ng-disabled="true"><div class="dollor-symbol">$</div><div class="inline-block">{{selectedGiftCard.Amount}}</div></button>
+                            <button class="btn mjc-btn numeric-updown-button" ng-disabled="maxIndex<=selectedIndex" ng-click="nextGiftCard();"><span class="glyphicon glyphicon-plus"></span></button>
+                        </div>
+                    </div>
+
+                    <div class="row remove-margin text-center">
+                        <button class="back-color-save btn-donate" ng-disabled="isPurchasing" ng-click="purchaseGiftCard()">{{isPurchasing?'Buying...' :'Buy For Yourself'}}</button>
+                    </div>
+                </div>
+
+                <div class="stock-details">
+                    <div class="row remove-margin stock-details-sec">
+                        <p class="hint-title phone-hint-title remove-margin stock-name">{{giftCardPreview.Name}}</p>
+                        <div class="about-collapse">
+                            <a class="collapse-tab" data-toggle="collapse" data-target="#about">
+                                About
+                            </a>
+                            <div id="about" class="collapse-content collapse">
+                                <p class="hint-title phone-hint-title remove-margin stock-desc-text">{{giftCardPreview.Description}}</p>
+                                <div class="gift-disclosure-min stock-desc-text" ng-bind-html="giftCardPreview.Disclosure" ng-if="giftCardPreview.Disclosure!=null"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="hideModal()">
+        <span class="glyphicon glyphicon-remove btn-close-text" />
+    </div>
+</div>

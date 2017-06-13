@@ -1,0 +1,176 @@
+﻿<!--Audio for send bonus-->
+<audio id="audioSendBonus" hidden preload="auto">
+    <source src="../../../sounds/Send%20a%20Bonus_parent.mp3" type="audio/mpeg" />
+</audio>
+
+<style>
+    body {
+        color: #333;
+    }
+
+    .popupForm .col-sm-4 {
+        padding: 0px 5px;
+    }
+
+    .popupForm {
+    }
+
+        .popupForm .signup-btn-margins {
+            margin: 10px 0;
+        }
+
+        .popupForm label {
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+            float: left;
+        }
+
+        .popupForm p {
+            font-family: "tosia-regular";
+            font-size: 11px;
+        }
+
+        .popupForm .img-dropdown .btn-drop-down {
+            font-size: 14px;
+            width: 110px;
+            padding: 7px 0;
+        }
+
+            .popupForm .img-dropdown .btn-drop-down .glyphicon-triangle-bottom {
+                margin-top: 5px;
+            }
+
+        .popupForm .img-dropdown .dropdown-menu li:not(:last-child) {
+            font-size: 14px;
+        }
+
+        .popupForm .img-dropdown .dropdown-menu li {
+            cursor: pointer;
+            font-size: 14px;
+            height: 29px;
+            padding: 3px 0;
+        }
+
+        .popupForm input.mjc-input {
+            border-radius: 0;
+            border-width: 0 0 1px;
+            font-size: 14px;
+            height: 36px;
+            padding: 4px 0;
+            text-align: left;
+            box-shadow:none;
+        }
+
+        .popupForm .signup-btn-margins {
+            margin: 10px 0;
+        }
+
+     
+
+    .pText {
+        font-size: 16px;
+        line-height: 21px;
+        padding: 20px 0px;
+        margin: 0px;
+        color: #999;
+    }
+
+    .btnMjc {
+        margin: 0 5px;
+        width: 46%;
+        min-height: auto;
+        padding: 7px 30px 8px;
+        box-sizing: border-box;
+    }
+
+    .addyourAcc {
+        font-weight: bold;
+        font-size: 24px;
+        padding-bottom: 25px;
+        color: #666;
+    }
+</style>
+<div class="box-content text-center" ng-class="{'background-green': showSuccessMessage }">
+    <div class="main-content remove-padding text-center">
+        <form name="AddExternalAccountForm" class="position-relative" role="form" ng-submit="submitted = true" novalidate>
+            <div>
+                <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+                <div ng-cloak class="text-center send-bonus-body popupForm">
+                    <div class="row input-margin-bottom">
+                        <div class="col-sm-12">
+                            <div class="addyourAcc">Add Your Account</div>
+                            <div class="col-sm-4">
+                                <label>Account Number</label>
+                                <div class="position-relative">
+                                    <input type="text" name="accountNumber" class="form-control mjc-input remove-margin margin-auto" placeholder="Account Number" ng-model="account.AccountNumber" required/>
+                                    <p class="help-block" ng-if="submitted && AddExternalAccountForm.accountNumber.$error.required">Account Number is required.</p>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Routing Number</label>
+                                <div class="position-relative">
+                                    <input type="text" name="routingNumber" class="form-control mjc-input remove-margin margin-auto" placeholder="Routing Number" ng-model="account.RoutingNumber"  required/>
+                                    <p class="help-block" ng-if="submitted && AddExternalAccountForm.routingNumber.$error.required">Routing Number is required.</p>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Account Type</label>
+                                <div class="position-relative">
+                                    <div class="text-center">
+                                        <div class="img-dropdown">
+                                            <button class="btn-drop-down dropdown-toggle" type="button" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{account.SelectedAccountType}}
+                                                <span class="glyphicon glyphicon-triangle-bottom pull-right"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
+                                                <li ng-repeat="accountType in accountTypesselect" ng-click="changeAccountType(accountType)">{{accountType}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="pText">
+
+                                The routing number is the first 9 digits at the bottom left of your checks.The account number is between the routing number and the check number.
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="text-center signup-btn-margins">
+                        <button class="btn btnMjc mjc-btn bac-color-67c152" ng-disabled="isProcessing" ng-click="AddExternalAccountForm.$valid && createMicroDepositAccount()">{{isProcessing?"Processing...":"Save"}}</button>
+                        <button class="btn btnMjc button mjc-btn bac-color-db402e " ng-disabled="isProcessing" ng-click="cancelBankAuthorzation()">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="send-bonus-success" ng-show="showSuccessMessage">
+                <div class="middle-div">
+                    <div class="row">
+                        <img class="row add-photo-image img-circle inline-block img-success" src="../../../images/success.png" />
+                    </div>
+                    <div>
+                        <div class="success-message ">
+                            <p class="bonus-success">Success! Your bonus was sent!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="cancelBankAuthorzation()">
+                <span class="glyphicon glyphicon-remove btn-close-text" />
+            </div>
+        </form>
+    </div>
+</div>

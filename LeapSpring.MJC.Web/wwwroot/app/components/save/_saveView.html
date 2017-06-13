@@ -1,0 +1,199 @@
+﻿<style>
+    .save-sec .gift-card-image {
+        padding: 5px;
+    }
+
+    .stock-quote-symbol {
+        margin-left: 3px !important;
+        font-size: 18px;
+    }
+
+    /*.save-sec .dashboard-chore:hover {
+        border: 1px solid #4a4a4a;
+    }
+
+        .save-sec .dashboard-chore:hover .image-bottom-border {
+            border-bottom: solid 1px #4a4a4a;
+        }*/
+
+    .center-image {
+        display: table;
+        height: 100%;
+    }
+
+        .center-image .center {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+    @media screen and (min-width : 768px) {
+        .save-content {
+            height: 100%;
+        }
+
+        /*.save-sec .chore-text {
+            white-space: normal;
+        }*/
+
+        .save-sec .gift-card-image {
+            max-height: inherit;
+        }
+
+        .image-bottom-border {
+            border: none;
+        }
+
+        /*.save-sec .dashboard-chore:hover .image-bottom-border {
+            border: none;
+        }*/
+    }
+</style>
+
+<div class="save-sec spend-gift margin-bottom-20">
+
+    <div ng-show="!isShowPurchaseStockGiftCards">
+        <div class="row remove-margin stock-header">
+            <p class="text-small">STOCKS</p>
+            <a class="link-sm pull-right" ng-click="toggleShowStockGiftCard()">MY STOCKS</a>
+        </div>
+
+        <div class="choreDue gift-card-sec remove-margin position-relative">
+            <div ng-show="isStockGiftCardsLoading" class="center-loading">
+                <div class="loading-top-div">
+                    <div class="loading-middle-div">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+            <ul class="chore-items" ng-if="!isStockGiftCardsLoading && stockGiftCards.length!=0">
+                <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chor" ng-repeat="stockGiftCard in stockGiftCards | limitTo:4">
+                    <div class="dashboard-chore">
+                        <div class="row remove-margin stock-tile">
+                            <div class="position-relative chore-image-sec">
+                                <!-- Gift cards section -->
+                                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 remove-padding center-image" ng-class="{'image-bottom-border':stockGiftCard.IsStock}">
+                                    <div class="position-relative center pointer" ng-click="showStockModal($event, stockGiftCard)">
+                                        <img class="add-photo-image gift-card-image" ng-src="{{stockGiftCard.LogoUrl}}" />
+                                        <!--<p class="dashboard-chore-value remove-margin back-color-save" ng-if="stockGiftCard.IsStock">STOCK</p>-->
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 remove-padding save-content">
+                                    <div class="save-name-section">
+                                        <div ng-if="stockGiftCard.IsStock">
+                                            <div>
+                                                <span class="remove-margin dashboard-text-medium chore-text stock-name">{{ stockGiftCard.CompanyPopularName}}</span>
+                                                <span class="remove-margin dashboard-text-medium chore-text stock-symbol">{{ stockGiftCard.StockSymbol}} </span>
+                                            </div>
+                                            <button class="btn mjc-btn btn-chore-done back-color-save pointer" ng-click="purchase(stockGiftCard)">Buy Stock</button>
+                                        </div>
+                                        <div ng-if="!stockGiftCard.IsStock">
+                                            <p class="dashboard-text-medium chore-text"> {{ stockGiftCard.CompanyPopularName}}</p>
+
+                                            <button class="btn mjc-btn btn-chore-done back-color-save">
+                                                <span>Teach Me</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Gift cards ended -->
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <a class="link-sm pull-right" ng-if="stockGiftCards.length!=0" ui-sref="buystock">More</a>
+            <p class="choredue-empty chore-line" ng-if="!isStockGiftCardsLoading && stockGiftCards.length==0">No stock gift cards available!</p>
+        </div>
+    </div>
+
+    <div ng-show="isShowPurchaseStockGiftCards">
+
+        <div class="position-relative">
+            <!-- My Stokcs -->
+            <div>
+                <div class="row remove-margin stock-header">
+                    <p class="text-small">MY STOCKS</p>
+                    <a class="link-sm pull-right" ng-click="toggleShowStockGiftCard()">BUY STOCKS</a>
+                </div>
+
+                <div class="choreDue gift-card-sec remove-margin position-relative">
+
+                    <ul class="chore-items" ng-if="!isStockGiftCardsLoading && purchasedStockGiftCards.length!=0">
+                        <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chor" ng-repeat="stockGiftCard in purchasedStockGiftCards">
+                            <div class="dashboard-chore pointer">
+                                <div class="row remove-margin stock-tile">
+                                    <div class="position-relative chore-image-sec">
+                                        <!-- Gift cards section -->
+                                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 remove-padding image-bottom-border center-image">
+                                            <div class="position-relative center pointer" ng-click="gotoStockPile();">
+                                                <img class="add-photo-image gift-card-image" ng-src="{{stockGiftCard.StockItem.LogoUrl}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 remove-padding save-content">
+                                            <div class="save-name-section">
+                                                <div>
+                                                    <span class="remove-margin dashboard-text-medium chore-text stock-name">{{ stockGiftCard.StockItem.CompanyPopularName}}</span>
+                                                    <span class="remove-margin dashboard-text-medium chore-text stock-symbol">{{ stockGiftCard.StockItem.StockSymbol}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Gift cards ended -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <p class="choredue-empty chore-line" ng-if="!isStockGiftCardsLoading && purchasedStockGiftCards.length==0">No stock gift cards purchased!</p>
+                </div>
+            </div>
+
+            <!-- Pending approval stocks -->
+            <div class="margin-top-20">
+                <div class="row remove-margin stock-header">
+                    <p class="text-small">PENDING APPROVAL</p>
+                </div>
+
+                <div class="choreDue gift-card-sec remove-margin position-relative">
+                    <ul class="chore-items" ng-if="!isStockGiftCardsLoading && pendingStockGiftCards.length!=0">
+                        <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chor" ng-repeat="stockGiftCard in pendingStockGiftCards">
+                            <div class="dashboard-chore pointer">
+                                <div class="row remove-margin stock-tile">
+                                    <div class="position-relative chore-image-sec">
+                                        <!-- Gift cards section -->
+                                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 remove-padding image-bottom-border center-image">
+                                            <div class="position-relative center" ng-click="gotoStockPile();">
+                                                <img class="add-photo-image gift-card-image" ng-src="{{stockGiftCard.StockItem.LogoUrl}}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 remove-padding save-content">
+                                            <div class="save-name-section">
+                                                <div>
+                                                    <span class="remove-margin dashboard-text-medium chore-text stock-name">{{ stockGiftCard.StockItem.CompanyPopularName}}</span>
+                                                    <span class="remove-margin dashboard-text-medium chore-text stock-symbol">{{ stockGiftCard.StockItem.StockSymbol}} </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Gift cards ended -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <p class="choredue-empty chore-line" ng-if="!isStockGiftCardsLoading && pendingStockGiftCards.length==0">No pending stock gift cards found!</p>
+                </div>
+            </div>
+
+            <div ng-show="isStockGiftCardsLoading" class="center-loading">
+                <div class="loading-top-div">
+                    <div class="margin-top-25">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

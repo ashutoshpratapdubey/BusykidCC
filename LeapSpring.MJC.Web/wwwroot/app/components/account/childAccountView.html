@@ -1,0 +1,154 @@
+﻿<style>
+    body {
+        color: #333;
+    }
+
+    .remove-underline, .link-md.remove-underline:hover {
+        text-decoration: none;
+    }
+
+    .my-account .profile-sec .image-sec {
+        position: relative;
+        min-width: 130px;
+        min-height: 130px;
+    }
+
+        .my-account .profile-sec .image-sec .loading-middle-div img {
+            margin-left: Calc(50% - 22px);
+        }
+
+    .my-account .profile-sec .profile-detail {
+        margin-top: 50px;
+    }
+
+    .linkbank-content {
+        margin-top: 0px;
+    }
+
+    .dollor-input {
+        max-width: 80px;
+        padding-left: 25px;
+    }
+
+    .signup-input-lbl, .newuser-input-lbl {
+        padding: 6px 0px;
+        font-size: 12px;
+    }
+
+    .pad10 {
+        padding: 10px 0;
+    }
+
+    .clicktochange {
+        bottom: 15px;
+        color: #333;
+        left: 9px;
+        position: absolute;
+        text-align: center;
+        width: 90%;
+    }
+</style>
+
+<div class="app-width">
+    <div class="my-account">
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <div ng-hide="isLoading">
+            <div class="text-center">
+                <h3 class="title-tag">My Account</h3>
+                <hr class="sm" />
+            </div>
+            <div class="profile-sec" style="position:relative;">
+                <div class="inline-block pull-left image-sec">
+                    <div class="inline-block pull-left image-sec" ng-class="{'pointer':!familyMember.isUploading}">
+                        <img ng-src="{{familyMember.ProfileImageUrl}}" err-src="../../../images/Avatar.png" ngf-select="uploadImage($file)"
+                             accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*"
+                             ng-if="!familyMember.isUploading" ng-class="{'border-white':(familyMember.ProfileImageUrl != '../../../images/Avatar.png')}" ngf-fix-orientation="true" />
+                    </div> 
+                    <h4>Click to change </h4>
+                    <!--<div class="remove-margin clicktochange">Click<br />to Change</div>-->
+                    <div class="center-loading" ng-if="familyMember.isUploading">
+                        <div class="loading-top-div">
+                            <div class="loading-middle-div">
+                                <img class="loading-icon" src="../../../images/black-loader.gif" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="profile-detail">
+                    <span class="choredue-task no-wrap">{{familyMember.Firstname}}</span>
+                </div>
+            </div>
+            <form name="ChildMemberform" role="form" novalidate>
+                <div style="clear:both;">
+
+                    <span class="chores-heading remove-margin">ACCOUNT DETAILS</span>
+                    <hr class="sm" />
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left">FirstName: <small ng-hide="isEditName">{{familyMember.Firstname }}</small></h4>
+                        <div class="input-group-lite form-group remove-margin" show-errors>
+                            <input id="memberName" type="text" name="Name" class="mjc-input-lite sm" placeholder="{{familyMember.Firstname }}" ng-show="isEditName"
+                                   ng-model="familyMember.Firstname" required autocomplete="off" />
+                            <div>
+                                <p class="help-block" ng-class="{'margin-top-10':!isEditName}" ng-if="ChildMemberform.Name.$error.required && (canShowAllErr||isEditName)">FirstName is required.</p>
+                            </div>
+                        </div>
+                        <a class="link-md pull-right margin-top-10" ng-click="editFormInput('name');">
+                            <span ng-hide="isEditName">Edit</span>
+
+                        </a>
+                        <a class="link-md pull-right margin-top-10" ng-click="UpdatechildName();">
+                            <span ng-show="isEditName">Done</span>
+                        </a>
+                    </div>
+
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left">Pin: <small ng-hide="isEditPin">****</small></h4>
+                        <div class="input-group-lite sm form-group remove-margin" show-errors>
+                            <input id="memberPin" type="password" maxlength="4" name="pin" class="mjc-input-lite" placeholder="New Pin" ng-show="isEditPin"
+                                   ng-model="familyMember.User.PIN" required autocomplete="off" />
+                            <div>
+                                <p class="help-block" ng-class="{'margin-top-10':!isEditPin}" ng-if="ChildMemberform.pin.$error.required && (canShowAllErr||isEditPin)">Pin is required.</p>
+                            </div>
+                        </div>
+                        <a class="link-md pull-right margin-top-10" ng-click="editFormInput('pin');">
+                            <span ng-hide="isEditPin">Edit</span>
+
+                        </a>
+                        <a class="link-md pull-right margin-top-10" ng-click="UpdateChildPin();">
+                            <span ng-show="isEditPin">Done</span>
+                        </a>
+                    </div>
+
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left">Phone: <small ng-hide="isEditPhone">{{familyMember.PhoneNumber | phoneNumber}}</small></h4>
+                        <div class="input-group-lite form-group remove-margin" show-errors>
+                            <input id="memberPhone" type="text" name="phone" class="mjc-input-lite sm" placeholder="Phone" ng-show="isEditPhone"
+                                   ng-model="familyMember.PhoneNumber" required autocomplete="off" phone-input-formatter />
+                            <div>
+                                <p class="help-block" ng-class="{'margin-top-10':!isEditPhone}" ng-if="ChildMemberform.phone.$error.required && (canShowAllErr||isEditPhone)">Phone is required.</p>
+                            </div>
+                        </div>
+                        <a class="link-md pull-right margin-top-10" ng-click="editFormInput('phone');">
+                            <span ng-hide="isEditPhone">Edit</span>
+                        </a>
+                        <a class="link-md pull-right margin-top-10" ng-click="UpdateChildPhone();">
+                            <span ng-show="isEditPhone">Done</span>
+                        </a>
+                    </div>
+
+                    <div class="text-center margin-top-25">
+                        <button class="btn mjc-btn bac-color-67c152 margin-top-10" ng-click="updateChildMember()">{{saveBtnTxt}}</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

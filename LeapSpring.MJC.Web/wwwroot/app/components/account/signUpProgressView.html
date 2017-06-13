@@ -1,0 +1,59 @@
+﻿<div class="app-width">
+    <div ng-show="isSignUpCompleted" style="background-color: white;" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div class="signUp-progress" ng-hide="isSignUpCompleted">
+        <div class="signUp-progress-parnt">
+            <div class="signUp-progress-content">
+                <div ng-show="isLoading" class="center-loading">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="hint-title">{{title}}</h3>
+
+                <ul class="signUp-missed-list">
+                    <li ng-click="completeSignup();">
+                        <div ng-class="{'completed':signUpProgress.IsAccountCreated && signUpProgress.HasPin && signUpProgress.HasPhoneNumber, '': !signUpProgress.HasPin || !signUpProgress.HasPhoneNumber}">
+                            <img src="../../../images/success.png" ng-if="signUpProgress.IsAccountCreated && signUpProgress.HasPin && signUpProgress.HasPhoneNumber"/>
+                            <img src="../../../images/icons/warning-sm.png" ng-if="!signUpProgress.HasPin || !signUpProgress.HasPhoneNumber" />
+                            <span ng-if="signUpProgress.IsAccountCreated && signUpProgress.HasPin && signUpProgress.HasPhoneNumber"> Created an Account</span>
+                            <span ng-if="!signUpProgress.HasPin || !signUpProgress.HasPhoneNumber"> Complete Signup</span>
+                        </div>
+                    </li>
+                    <li ng-click="gotoAddChild();">
+                        <div ng-class="{'completed': !signUpProgress.HasPin || !signUpProgress.HasPhoneNumber, '': signUpProgress.IsAddedChild}">
+                            <img src="../../../images/success.png" ng-if="signUpProgress.IsAddedChild" />
+                            <img src="../../../images/icons/warning-sm.png" ng-if="!signUpProgress.IsAddedChild" />
+                            <span ng-if="signUpProgress.IsAddedChild"> Added a Child</span>
+                            <span ng-if="!signUpProgress.IsAddedChild"> Add Child</span>
+                        </div>
+                    </li>
+                    <li ng-click="gotoAssignedChores();">
+                        <div ng-class="{'completed': !signUpProgress.HasPin || !signUpProgress.HasPhoneNumber || !signUpProgress.IsAddedChild, '': signUpProgress.IsAssignedSomeChores}">
+                            <img src="../../../images/success.png" ng-if="signUpProgress.IsAssignedSomeChores" />
+                            <img src="../../../images/icons/warning-sm.png" ng-if="!signUpProgress.IsAssignedSomeChores" />
+                            <span ng-if="signUpProgress.IsAssignedSomeChores"> Assigned Some Chores</span>
+                            <span ng-if="!signUpProgress.IsAssignedSomeChores"> Assign Chore</span>
+                        </div>
+                    </li>
+                    <li ng-click="gotoLinkBank();">
+                        <div ng-class="{'completed': !signUpProgress.HasPin || !signUpProgress.HasPhoneNumber || !signUpProgress.IsAddedChild || !signUpProgress.IsAssignedSomeChores || isCompletedBankProcess}">
+                            <img src="../../../images/success.png" ng-if="isCompletedBankProcess" />
+                            <img src="../../../images/icons/warning-sm.png" ng-if="!isCompletedBankProcess" />
+                            <span> {{bankLinkText}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

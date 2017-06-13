@@ -1,0 +1,39 @@
+﻿<div>
+    <div class="app-width">
+        <p class="admin-dashboard-title text-center">Add Parent</p>
+
+        <p class="hint-medium text-center margin-bottom-40">
+            Here’s your chance to add another<br />
+            parent to your family. Please complete the<br />
+            next few steps and you’re ready to go!
+        </p>
+
+        <div class="text-center">
+            <p class="child-phone-lbl color-555 text-center">USING THEIR OWN PHONE?</p>
+            <label>
+                <input id="yes" type="radio" value="0" name="quality" ng-model="parentOwnPhone"><span></span>
+                <p class="color-555 radiobtn-yes">Yes</p>
+            </label>
+
+            <label>
+                <input id="no" type="radio" value="1" name="quality" ng-model="parentOwnPhone"><span></span>
+                <p class="color-555 radiobtn-no">No</p>
+            </label>
+        </div>
+        <form name="parentPhoneForm" role="form" novalidate>
+            <div class="row form-group text-center margin-bottom-25" ng-class="{'input-disabled':parentOwnPhone == '1'}" show-errors>
+                <div class="col-sm-12 mjc-input-group margin-auto">
+                    <span class="color-555 max-width-300 inline-block text-left full-width child-phone-lbl">PARENT’S PHONE NUMBER</span>
+                    <input type="tel" name="phone" class="form-control input-group mjc-input remove-margin margin-auto" ng-disabled="parentOwnPhone == '1'"
+                           placeholder="Phone Number" ng-model="member.PhoneNumber" ng-required="parentOwnPhone == '0'" minlength="10" ng-minlength="10" phone-input-formatter autocomplete="off" />
+                    <p class="help-block" ng-if="parentPhoneForm.phone.$error.required">Enter phone number.</p>
+                    <p class="help-block" ng-if="parentPhoneForm.phone.$error.minlength">Phone number must be minimum 10 digits.</p>
+                </div>
+            </div>
+
+            <div class="text-center button-center margin-top-51 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue" ng-click="addParentPhone()">{{btnContinue}}</button>
+            </div>
+        </form>
+    </div>
+</div>

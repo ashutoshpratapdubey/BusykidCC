@@ -1,0 +1,102 @@
+﻿<style>
+    input {
+        max-width: 330px;
+    }
+
+    .more-info {
+        color: #666;
+    }
+
+        .more-info .hint-title {
+            margin-top: 35px;
+        }
+</style>
+<div class="app-width more-info">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <div ng-show="isSignUpProgress.response" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="isSignUpProgress.response">
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <p class="row hint-title phone-hint-title">Verify your identity</p>
+        <form name="memberInfoForm" role="form" novalidate>
+            <div class="signup remove-padding">
+                <div>
+                    <div class="row form-group signup-input-margin-bottom" show-errors>
+                        <div class="col-sm-12 mjc-input-group margin-auto" id="dobSection">
+                            <span class="max-width-300 inline-block text-left full-width input-lbl">DATE OF BIRTH (MM/DD/YY)</span>
+                            <input type="text" inputmode="numeric" name="dob" class="form-control input-group mjc-input remove-margin margin-auto"
+                                   placeholder="{{dobPlaceHolder | date:'MM/dd/yy'}}" ng-model="member.Dob" required date-input-formatter autocomplete="off"
+                                   ng-pattern="/^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{2}|[0-9]{4}$/gm" ng-class="{'error-input':isBelow18Age}" ng-change="validateDOB()" />
+                            <p class="help-block" ng-if="memberInfoForm.dob.$error.required">Date of birth is required.</p>
+                            <p class="help-block" ng-if="memberInfoForm.dob.$error.pattern">Invalid date format.</p>
+                            <p class="help-block" style="display:block;" ng-if="isBelow18Age">Only accept 18+ age.</p>
+                        </div>
+                    </div>
+                    <div class="form-group signup-input-margin-bottom" show-errors>
+                        <div class="cols-sm-2 signup-input-lbl">Address</div>
+                        <div class="cols-sm-10 mjc-input-group">
+                            <input type="text" name="address" class="form-control mjc-input" placeholder="Address" ng-model="member.Address" required autocomplete="off" />
+                            <p class="help-block" ng-if="memberInfoForm.address.$error.required">Address is required.</p>
+                        </div>
+                    </div>
+                    <div class="form-group signup-input-margin-bottom" show-errors>
+                        <div class="cols-sm-2 signup-input-lbl">City</div>
+                        <div class="cols-sm-10 mjc-input-group">
+                            <input type="text" name="lastName" class="form-control mjc-input" placeholder="City" ng-model="member.City" required autocomplete="off" />
+                            <p class="help-block" ng-if="memberInfoForm.lastName.$error.required">City is required.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group signup-input-margin-bottom">
+                        <div class="cols-sm-2 signup-input-lbl">States</div>
+                        <div class="dropdown mjc-custom-dd">
+                            <button class="btn-drop-down dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                {{member.State.Name}} - {{member.State.Code}}
+                                <span class="caret pull-right"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li ng-repeat="state in states" ng-class="{'active': state.Id==member.State.Id}" ng-click="changeState(state);"><a>{{state.Name}} - {{state.Code}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group signup-input-margin-bottom" show-errors>
+                        <div id="hintssn" class="position-relative margin-auto">
+                            <div class="cols-sm-2 signup-input-lbl" ng-click="toggleSsnHint()">SSN (Last 4 Digits) <div class="questionmark-oval">?</div></div>
+                            <div class="ssn-hint padding-10" ng-class="{'show':isShowHint, 'hide':!isShowHint}">
+                                <p class="remove-margin-top">
+                                    The final four digits of the SSN is for verification purposes only. It will never be shared.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="cols-sm-10 mjc-input-group">
+                            <input type="text" inputmode="numeric" name="SSN" class="form-control mjc-input" placeholder="SSN"
+                                   ng-model="member.SSN" ng-minlength="4" ng-maxlength="4" required autocomplete="off" />
+                            <p class="help-block" ng-if="memberInfoForm.SSN.$error.required">SSN is required.</p>
+                            <p class="help-block" ng-if="memberInfoForm.SSN.$error.minlength">SSN must be in 4 digits.</p>
+                            <p class="help-block" ng-if="memberInfoForm.SSN.$error.maxlength">SSN must be in 4 digits.</p>
+                        </div>
+                    </div>
+
+                    <div class="text-center signup-btn-margins">
+                        <button class="btn mjc-btn bac-color-2b79a9" ng-disabled="isUpdating" ng-click="updateMemberInfo()">{{btnContinue}}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

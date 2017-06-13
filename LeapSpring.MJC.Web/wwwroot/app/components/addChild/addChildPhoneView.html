@@ -1,0 +1,78 @@
+﻿<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <div ng-show="isSignUpProgress.response" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="isSignUpProgress.response">
+
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+
+        <div ng-hide="isLoading">
+            <form name="childPhoneForm" role="form" novalidate>
+                <div>
+                    <p class="row hint-title add-child-title text-center">Tell Us About Your Child</p>
+                    <div class="row text-center">
+                        <button class="add-photo-shape inline-block pointer margin-bottom-20" type="file" ngf-select="uploadImage($file)" accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*" ngf-fix-orientation="true">
+                            <div ng-if="!hasImage">
+                                <img src="../../../images/icons/camera.png" class="default-camera" />
+                                <div class="add-photo">
+                                    Add<br />Photo
+                                </div>
+                            </div>
+                            <img class="row add-photo-image img-circle inline-block pointer" ng-if="hasImage" ng-src="{{imageSource}}" err-src="../../../images/Avatar.png" />
+                        </button>
+                    </div>
+
+                    <p class="row hint-medium text-center">
+                        One of the key components of BusyKid is<br />
+                        the ability for parents and children to<br />
+                        receive text messages to get important<br />
+                        approvals. If your child has their own<br />
+                        phone, great! If not, our system will<br />
+                        still work. We just need to know.
+                    </p>
+
+                    <div class="text-center">
+                        <p class="child-phone-lbl color-555 text-center">USING THEIR OWN PHONE?</p>
+                        <label>
+                            <input id="yes" type="radio" value="0" name="quality" ng-model="childOwnPhone"><span></span>
+                            <p class="color-555 radiobtn-yes">Yes</p>
+                        </label>
+
+                        <label>
+                            <input id="no" type="radio" value="1" name="quality" ng-model="childOwnPhone"><span></span>
+                            <p class="color-555 radiobtn-no">No</p>
+                        </label>
+                    </div>
+
+                    <div class="row form-group text-center margin-bottom-40" ng-class="{'input-disabled':childOwnPhone == '1'}" show-errors>
+                        <div class="col-sm-12 mjc-input-group margin-auto">
+                            <span class="color-555 max-width-300 inline-block text-left full-width child-phone-lbl">CHILD’S PHONE NUMBER</span>
+                            <input type="tel" name="phone" class="form-control input-group mjc-input remove-margin margin-auto" ng-disabled="childOwnPhone == '1'"
+                                   placeholder="Phone Number" ng-model="member.PhoneNumber" minlength="10" ng-minlength="10" required phone-input-formatter autocomplete="off" />
+                            <p class="help-block" ng-if="childPhoneForm.phone.$error.required">Enter phone number.</p>
+                            <p class="help-block" ng-if="childPhoneForm.phone.$error.minlength">Phone number must be minimum 10 digits.</p>
+                        </div>
+                    </div>
+
+                    <div class="text-center button-center margin-bottom-40 inline-block">
+                        <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue" ng-click="addChildPhone()">{{btnContinue}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

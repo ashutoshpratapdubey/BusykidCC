@@ -1,0 +1,32 @@
+﻿<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <form name="phoneEntry" role="form" novalidate>
+        <div class="text-center">
+
+            <p class="hint-title phone-hint-title">What's your mobile number?</p>
+
+            <div class="row form-group margin-bottom-20" show-errors>
+                <!--<input type="tel" name="phone" class="form-control phone-text text-center inline-block remove-margin" tabindex="1" placeholder="Cell Phone Number" ng-model="phoneNumber" ng-pattern='/^\d{3}-\d{3}-\d{4}$/' phone-input-formatter autofocus autocomplete="off" required />-->
+                <input type="tel" name="phone" class="form-control phone-text text-center inline-block remove-margin" tabindex="1" placeholder="Cell Phone Number" ng-model="phoneNumber" minlength="10" ng-minlength="10" phone-input-formatter autocomplete="off" required />
+                <p class="help-block" ng-if="phoneEntry.phone.$error.required">Enter phone number.</p>
+                <p class="help-block" ng-if="phoneEntry.phone.$error.minlength">Phone number must be minimum 10 digits.</p>
+            </div>
+
+            <p class="row hint-medium text-center phone-hint-medium">
+                BusyKid is designed to work with you<br />
+                primarily through text messages.<br />
+                Please provide your mobile phone<br />
+                number so we can reach you.
+            </p>
+
+            <p class="row phone-hint-small remove-margin text-center">
+                *Standard messaging rates apply. <br />
+            </p>
+
+            <div class="text-center button-center margin-top-111 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" tabindex="5" ng-disabled="isContinue" ng-click="goToNext()">{{btnContinue}}</button>
+            </div>
+        </div>
+    </form>
+</div>

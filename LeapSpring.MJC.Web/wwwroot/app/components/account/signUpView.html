@@ -1,0 +1,97 @@
+﻿<style>
+    body {
+        background-color: #0491d3 !important;
+    }
+
+    input {
+        max-width: 330px;
+    }
+</style>
+<div class="app-width">
+    <div class="margin-top-30">
+        <p class="text-center note padding-left-right-20">
+            Set-up Your Account
+        </p>
+    </div>
+    <form name="signupForm" role="form" novalidate>
+        <div class="signup remove-padding">
+            <div>
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">EMAIL ADDRESS</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input id="firstTxtInput" type="email" name="email" inputmode="email" class="form-control mjc-input" placeholder="Email Address" ng-model="member.Email" required autocomplete="off" />
+                        <p class="help-block" ng-if="signupForm.email.$error.required">Email is required.</p>
+                        <p class="help-block" ng-if="signupForm.email.$error.email">Valid Email is required.</p>
+                    </div>
+                </div>
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">ACCOUNT PASSWORD <div class="signup-questionmark-oval">?</div></div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="{{inputType}}" name="password" class="form-control mjc-input" placeholder="Account Password" ng-model="member.Password" required autocomplete="off" />
+                        <img class="icon-btn" src="../../../images/icons/eye.png" style="width: 8%;" ng-click="showPassword()" />
+                        <p class="help-block" ng-if="signupForm.password.$error.required">Password is required.</p>
+                    </div>
+                </div>
+                <!--This is for manual password validation UI-->
+                <!--<div class="form-group signup-input-margin-bottom" show-errors ng-class="{'has-manual-error':isWrongPassword}">
+                    <div class="cols-sm-2 signup-input-lbl">ACCOUNT PASSWORD <div class="signup-questionmark-oval">?</div></div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="{{inputType}}" name="password" class="form-control mjc-input" placeholder="Account Password"
+                               ng-model="member.Password" required ng-change="validatePassword(member.Password)" autocomplete="off" />
+                        <img class="icon-btn" src="../../../images/icons/eye.png" style="width: 8%;" ng-click="showPassword()" />
+                        <p class="help-block" ng-if="signupForm.password.$error.required || isWrongPassword">{{passwordValidationError}}</p>
+                    </div>
+                </div>-->
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">FIRST NAME</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="text" name="firstName" class="form-control mjc-input" placeholder="First Name" ng-model="member.FirstName" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                        <p class="help-block" ng-if="signupForm.firstName.$error.required">FirstName  is required.</p>
+                        <p class="help-block" ng-if="signupForm.firstName.$error.pattern">Name must be in alphabets.</p>
+                    </div>
+                </div>
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">LAST NAME</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="text" name="lastName" class="form-control mjc-input" placeholder="Last Name" ng-model="member.LastName" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                        <p class="help-block" ng-if="signupForm.lastName.$error.required">LastName is required.</p>
+                        <p class="help-block" ng-if="signupForm.lastName.$error.pattern">Name must be in alphabets.</p>
+                    </div>
+                </div>
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">ZIP CODE</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="text" inputmode="numeric" pattern="[0-9]*" name="zipCode" class="form-control mjc-input" placeholder="Zip Code" ng-model="member.ZipCode" ng-pattern="/^[0-9]*$/" ng-minlength="5" ng-maxlength="5" maxlength="5" required autocomplete="off" />
+                        <p class="help-block" ng-if="signupForm.zipCode.$error.required">Zipcode is required.</p>
+                        <p class="help-block" ng-if="signupForm.zipCode.$error.pattern">Zipcode must be in numbers.</p>
+                        <p class="help-block" ng-if="signupForm.zipCode.$error.minlength">Zipcode must be in 5 digits.</p>
+                        <p class="help-block" ng-if="signupForm.zipCode.$error.maxlength">Zipcode must be in 5 digits.</p>
+                    </div>
+                </div>
+                <!--<div class="form-group signup-input-margin-bottom" show-errors ng-if="$stateParams.offer == null || $stateParams.offer == 'trial'  || $stateParams.offer == '' ">-->
+                <div class="form-group signup-input-margin-bottom" ng-show="ShowPromocode();">
+                    <div class="cols-sm-2 signup-input-lbl">PROMO CODE</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="text" name="promocode" class="form-control mjc-input" placeholder="Promo Code" ng-model="member.PromoCodeValue" maxlength="30" ng-pattern="/^[a-z A-Z]*$/" autocomplete="off" />
+                        <p class="help-block" ng-if="signupForm.PromoCode.$error.pattern">Promo Code must be in alphabets.</p>
+                    </div>
+                </div>
+
+                <div class="row text-center terms-policy-sec">
+                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 remove-padding">
+                        <label class="accept-checkbox"><input type="checkbox" ng-model="isAcceptTerms"></label>
+                    </div>
+                    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 remove-padding">
+                        <p class="terms-policy">
+                            <!--By signing up, you agree to our <a href="#" ui-sref="termsandcondition" target="_blank" class="terms-policy-link">Terms</a> & <a href="#" ui-sref="privacypolicy" target="_blank" class="terms-policy-link">Privacy Policy.</a>-->
+                            By signing up, you agree to our <a href="http://busykid.com/terms-and-conditions/" target="_blank" class="terms-policy-link">Terms</a> & <a href="http://busykid.com/privacy-policy/" target="_blank" class="terms-policy-link">Privacy Policy.</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center signup-btn-margins">
+                    <button class="btn mjc-btn bac-color-2b79a9" ng-disabled="isSignUp" ng-click="signUp()">{{btnSignUp}}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

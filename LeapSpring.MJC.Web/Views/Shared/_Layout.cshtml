@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html ng-app="mjcApp">
+
+@{
+    //DateTime lastPublishedDate = Convert.ToDateTime("10-2-2017 23:25"); /*Local Date Format (MM-dd-yyyy)*/
+    DateTime lastPublishedDate = Convert.ToDateTime("2-16-2017 16:25");  /*Server Date Format (MM-dd-yyyy)*/
+}
+
+<head>
+    <link rel="shortcut icon" href="~/images/icons/favicon.ico" type="image/x-icon" />
+    <meta charset="utf-8" />
+    @*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*@
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title ng-bind="$state.current.data.pageTitle"></title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    </environment>
+
+
+    <script type="text/javascript">
+
+        // Bootstrap alert using script
+        // Alert types - success, info, warning, danger
+        function DisplayAlert(alertMsg, alertType, stayMsg) {
+            stayMsg = stayMsg || false;
+            var icon;
+
+            switch (alertType) {
+                case 'success':
+                    icon = 'ok';
+                    break;
+                case 'danger':
+                    icon = 'remove-sign';
+                    break;
+                case 'warning':
+                    icon = 'warning-sign';
+                    break;
+                case 'info':
+                    icon = 'info-sign';
+                    break;
+                default:
+                    icon = 'remove-sign';
+                    break;
+            }
+
+            if (alertMsg == null || alertMsg == undefined)
+                alertMsg = "oops there seems to be a connection problem";
+            else if (alertMsg.Message != undefined)
+                alertMsg = alertMsg.Message;
+            else if (alertMsg.data != undefined && alertMsg.data.Message != undefined)
+                alertMsg = alertMsg.data.Message;
+
+            if (angular.isObject(alertMsg))
+                alertMsg = "oops there seems to be a connection problem";
+
+            // Prepare alert panel
+            $('#alertPanel').html('<div class="alert alert-' + alertType + ' alert-dismissable"><span class="glyphicon glyphicon-' + icon + '"></span>  ' + alertMsg + '</span><span class="glyphicon glyphicon-remove pointer" style="margin-left:10px;font-size: 11px;" onclick="hideAlert();" aria-hidden="true"></span></div>');
+
+            if (!stayMsg) {
+                $('#alertPanel').addClass('avoid-click');
+                $(".alert").delay(2500).addClass("in").fadeOut(2000);
+            }
+            else
+                $('#alertPanel').removeClass('avoid-click');
+        }
+
+        function hideAlert() {
+            $(".alert").fadeOut(500);
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+  
+
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/angular/angular.js"></script>
+        <script src="~/lib/angular-animate/angular-animate.js"></script>
+        <script src="~/lib/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="~/lib/angular-ui-router/production/angular-ui-router.js"></script>
+        <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
+        <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+        <script src="~/lib/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+        <script src="~/lib/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+        <script src="~/lib/itemslide/dist/itemslide.min.js"></script>
+        <script src="~/lib/angular-elastic/elastic.js"></script>
+        <script src="https://modal.stockpile.com/init.js"></script>
+        <script src="~/lib/ng-idle/angular-idle.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+        <script src="~/lib/angular-moment/angular-moment.js"></script>
+        <script src="~/lib/angular-modal-service/dst/angular-modal-service.min.js"></script>
+        <script src="~/app/app.js?r='@lastPublishedDate'"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/lib/angular/angular.min.js"></script>
+        <script src="~/lib/angular-animate/angular-animate.min.js"></script>
+        <script src="~/lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
+        <script src="~/lib/angular-ui-router/production/angular-ui-router.min.js"></script>
+        <script src="~/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+        <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+        <script src="~/lib/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+        <script src="~/lib/bootstrap-ui-datetime-picker/dist/datetime-picker.min.js"></script>
+        <script src="~/lib/itemslide/dist/itemslide.min.js"></script>
+        <script src="~/lib/angular-elastic/elastic.js"></script>
+        <script src="https://modal.stockpile.com/init.js"></script>
+        <script src="~/lib/ng-idle/angular-idle.min.js"></script>
+        <script src="~/lib/moment/min/moment.min.js"></script>
+        <script src="~/lib/angular-moment/angular-moment.min.js"></script>
+        <script src="~/lib/angular-modal-service/dst/angular-modal-service.min.js"></script>
+        <script src="~/app/app.js?r='@lastPublishedDate'"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,78 @@
+﻿<style>
+    .user-link {
+        margin: 0 11px 5px 0;
+        font-size: 14.5px;
+        padding: 0;
+    }
+
+    .member-content {
+        padding: 6px;
+        padding-left: 10px;
+    }
+
+    .primary-member-lbl {
+        max-width: 375px;
+        text-align: left;
+        margin: 30px auto 0 auto;
+    }
+
+    .primary-member-scroll {
+        max-height: Calc(100vh - 116px);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="app-width">
+    <div ng-show="isLoading" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="isLoading" class="primary-member-scroll">
+        <div class="center-loading" ng-if="Members.length==0">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <p class="text-list-hint remove-padding">No family members found!</p>
+                </div>
+            </div>
+        </div>
+        <p class="admin-dashboard-title" ng-if="Members.length!=0">The {{$stateParams.name}} Family</p>
+        <div class="text-center padding-20 remove-padding-top remove-padding-bottom" ng-if="Members.length!=0">
+            <div class="primary-member-lbl">
+                <span class="color-555 input-lbl">PRIMARY ACCOUNT MEMBERS</span>
+                <div class="chore-line"></div>
+            </div>
+
+            <div>
+                <div class="mjc-input margin-auto" ng-repeat="member in Members">
+                    <div class="familymember-list">
+                        <img class="col-xs-2 col-sm-2 col-md-2 col-lg-2 remove-padding text-left img-circle" ng-src="{{member.ProfileImageUrl}}" err-src="../../../images/Avatar.png" />
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 member-content text-left remove-padding-right">
+                            <div class="member-name no-wrap">
+                                {{member.Firstname}}
+                            </div>
+                            <div class="member-link no-wrap">
+                                <a class="link user-link" ng-click="switchAccount(member.Id, member.Firstname)">Login</a>
+                                <a class="link user-link remove-margin-right" ng-click="retrievePin(member)" ng-disabled="member.isRetrievingPin">{{member.btnForgorPasswordContent}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<p class="hint-medium margin-top-51">
+                Need to add a new family member?<br />
+                Add one now below!
+            </p>
+
+            <div class="button-center margin-top-20 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue">{{btnContinue}}</button>
+            </div>-->
+
+        </div>
+    </div>
+</div>

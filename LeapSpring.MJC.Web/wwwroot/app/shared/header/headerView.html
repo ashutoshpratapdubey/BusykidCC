@@ -1,0 +1,87 @@
+﻿<div class="app-width">
+    <img class="page-logo pointer" ng-class="{{}}" src="../../../images/Logo.png" ng-click="goToDashboard(AuthData.MemberType)" />
+
+    <!--<img  id="home1" style="display:block; width:20px;" ng-class="{{}}" src="../../../images/Home.jpg" ng-click="test()" />
+    <img   id="home2" style="display:none;width:20px;" ng-class="{{}}" src="../../../images/Home.jpg" ng-click="test2()" />-->
+
+    <div class="header-menu" ng-if="!isLoggedIn">
+        <a href="http://busykid.com/">How it Works</a>
+        <a ui-sref="login" ng-if="!isLoginPage">Login</a>
+        <a ui-sref="signup" ng-if="isLoginPage">Sign Up</a>
+    </div>
+    <div id="profilemenu" class="float-right pointer position-relative inline-block header-image" ng-if="isLoggedIn">
+        <div class="user-profile" ng-click="toggleUserProfile()">
+            <img class="img-circle profile-image-height" ng-class="{'border-white':AuthData.ProfileUrl!=null || AuthData.ProfileUrl!=undifined}" ng-src="{{AuthData.ProfileUrl}}" err-src="../../../images/Avatar.png" />
+            <img class="carrot" src="../../../images/icons/Triangle.png" />
+        </div>
+        <div class="user-profile-menu" ng-class="{'show':isShowUserProfile, 'hide':!isShowUserProfile}">
+            <div class="user-profile-scroll">
+                <div class="current-user">
+                    <img class="col-xs-5 col-sm-5 col-md-5 col-lg-5 remove-padding img-circle current-user-img" ng-src="{{AuthData.ProfileUrl}}" err-src="../../../images/Avatar.png" />
+                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 current-user-details">
+                        <p class="current-user-name">{{AuthData.Firstname}}</p>
+                        <p class="current-user-type">{{AuthData.MemberType | uppercase}} USER</p>
+                    </div>
+                </div>
+                <div class="member-container">
+                    <div ng-show="isLoading" class="center-loading">
+                        <div class="loading-top-div">
+                            <div class="loading-middle-div">
+                                <img class="loading-icon" src="../../../images/black-loader.gif" />
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-hide="isLoading">
+                        <div ng-repeat="member in Members">
+                            <div ng-class="{'members':!member.IsAuthenticate}">
+                                <div class="member-list" ng-if="!member.IsAuthenticate">
+                                    <img class="col-xs-2 col-sm-2 col-md-2 col-lg-2 remove-padding text-left img-circle" ng-src="{{member.ProfileImageUrl}}" err-src="../../../images/Avatar.png" />
+                                    <div class="col-xs-10 col-sm-9 col-md-9 col-lg-9 member-content text-left remove-padding-right">
+                                        <div class="member-name no-wrap">
+                                            {{member.Firstname}}
+                                        </div>
+                                        <div class="member-link no-wrap">
+                                            <!--<a class="link current-user-link" ng-click="viewProfile(member.Id, member.MemberType)">View Profile</a>-->
+                                            <a class="link current-user-link remove-margin-right" ng-if="!member.IsDeleting && member.ProfileStatus === 'Completed'" ng-click="switchAccount(member.Id, member.Firstname)">Switch to Account</a>
+                                            <a class="link current-user-link remove-margin-right" ng-if="AuthData.MemberType === 'Admin' && !member.IsDeleting && member.ProfileStatus === 'InCompleted'" ng-click="completeProfile(member)">Complete Profile</a>
+                                            <span class="incomplete-user remove-margin-right" ng-if="AuthData.MemberType != 'Admin' && !member.IsDeleting && member.ProfileStatus === 'InCompleted'">Incomplete Profile</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="members" ui-sref="addUser" ng-if="AuthData.MemberType == 'Admin'">
+                            <div class="member-list">
+                                <img class="col-xs-2 col-sm-2 col-md-2 col-lg-2 remove-padding img-circle" src="../../../images/AddUser.png" />
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <p class="add-new-user">Add a New User…</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="user-profile-info">
+                            <li ng-if="AuthData.MemberType != 'Child' && $state.current.name != 'adminDashboard'" ui-sref="adminDashboard">
+                                <p class="remove-margin">Dashboard</p>
+                            </li>
+                            <li ng-if="AuthData.MemberType == 'Child' && $state.current.name != 'childDashboard'" ui-sref="childDashboard">
+                                <p class="remove-margin">Dashboard</p>
+                            </li>
+                            <li ng-if="AuthData.MemberType != 'Child' && $state.current.name != 'myAccount'" ui-sref="myAccount">
+                                <p class="remove-margin">My Account</p>
+                            </li>
+                            <li ng-if="AuthData.MemberType == 'Child' && $state.current.name != 'childAccount'" ui-sref="childAccount">
+                                <p class="remove-margin">My Account</p>
+                            </li>
+                            <li ng-if="AuthData.MemberType != 'Child' && $state.current.name != 'manageusers'" ui-sref="manageusers">
+                                <p class="remove-margin">Manage Users</p>
+                            </li>
+                            <li ng-click="signOut()">
+                                <p class="remove-margin">Sign Out</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

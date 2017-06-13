@@ -1,0 +1,95 @@
+﻿<style>
+    body {
+        color: #333;
+    }
+
+    .remove-underline, .link-md.remove-underline:hover {
+        text-decoration: none;
+    }
+
+    .my-account .profile-sec .image-sec {
+        position: relative;
+        min-width: 130px;
+        min-height: 130px;
+    }
+
+        .my-account .profile-sec .image-sec .loading-middle-div img {
+            margin-left: Calc(50% - 22px);
+        }
+
+    .my-account .profile-sec .profile-detail {
+        margin-top: 50px;
+    }
+
+    .linkbank-content {
+        margin-top: 0px;
+    }
+
+    .dollor-input {
+        max-width: 80px;
+        padding-left: 25px;
+    }
+
+    .signup-input-lbl, .newuser-input-lbl {
+        padding: 6px 0px;
+        font-size: 12px;
+    }
+
+    .pad10 {
+        padding: 10px 0;
+    }
+
+    .inpane {
+        padding: 10px 0;
+    }
+
+    .inputLabel {
+        width: 25%;
+        text-align: left;
+    }
+
+    .inputType {
+        width: 74%;
+        text-align: left; float:left;
+    }
+</style>
+<div class="box-content text-center add-chore-sec">
+    <div class="btn-popup-close img-circle text-center pointer" ng-click="hideModal()">
+        <span class="glyphicon glyphicon-remove btn-close-text" />
+    </div>
+    <div class="main-content text-center">
+        <form name="Editemailform" role="form" novalidate>
+            <div>
+                <hr class="sm" />
+                <div class="row remove-margin inpane">
+                    <h4 class="content-title no-wrap pull-left inputLabel">
+                        Email:
+                    </h4>
+                    <div class="inputType" style="margin-top:10px; text-align:left;"> {{familyMember.User.Email}}</div>
+                </div>
+                <div class="row remove-margin inpane">
+                    <h4 class="content-title no-wrap pull-left inputLabel">Password:</h4>
+                    <div class="input-group-lite form-group remove-margin inputType" show-errors>
+                        <input type="password" name="password" class="form-control mjc-input" placeholder="Password" ng-model="Password" required autocomplete="off" />
+                        <p class="help-block" ng-if="Editemailform.password.$error.required">Password is required.</p>
+                    </div>
+                </div>
+
+                <div class="row remove-margin inpane">
+                    <h4 class="content-title no-wrap pull-left inputLabel">New Email:</h4>
+                    <div class="input-group-lite form-group remove-margin inputType" show-errors>
+                        <input type="email" name="email" inputmode="email" class="form-control mjc-input" placeholder="Email Address" ng-model="EmailId" required autocomplete="off" />
+                        <p class="help-block" ng-if="Editemailform.email.$error.required">Email is required.</p>
+                        <p class="help-block" ng-if="Editemailform.email.$error.email">Valid Email is required.</p>
+                    </div>
+                </div>
+
+                <div class="text-center button-center margin-top-25 inline-block">
+                    <button type="button" class="btn mjc-btn button bac-color-67c152" ng-disabled="isUpdating" ng-click="UpdateEmail()">{{isUpdating ?'Updating...':'Update'}}</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</div>

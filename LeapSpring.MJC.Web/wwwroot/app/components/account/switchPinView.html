@@ -1,0 +1,23 @@
+﻿
+<div class="app-width">
+    <form name="switchPinForm" role="form" novalidate>
+        <div class="text-center">
+            <p class="row hint-title child-login-title">Hi {{ChildName}}, Please Enter Your PIN Below</p>
+            <div class="row form-group" ng-class="{'has-error':isPinEmpty}">
+                <input type="text" inputmode="numeric" name="pinOne" class="form-control pin-text" maxlength="1" tabindex="1" ng-model="PinOne" move-to-next autocomplete="off" ng-keyup="checkPinValidation();" pattern="[0-9]*" required />
+                <input type="text" inputmode="numeric" name="pinTwo" class="form-control pin-text" maxlength="1" tabindex="2" ng-model="PinTwo" move-to-next autocomplete="off" ng-keyup="checkPinValidation();" pattern="[0-9]*" required />
+                <input type="text" inputmode="numeric" name="pinThree" class="form-control pin-text" maxlength="1" tabindex="3" ng-model="PinThree" move-to-next autocomplete="off" ng-keyup="checkPinValidation();" pattern="[0-9]*" required />
+                <input type="text" inputmode="numeric" name="pinFour" class="form-control pin-text" maxlength="1" tabindex="4" ng-model="PinFour" move-to-next autocomplete="off" ng-keyup="checkPinValidation();" pattern="[0-9]*" required />
+                <p class="help-block" ng-if="isPinEmpty">Enter pin number</p>
+            </div>
+
+            <div class="row form-group margin-bottom-40" ng-class="{'has-error':isPinEmpty}">
+                <a class="forgot-pin" ng-click="retrievePin()" ng-disabled="isRetrievingPin">{{btnForgorPinContent}}</a>
+            </div>
+
+            <div class="text-center button-center margin-top-120 margin-bottom-20 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152 margin-top-10" tabindex="5" ng-disabled="isContinue" ng-click="login()">{{btnContinue}}</button>
+            </div>
+        </div>
+    </form>
+</div>

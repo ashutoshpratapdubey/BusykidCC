@@ -1,0 +1,11 @@
+﻿<div class="row" ng-if="isProgressShow">
+    <div class="text-center">
+        <ul class="step-progress">
+            <li ng-class="{'active':isProgressCount>=1}"></li>
+            <li ng-class="{'active':isProgressCount>=2}"></li>
+            <li ng-class="{'active':isProgressCount>=3}"></li>
+            <li ng-class="{'active':isProgressCount>=4}"></li>
+            <li ng-class="{'active':isProgressCount==5}"></li>
+        </ul>
+    </div>
+</div>

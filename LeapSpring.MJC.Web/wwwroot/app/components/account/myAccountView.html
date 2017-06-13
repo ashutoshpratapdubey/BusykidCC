@@ -1,0 +1,257 @@
+﻿<style>
+    body {
+        color: #333;
+    }
+
+    .remove-underline, .link-md.remove-underline:hover {
+        text-decoration: none;
+    }
+
+    .my-account .profile-sec .image-sec {
+        position: relative;
+        min-width: 130px;
+        min-height: 130px;
+    }
+
+        .my-account .profile-sec .image-sec .loading-middle-div img {
+            margin-left: Calc(50% - 22px);
+        }
+
+    .my-account .profile-sec .profile-detail {
+        margin-top: 50px;
+    }
+
+    .linkbank-content {
+        margin-top: 0px;
+    }
+
+    .dollor-input {
+        max-width: 80px;
+        padding-left: 25px;
+    }
+
+    .signup-input-lbl, .newuser-input-lbl {
+        padding: 6px 0px;
+        font-size: 12px;
+    }
+
+    .pad10 {
+        padding: 10px 0;
+    }
+</style>
+<div class="app-width">
+    <div class="my-account">
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <div ng-hide="isLoading">
+            <div class="text-center">
+                <h3 class="title-tag">My Account</h3>
+                <hr class="sm" />
+            </div>
+            <div class="profile-sec">
+                <div class="inline-block pull-left image-sec">
+                    <div class="inline-block pull-left image-sec" ng-class="{'pointer':!familyMember.isUploading}">
+                        <img ng-src="{{familyMember.ProfileImageUrl}}" err-src="../../../images/Avatar" ngf-select="uploadImage($file)"
+                             accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*"
+                             ng-if="!familyMember.isUploading" ng-class="{'border-white':(familyMember.ProfileImageUrl != '../../../images/Avatar.png')}" ngf-fix-orientation="true" />
+                    </div>
+                    <h4>Click to change </h4>
+                    <div class="center-loading" ng-if="familyMember.isUploading">
+                        <div class="loading-top-div">
+                            <div class="loading-middle-div">
+                                <img class="loading-icon" src="../../../images/black-loader.gif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-detail">
+                    <span class="choredue-task no-wrap">{{familyMember.Firstname}}</span>
+                </div>
+            </div>
+            <form name="familyMemeberForm" role="form" novalidate>
+                <div ng-if="memberType=='Admin' || (memberType=='Parent' && familyMember.User.Email !=null)">
+                    <span class="chores-heading remove-margin">ACCOUNT DETAILS</span>
+                    <hr class="sm" />
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left">Email: <small>{{familyMember.User.Email}}</small></h4>
+                    </div>
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left">Password: <small ng-hide="isEditPassword">********</small></h4>
+                        <div class="input-group-lite sm form-group remove-margin" show-errors>
+                            <input id="memberPassword" type="password" name="password" class="mjc-input-lite" placeholder="New Password" ng-show="isEditPassword"
+                                   ng-model="familyMember.User.Password" required autocomplete="off" />
+                            <div>
+                                <p class="help-block" ng-class="{'margin-top-10':!isEditPassword}" ng-if="familyMemeberForm.password.$error.required && (canShowAllErr||isEditPassword)">Password is required.</p>
+                            </div>
+                        </div>
+                        <a class="link-md pull-right margin-top-10" ng-click="editFormInput('password');">
+                            <span ng-hide="isEditPassword">Edit</span>
+                            <span ng-show="isEditPassword">Done</span>
+                        </a>
+                    </div>
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left">Phone: <small ng-hide="isEditPhone">{{familyMember.PhoneNumber | phoneNumber}}</small></h4>
+                        <div class="input-group-lite form-group remove-margin" show-errors>
+                            <input id="memberPhone" type="text" name="phone" class="mjc-input-lite sm" placeholder="Phone" ng-show="isEditPhone"
+                                   ng-model="familyMember.PhoneNumber" required autocomplete="off" phone-input-formatter />
+                            <div>
+                                <p class="help-block" ng-class="{'margin-top-10':!isEditPhone}" ng-if="familyMemeberForm.phone.$error.required && (canShowAllErr||isEditPhone)">Phone is required.</p>
+                            </div>
+                        </div>
+                        <a class="link-md pull-right margin-top-10" ng-click="editFormInput('phone');">
+                            <span ng-hide="isEditPhone">Edit</span>
+                            <span ng-show="isEditPhone">Done</span>
+                        </a>
+                    </div>
+                </div>
+                <div ng-if="memberType=='Admin' && CreditCard ==0">
+                    <div ng-if="isLinkedBank" class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left full-max-width">{{bankDetails.BankName}} : <small>{{bankDetails.AccountNumber}}</small></h4>
+                    </div>
+                    <div ng-if="!isShowVerifiedBank && isLinkedBank" class="row remove-margin">
+                        <!--<a class="link-md margin-top-10" ng-click="removeFundingSource();">{{removeBankText}}</a>-->
+                        <h4 class="content-title pull-left full-max-width linkbank-content">
+                            <small class="remove-margin">Please contact <a class="link-md" href="mailto:support@busykid.com">support@busykid.com</a> to edit your bank information.</small>
+                        </h4>
+                    </div>
+                    <div class="row remove-margin">
+                        <!--<a class="link-md margin-top-10" ui-sref="linkbankinfo({action:'update'})">{{bankLinkText}}</a>-->
+                    </div>
+
+
+                    <div class="text-center row remove-margin margin-top-25" ng-if="isShowVerifiedBank && IsPlaidAccount">
+                        <button type="button" class="btn mjc-lg-btn bac-color-0491d3" ui-sref="verifymicrodeposit">Verify Micro Deposits</button>
+                    </div>
+                    <!-- For Non Plaid account-->
+                    <div ng-if="isShowVerifiedBank && !IsPlaidAccount" class="row remove-margin">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 pad10">One or Two microdeposit transactions were sent to your account. Please verify your transaction amount(s) below:</div>
+                        <div ng-class="{'has-error':isShowAmountsError}">
+                            <div class="col-xs-12 col-sm-12 col-md-12 pad10">
+                                <div class="form-group signup-input-margin-bottom" show-errors>
+                                    <div class="cols-sm-2 signup-input-lbl pull-left">Transaction 1</div>
+                                    <div class="cols-sm-10 mjc-input-group pull-left">
+                                        <div class="position-relative">
+                                            <span class="dollor-addon"> $0.</span>
+                                            <input type="text" name="amountOne" ng-change="ChangeVerifyAmount" maxlength="2" class="form-control dollor-input" placeholder="Value" tabindex="2"
+                                                   ng-model="verifyDepositAmountsNonPlaid.AmountOne" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 pad10">
+                            <div class="form-group signup-input-margin-bottom pull-left">
+                                <div class="cols-sm-2 signup-input-lbl pull-left">Transaction 2</div>
+                                <div class="cols-sm-10 mjc-input-group pull-left">
+                                    <div class="position-relative">
+                                        <span class="dollor-addon"> $0.</span>
+                                        <input type="text" name="amountTwo" ng-change="ChangeVerifyAmount" maxlength="2" class="form-control dollor-input" placeholder="Value" tabindex="2"
+                                               ng-model="verifyDepositAmountsNonPlaid.AmountTwo" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="help-block" ng-if="isShowAmountsError">*Amounts are required</p>
+
+                        <!--<div class="row text-center" ng-if="isShowAmountsError" style="position:relative;">
+                            <p class="help-block text-nowrap" style="position:absolute; top:140px; left:10px" ng-if="familyMemeberForm.amountOne.$error.required || familyMemeberForm.amountTwo.$error.required">Amounts are required.</p>
+                        </div>-->
+                        <div class="text-center signup-btn-margins">
+                            <button class="btn mjc-btn bac-color-0491d3" ng-disabled="isVerifying" ng-click="verifyNonPlaidExternalAccount()">{{isVerifying? "Verifying...":"Verify Transaction"}}</button>
+                        </div>
+
+                    </div>
+
+                    <!-- For Non Plaid account-->
+
+
+
+
+                </div>
+
+                <div ng-if="memberType=='Admin' &&  CreditCard ==1">
+                    <div class="row remove-margin">
+                        <h4 class="content-title no-wrap pull-left full-max-width">{{creditinformation.Cardtype}} : <small>{{creditinformation.MaskCardNumber}}</small></h4>
+                    </div>
+                    <div ng-if="!isShowVerifiedBank && isLinkedBank" class="row remove-margin">
+                        <h4 class="content-title pull-left full-max-width linkbank-content">
+                            <small class="remove-margin">Please contact <a class="link-md" href="mailto:support@busykid.com">support@busykid.com</a> to edit your bank information.</small>
+                        </h4>
+                    </div>
+
+                    <div class="row remove-margin" style="cursor:pointer;">
+                        <h4><a ng-click="openplaid();">I'm tired of fees. I'd rather link my bank account and pay allowance for free.</a></h4>
+                    </div>
+
+
+                    <div class="text-center margin-top-25">
+                        <button class="btn mjc-btn bac-color-67c152 margin-top-10" ng-click="OpenCreditCard();">Replace Card</button>
+                    </div>
+
+                    <div class="row remove-margin">
+                    </div>
+
+
+
+                    <!-- For Non Plaid account-->
+                    <!-- For Non Plaid account-->
+
+
+
+
+                </div>
+
+
+
+                <div class="text-center margin-top-10">
+                    <button type="button" class="btn mjc-lg-btn bac-color-0491d3" ui-sref="familyPage({name:family.UniqueName})">View My Family</button>
+                </div>
+                <div class="margin-top-25" ng-if="memberType=='Admin'">
+                    <span class="chores-heading remove-margin">SUBSCRIPTION</span>
+                    <hr class="sm" />
+                    <div ng-if="familySubscription.PromoCode == 'Organic'">
+                        <div class="row remove-margin">
+                            <h4 class="content-title no-wrap pull-left">Trial Start Date: <small class="ng-binding">{{familySubscription.StartsOn | date:'MM/dd/yyyy'}}</small></h4>
+                        </div>
+                        <div class="row remove-margin">
+                            <h4 class="content-title no-wrap pull-left">Trial End Date: <small class="ng-binding">{{familySubscription.EndsOn | date:'MM/dd/yyyy'}}</small></h4>
+                        </div>
+                    </div>
+                    <div ng-if="familySubscription.PromoCode !='Organic'">
+                        <div class="row remove-margin">
+                            <h4 class="content-title no-wrap pull-left">Subscription Start Date: <small class="ng-binding">{{familySubscription.StartsOn | date:'MM/dd/yyyy'}}</small></h4>
+                        </div>
+                        <div class="row remove-margin">
+                            <h4 class="content-title no-wrap pull-left">Subscription End Date: <small class="ng-binding">{{familySubscription.EndsOn | date:'MM/dd/yyyy'}}</small></h4>
+                        </div>
+                    </div>
+
+                    <h4 class="content-title full-width">
+                        <small>
+                            <!--<a class="link-md margin-top-10" ng-if="!isSubscribed" ng-click="gotoSubscription();">Upgrade to Premium Account</a>-->
+                            <a class="link-md margin-top-10" ng-if="isSubscribed" ng-class="{'remove-underline':isCancelling}" ng-click="cancelSubscription();">{{isCancelling?'Cancelling...': 'Cancel Subscription'}}</a>
+                        </small>
+                    </h4>
+                </div>
+                <div class="margin-top-25" ng-if="memberType=='Admin'">
+                    <span class="chores-heading remove-margin">EMAIL SUBSCRIPTION</span>
+                    <hr class="sm" />
+                    <h4 class="content-title full-width">
+                        <small>
+                            <a class="link-md margin-top-10" ng-class="{'remove-underline':isSubscribing}" ng-click="toggleEmailSubscription();">{{emailSubscriptionContent}}</a>
+                        </small>
+                    </h4>
+                </div>
+                <div class="text-center margin-top-25" ng-if="memberType=='Admin' || (memberType=='Parent' && familyMember.User.Email !=null)">
+                    <button class="btn mjc-btn bac-color-67c152 margin-top-10" ng-click="updateMember()">{{saveBtnTxt}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+﻿<style>
+    .nav-tabs.subscription-tab-button {
+        border: none;
+    }
+
+        .nav-tabs.subscription-tab-button > li {
+            padding-top: 5px;
+            margin: 0;
+            float: none;
+        }
+
+            .nav-tabs.subscription-tab-button > li > a {
+                font-size: 15px;
+                font-weight: normal;
+                text-align: center;
+                white-space: normal;
+                background-color: #fff;
+                border-radius: 2px;
+                border: solid 1px #67c152;
+                color: #67c152;
+                margin: 5px 8px 1px 8px;
+                padding: 10px 0;
+                cursor: pointer;
+                display: inline-block;
+                width: 275px;
+            }
+
+            .nav-tabs.subscription-tab-button > li.active > a {
+                background-color: #67c152;
+                color: #fff;
+                cursor: pointer;
+            }
+
+                .nav-tabs.subscription-tab-button > li.active > a:hover {
+                    border: solid 1px #67c152;
+                }
+
+    .subscription-sec .center-loading {
+        margin-top: 20%;
+    }
+
+    @media screen and (min-width : 768px) {
+        .nav-tabs.subscription-tab-button {
+            display: inline-block;
+            margin: 10px 0 0 0;
+        }
+
+            .nav-tabs.subscription-tab-button > li > a {
+                font-size: 20px;
+                padding: 10px 0;
+                border-radius: 2px;
+                width: 400px;
+            }
+    }
+
+    .promo_link {
+        margin: 10px auto;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .msg_txt {
+        display: inline-block;
+        margin: 10px auto;
+    }
+</style>
+<div class="app-width" ng-init="loadpromocodeURL()">
+    <div>
+        <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController" ng-show="signUpStatus.data!='Completed' && !isLoading"></div>
+        <div ng-show="isSignUpProgress.response" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <div ng-hide="isSignUpProgress.response">
+            <div class="subscription-sec position-relative" ng-show="!isLoading">
+                <div>
+                    <div class="text-center" id="popup">
+                        <h3 class="hint-title" ng-if="!isExpaired">
+                            <span ng-if="isFromTrial && !hasPromoCode">BusyKid is free for {{subscriptionDuration}}!</span> <!--Trial Plan-->
+                            <span ng-if="!isFromTrial && !hasPromoCode">Subscription</span>  <!--Annual Plan-->
+                            <span ng-if="hasPromoCode && selectedPromoCode.Duration!=0">BusyKid is free for {{subscriptionDuration}}!</span> <!--Promo Plan-->
+                        </h3>
+                        <h3 class="hint-title" ng-if="isExpaired">Welcome Back!</h3>
+                        <p class="bank-info hint-medium text-center" ng-if="!isExpaired">
+                            <span class="msg_txt" ng-if="isFromTrial || (hasPromoCode && selectedPromoCode.Duration!=0)">
+                                After your {{hasPromoCode && selectedPromoCode.Duration!=0 ?'promo period' : 'trial'}} ends, you will be enrolled into yearly subscription of $12/year.<br />
+                                You can cancel this any time.
+                            </span> <!--Trial Plan-->
+                            <span class="msg_txt" ng-if="!isFromTrial && !hasPromoCode">
+                                You will be enrolled into yearly subscription of $12/year.<br />
+                                You can cancel this any time.
+                            </span> <!--Annual Plan-->
+                            <span class="msg_txt" ng-if="hasPromoCode  &&  selectedPromoCode.Duration==0">
+                                You will be enrolled into yearly subscription of $12/year.<br />
+                                You can cancel this any time.
+                            </span> <!--Promo Plan-->
+                        </p>
+                        <p class="bank-info hint-medium text-center" ng-if="isExpaired">
+                            To continue using BusyKid, click the button below.
+                        </p>
+
+                    </div>
+
+                    <!--Code Added By STPL  Abhishek Dated 26-04-2017-->
+                    <!--<div class="bank-info hint-medium text-center" ng-if="promocode == '' && !trial">
+                        <a class="link-md promo_link" ng-click="subscribePromoCode();">{{promoCodeButtonText}}</a>
+                        <p class="bank-info hint-medium text-center" ng-if="selectedPromoCode!=undefined && selectedPromoCode!=null">Promo Code : {{selectedPromoCode.PromoCode}}</p>
+                    </div>-->
+                    <button style="display: block; margin: 0 auto;padding-top:10px;" class="btn mjc-btn button bac-color-67c152 margin-top-20" tabindex="15" ng-disabled="isSubscribing" ng-click="subscribe();">{{isSubscribing ?'Subscribing...':'Subscribe'}}</button>
+                </div>
+            </div>
+        </div>
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

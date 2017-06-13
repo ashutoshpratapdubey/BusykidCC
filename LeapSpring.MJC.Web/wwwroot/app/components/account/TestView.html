@@ -1,0 +1,64 @@
+﻿<style>
+    .inpane {
+        padding: 10px 0;
+    }
+
+    .inputLabel {
+        width: 25%;
+        text-align: left;
+    }
+
+    .inputType {
+        width: 74%;
+        text-align: left;
+        float: left;
+    }
+</style>
+<div class="app-width">
+    <form name="Testform" role="form" novalidate>
+        <div>
+            <hr class="sm" />
+            <div class="row remove-margin inpane">
+                <h4 class="content-title no-wrap pull-left inputLabel">Text1:</h4>
+                <div class="input-group-lite form-group remove-margin inputType">
+                    <input type="text" name="onevalue" class="form-control mjc-input" placeholder="Text" ng-model="OneValue" autocomplete="off" />
+
+                </div>
+            </div>
+
+            <div class="row remove-margin inpane">
+                <h4 class="content-title no-wrap pull-left inputLabel">Text2:</h4>
+                <div class="inputType">
+                    <input type="text" name="twovalue" class="form-control mjc-input" placeholder="Second Value" ng-model="TwoValue" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="text-center button-center margin-top-25 inline-block">
+                <button type="button" class="btn mjc-btn button bac-color-67c152" ng-click="SubmitValue(OneValue,TwoValue)">Submit</button>
+            </div>
+
+
+
+            <!--<div class="row remove-margin inpane">
+                <h4 class="content-title no-wrap pull-left inputLabel">Text1:</h4>
+                <div class="input-group-lite form-group remove-margin inputType">
+                    <input type="text" name="onevalue" class="form-control mjc-input" placeholder="Transaction ID" ng-model="TransactionID" autocomplete="off" />
+
+                </div>
+            </div>
+
+            <div class="row remove-margin inpane">
+                <h4 class="content-title no-wrap pull-left inputLabel">Text2:</h4>
+                <div class="inputType">
+                    <input type="text" name="twovalue" class="form-control mjc-input" placeholder="Response" ng-model="TwoValue" autocomplete="off" />
+
+                </div>
+            </div>-->
+
+            <div class="text-center button-center margin-top-25 inline-block">
+                <button type="button" class="btn mjc-btn button bac-color-67c152" ng-click="RunProcess()">Run CorePro Process</button>
+            </div>
+
+        </div>
+    </form>
+</div>

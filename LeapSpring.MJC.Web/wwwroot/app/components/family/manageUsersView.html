@@ -1,0 +1,105 @@
+﻿<style>
+    .user-link {
+        margin: 0 11px 5px 0;
+        font-size: 14.5px;
+        padding: 0;
+    }
+
+    .member-content {
+        padding: 6px;
+        padding-left: 10px;
+    }
+
+    .primary-member-lbl {
+        max-width: 375px;
+        text-align: left;
+        margin: 30px auto 0 auto;
+    }
+
+    .primary-member-scroll {
+        /*max-height: Calc(100vh - 415px);*/
+        max-height: Calc(100vh - 233px);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="app-width">
+    <div ng-show="isLoading" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="isLoading">
+        <div class="text-center">
+            <div class="remove-margin">
+                <h3 class="title-tag remove-margin-top">{{AuthData.Firstname}}</h3>
+                <img class="add-photo-image img-circle inline-block" ng-class="{'border-white':(AuthData.ProfileUrl != '../../../images/Avatar.png')}"
+                     ng-src="{{(AuthData.ProfileUrl === undefined || AuthData.ProfileUrl === null || AuthData.ProfileUrl === '') ? defaultProfileImage:AuthData.ProfileUrl}}"
+                     err-src="../../../images/Avatar.png" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-fix-orientation="true" />
+            </div>
+        </div>
+        <div class="text-center remove-padding">
+            <div class="primary-member-lbl">
+                <span class="color-555 input-lbl remove-margin-top">PRIMARY ACCOUNT MEMBERS</span>
+                <div class="chore-line"></div>
+            </div>
+
+            <div class="primary-member-scroll" style="max-width: 375px; margin: 0 auto;" ng-if="Members.length!=0">
+                <div class="mjc-input margin-auto" ng-repeat="member in Members">
+                    <div class="familymember-list row padding-10-5" ng-if="AuthData.MemberType != member.MemberType">
+
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 remove-padding text-left img-circle" ng-class="{'pointer':(!member.isUploading && member.MemberType !='Admin')}">
+                            <img class="col-xs-2 col-sm-2 col-md-2 col-lg-2 remove-padding text-left img-circle" ng-src="{{member.ProfileImageUrl}}" err-src="../../../images/Avatar.png" ngf-select="uploadImage(member, $file)"
+                                 accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*"
+                                 ng-class="{'border-white':(member.ProfileImageUrl != '../../../images/Avatar.png')}"
+                                 ngf-fix-orientation="true" ng-disabled="member.MemberType ==='Admin'" />
+                            <div class="center-loading" ng-if="member.isUploading">
+                                <div class="loading-top-div">
+                                    <div class="loading-middle-div">
+                                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 member-content text-left remove-padding-right">
+                            <div class="member-name no-wrap">
+                                {{member.Firstname}}
+                            </div>
+                            <div class="member-link no-wrap">
+                                <a class="link user-link" ng-class="{'input-disabled':member.IsDeleting}" ng-if="member.ProfileStatus === 'Completed'" ng-click="switchAccount(member)">Switch to Account</a>
+                                <a class="link current-user-link remove-margin-right" ng-if="AuthData.MemberType === 'Admin' && member.ProfileStatus === 'InCompleted'" ng-click="completeProfile(member)">Complete Profile</a>
+                                <p class="color-555 font-size-16 user-link remove-margin-right" ng-if="AuthData.MemberType != 'Admin' && member.ProfileStatus === 'InCompleted'">Incomplete Profile</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right member-content text-left remove-padding-right">
+                            <button class="btn mjc-md pull-right bac-color-67c152" ng-click="EditChild(member);" ng-disabled="member.MemberType ==='Admin'">
+                                <span ng-if="!member.IsDeleting">Edit</span>
+                            </button>
+                        </div>
+
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right member-content text-left remove-padding-right">
+                            <button class="btn mjc-md-btn bac-color-db402e pull-right" ng-click="deleteMember(member);" ng-disabled="member.MemberType ==='Admin'">
+                                <span ng-if="!member.IsDeleting">Delete</span>
+                                <span ng-if="member.IsDeleting">Deleting...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-list-hint remove-padding" ng-if="Members.length==0">No family members found!</p>
+
+            <div class="button-center margin-top-20 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" ui-sref="addUser">Add a New User</button>
+            </div>
+            <div class="button-center margin-top-20 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" ui-sref="adminDashboard">Go To Dashboard</button>
+            </div>
+
+        </div>
+    </div>
+</div>

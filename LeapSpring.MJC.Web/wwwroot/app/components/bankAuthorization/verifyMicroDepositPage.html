@@ -1,0 +1,84 @@
+﻿<style>
+    input {
+        max-width: 330px;
+    }
+
+    .microDepositPage .note.bankname {
+        font-size: 15px;
+        margin: 0px 0 10px;
+    }
+
+    .microDepositPage, .microDepositPage .radio-label {
+        color: #000;
+    }
+
+    .microDepositPage {
+        padding: 0 10px;
+    }
+
+        .microDepositPage .hint-medium {
+            margin-bottom: 30px;
+            padding: 0;
+        }
+
+        .microDepositPage .dollor-input {
+            max-width: 80px;
+            padding-left: 25px;
+        }
+</style>
+<div class="app-width microDepositPage">
+    <div ng-show="isLoading" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+    <div class="margin-top-10">
+        <p class="note text-center">
+            Verify Micro Deposit
+        </p>
+        <p class="note bankname text-center">
+            {{financialAccount.BankName}}
+        </p>
+        <p class="bank-info hint-medium text-center">
+            Please enter the two deposit amounts (under 50&#162; each) below to verify and finish connecting your {{financialAccount.BankName}} account.
+        </p>
+    </div>
+    <form name="verifyMicroDepositForm" role="form" novalidate>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group signup-input-margin-bottom pull-right" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">Deposit 1 Amount</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <div class="position-relative">
+                            <span class="dollor-addon">$0.</span>
+                            <input type="number" name="amountOne" step="0.01" ng-change="ChangeAmount();" class="form-control dollor-input" placeholder="Value" tabindex="2"
+                                   ng-model="verifyDepositAmounts.AmountOne" required autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group signup-input-margin-bottom pull-left" show-errors>
+                    <div class="cols-sm-2 signup-input-lbl">Deposit 2 Amount</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <div class="position-relative">
+                            <span class="dollor-addon">$0.</span>
+                            <input type="number" name="amountTwo" step="0.01" ng-change="ChangeAmount();" class="form-control dollor-input" placeholder="Value" tabindex="2"
+                                   ng-model="verifyDepositAmounts.AmountTwo" required autocomplete="off" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center" ng-if="isShowAmountsError">
+            <p class="help-block text-nowrap" ng-if="verifyMicroDepositForm.amountTwo.$error.required||verifyMicroDepositForm.amountOne.$error.required">Amounts are required.</p>
+        </div>
+
+        <div class="text-center signup-btn-margins">
+            <button class="btn mjc-btn bac-color-67c152" ng-disabled="isVerifying" ng-click="verifyExternalAccount()">{{isVerifying? "Verifying...":"Verify"}}</button>
+        </div>
+    </form>
+</div>

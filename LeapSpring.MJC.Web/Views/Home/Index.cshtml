@@ -1,0 +1,144 @@
+﻿
+@{
+    //DateTime lastPublishedDate = Convert.ToDateTime("10-2-2017 23:25"); /*Local Date Format (MM-dd-yyyy)*/
+    DateTime lastPublishedDate = Convert.ToDateTime("2-16-2017 16:25");  /*Server Date Format (MM-dd-yyyy)*/
+}
+
+@section scripts {
+
+    @* Shared *@
+    <script src="~/app/shared/directives/showerrors.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/oAuth/authInterceptorService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/header/headerController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/header/headerService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/directives/moveToNextDirective.js"></script>
+    <script src="~/app/shared/directives/autoFocus.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/directives/phoneInputFormatter.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/directives/profilePicker/addPhotoController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/directives/dateInputFormatter.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/directives/toggleDropdownRenderer.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/directives/signUp/signUpProgressBarController.js?r='@lastPublishedDate'"></script>
+
+    @* Filters *@
+    <script src="~/app/shared/filters/phoneNumber.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/filters/dateFormat.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/filters/searchStock.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/filters/rememberCrendetials.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/filters/dateWithOrdinal.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/shared/filters/indexOf.js?r='@lastPublishedDate'"></script>
+
+    @* Login *@
+    <script src="~/app/components/account/logincontroller.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/account/switchPinController.js?r='@lastPublishedDate'"></script>
+
+    @* Sign Up *@
+    <script src="~/app/components/account/signUpController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/account/accountservice.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/account/signUpProgressController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/account/incompleteSignUpController.js?r='@lastPublishedDate'"></script>
+
+    @* Forgot Password *@
+    <script src="~/app/components/account/forgotPasswordController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/account/resetPasswordController.js?r='@lastPublishedDate'"></script>
+
+    @* Pin *@
+    <script src="~/app/components/createPin/createPinController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/createPin/createPinService.js?r='@lastPublishedDate'"></script>
+
+    @* Phone Entry *@
+    <script src="~/app/components/phoneEntry/phoneEntryController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/phoneEntry/phoneEntryService.js?r='@lastPublishedDate'"></script>
+
+    @* Profile Picture *@
+    <script src="~/app/components/profilePicture/profilePictureController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/profilePicture/profilePictureService.js?r='@lastPublishedDate'"></script>
+
+    @* Add Child *@
+    <script src="~/app/components/addChild/childController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/addChild/childService.js?r='@lastPublishedDate'"></script>
+
+    @* Chore *@
+    <script src="~/app/components/chore/choreController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/chore/choreService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/chore/addChoreController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/chore/editChoreController.js?r='@lastPublishedDate'"></script>
+
+    @* Banking *@
+    <script src="~/app/components/bankAuthorization/bankAuthorizeService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/bankAuthorization/linkBankController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/bankAuthorization/verifyMicroDepositController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/bankAuthorization/addMicroDepositAccountController.js?r='@lastPublishedDate'"></script>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
+    @*Dashboard*@
+    <script src="~/app/components/dashboard/adminDashboardController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/dashboard/childDashboardController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/dashboard/dashboardService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/dashboard/childActivityController.js?r='@lastPublishedDate'"></script>
+
+    @*Family members*@
+    <script src="~/app/components/family/familyMemberService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/family/familyController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/account/myAccountController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/family/updateMemberInfoController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/family/manageUsersController.js?r='@lastPublishedDate'"></script>
+
+    @*Earnings*@
+    <script src="~/app/components/earnings/earningsService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/earnings/moveMoneyController.js?r='@lastPublishedDate'"></script>
+
+    @*Spend*@
+    <script src="~/app/components/spend/spendService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/spend/spendController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/spend/cashOutController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/spend/giftCardController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/spend/purchaseGiftCardController.js?r='@lastPublishedDate'"></script>
+
+    @*Settings*@
+    <script src="~/app/components/settings/settingsService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/settings/allocationSettingsController.js?r='@lastPublishedDate'"></script>
+
+    @*Bonus*@
+    <script src="~/app/components/bonus/bonusController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/bonus/bonusService.js?r='@lastPublishedDate'"></script>
+
+    @* New User *@
+    <script src="~/app/components/addUser/addUserController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/addUser/addParent/parentController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/addUser/addParent/parentService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/addUser/invitation/invitationController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/addUser/invitation/invitationService.js?r='@lastPublishedDate'"></script>
+
+    @* Charity *@
+    <script src="~/app/components/charity/charityController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/charity/charityService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/charity/donateController.js?r='@lastPublishedDate'"></script>
+
+    @* Save *@
+    <script src="~/app/components/save/saveController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/save/saveService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/save/purchaseStockController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/save/stockController.js?r='@lastPublishedDate'"></script>
+
+    @* Subscription *@
+    <script src="~/app/components/subscription/subscriptionController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/subscription/subscriptionService.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/subscription/promoCodeSubscriptionController.js?r='@lastPublishedDate'"></script>
+    <script src="~/app/components/subscription/subscriptionCancellationController.js?r='@lastPublishedDate'"></script>
+
+    @*Common*@
+    <script src="~/app/shared/common/confirmDialogController.js?r='@lastPublishedDate'"></script>
+
+    @*Privacy policy*@
+    <script src="~/app/components/termsAndPrivacy/privacyPolicyController.js?r='@lastPublishedDate'"></script>
+}
+
+<div id="alertPanel" class="alertParent"></div>
+
+<div class="row remove-margin">
+    <div id="contentPage" class="container">
+        <header class="top-header" ui-view="header"></header>
+        <div id="loginPage" ui-view="login"></div>
+        <div class="main-container" ui-view="content"></div>
+    </div>
+</div>

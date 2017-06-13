@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{278CB773-F522-4B83-A232-CD49361793CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LeapSpring.MJC.Core</RootNamespace>
+    <AssemblyName>LeapSpring.MJC.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\Prod\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah, Version=1.2.13605.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET MVC 4\Assemblies\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\Account\PasswordResetRequest.cs" />
+    <Compile Include="Domain\Account\PhoneNumberConfirmation.cs" />
+    <Compile Include="Domain\Banking\BankTransaction.cs" />
+    <Compile Include="Domain\Banking\CoreproSettings.cs" />
+    <Compile Include="Domain\Banking\CreditCardAccount.cs" />
+    <Compile Include="Domain\Banking\FinancialAccount.cs" />
+    <Compile Include="Domain\Banking\TransactionLog.cs" />
+    <Compile Include="Domain\BaseEntity.cs" />
+    <Compile Include="Domain\Bonus\ChildBonus.cs" />
+    <Compile Include="Domain\Charities\Charity.cs" />
+    <Compile Include="Domain\Charities\Donation.cs" />
+    <Compile Include="Domain\Chore\Chore.cs" />
+    <Compile Include="Domain\Chore\SystemChore.cs" />
+    <Compile Include="Domain\Earnings\ChildEarnings.cs" />
+    <Compile Include="Domain\Email\EmailHistory.cs" />
+    <Compile Include="Domain\Email\EmailTemplate.cs" />
+    <Compile Include="Domain\Family\Family.cs" />
+    <Compile Include="Domain\Family\FamilyMember.cs" />
+    <Compile Include="Domain\Family\State.cs" />
+    <Compile Include="Domain\Family\User.cs" />
+    <Compile Include="Domain\Invitation\FamilyInvitation.cs" />
+    <Compile Include="Domain\Save\StockPurchaseRequest.cs" />
+    <Compile Include="Domain\Save\StockItem.cs" />
+    <Compile Include="Domain\Settings\AllocationByAge.cs" />
+    <Compile Include="Domain\Settings\AllocationSettings.cs" />
+    <Compile Include="Domain\Settings\GyftSettings.cs" />
+    <Compile Include="Domain\Sms\ChoreWorkflow.cs" />
+    <Compile Include="Domain\Sms\Joke.cs" />
+    <Compile Include="Domain\Sms\SMSApproval.cs" />
+    <Compile Include="Domain\Spend\CashOut.cs" />
+    <Compile Include="Domain\Spend\GiftCard.cs" />
+    <Compile Include="Domain\Spend\PurchasedGiftCard.cs" />
+    <Compile Include="Domain\Subscription\FamilySubscription.cs" />
+    <Compile Include="Domain\Subscription\SubscriptionCancellationRequest.cs" />
+    <Compile Include="Domain\Subscription\SubscriptionPlan.cs" />
+    <Compile Include="Domain\Subscription\SubscriptionPromoCode.cs" />
+    <Compile Include="Domain\Subscription\TransactionStatusFileDetails.cs" />
+    <Compile Include="Dto\Accounts\AuthResponse.cs" />
+    <Compile Include="Dto\Accounts\LoginRequest.cs" />
+    <Compile Include="Dto\Accounts\SignUp.cs" />
+    <Compile Include="Dto\Accounts\SignUpProgress.cs" />
+    <Compile Include="Dto\Banking\BankInfo.cs" />
+    <Compile Include="Dto\Banking\MessageEvent.cs" />
+    <Compile Include="Dto\ChildFinancialOverview.cs" />
+    <Compile Include="Dto\Chores\SuggestedChores.cs" />
+    <Compile Include="Dto\ProfileImage.cs" />
+    <Compile Include="Dto\Save\StockGiftItem.cs" />
+    <Compile Include="Dto\Save\GiftStockQuote.cs" />
+    <Compile Include="Dto\Save\StockGiftItemResponse.cs" />
+    <Compile Include="Dto\Save\StockGiftQuoteResponse.cs" />
+    <Compile Include="Dto\Save\Order.cs" />
+    <Compile Include="Dto\Save\OrderResponse.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\PaymentDetails.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\Preamble.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\PrepaidValueItemRequest.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\PrepaidValueItemResponse.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\Purchaser.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\PurchaseStockRequest.cs" />
+    <Compile Include="Dto\Save\StockPilePurchase\PurchaseStockResponse.cs" />
+    <Compile Include="Dto\SelectItem.cs" />
+    <Compile Include="Dto\Sms\SmsResponse.cs" />
+    <Compile Include="Dto\Spend\GiftCardPreview.cs" />
+    <Compile Include="Dto\Spend\GyftCardItem.cs" />
+    <Compile Include="Dto\Spend\GyftPurchaseRequest.cs" />
+    <Compile Include="Dto\Subscription.cs" />
+    <Compile Include="Dto\TransactionHistory.cs" />
+    <Compile Include="Enums\ApprovalType.cs" />
+    <Compile Include="Enums\CompanyFundSourceType.cs" />
+    <Compile Include="Enums\CreditCardStatus.cs" />
+    <Compile Include="Enums\CreditCardTransactionType.cs" />
+    <Compile Include="Enums\CreditCardType.cs" />
+    <Compile Include="Enums\MessageEventEnum.cs" />
+    <Compile Include="Enums\DurationType.cs" />
+    <Compile Include="Enums\DwollaAccountStatus.cs" />
+    <Compile Include="Enums\EmailType.cs" />
+    <Compile Include="Enums\FinancialAccountStatus.cs" />
+    <Compile Include="Enums\FundingSourceType.cs" />
+    <Compile Include="Enums\PaymentType.cs" />
+    <Compile Include="Enums\ProfileStatus.cs" />
+    <Compile Include="Enums\SubscriptionStatus.cs" />
+    <Compile Include="Enums\SubscriptionType.cs" />
+    <Compile Include="Enums\TransactionStatus.cs" />
+    <Compile Include="Enums\ChoreDueType.cs" />
+    <Compile Include="Enums\ChoreStatus.cs" />
+    <Compile Include="Enums\DwollaWebhookRT.cs" />
+    <Compile Include="Enums\EarningsBucketType.cs" />
+    <Compile Include="Enums\EmailTemplateType.cs" />
+    <Compile Include="Enums\FrequencyType.cs" />
+    <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\InvitationStatus.cs" />
+    <Compile Include="Enums\MemberType.cs" />
+    <Compile Include="Enums\PasswordResetStatus.cs" />
+    <Compile Include="Enums\SignUpStatus.cs" />
+    <Compile Include="Enums\SmsCommandType.cs" />
+    <Compile Include="Enums\ApprovalStatus.cs" />
+    <Compile Include="Enums\TransactionHistoryType.cs" />
+    <Compile Include="Enums\TransferType.cs" />
+    <Compile Include="Enums\VerificationCodeStatus.cs" />
+    <Compile Include="Dto\Chores\SuggestedChore.cs" />
+    <Compile Include="Enums\WorkflowStatus.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Filters\InvalidParameterException.cs" />
+    <Compile Include="Filters\ObjectNotFoundException.cs" />
+    <Compile Include="Filters\UnhandledExceptionFilter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

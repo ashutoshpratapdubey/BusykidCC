@@ -1,0 +1,80 @@
+﻿
+<div class="app-width">
+    <div ng-show="isLoading" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+    <div ng-show="isSignUpProgress.response" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+    <div ng-hide="isSignUpProgress.response">
+        <div class="subscription-sec position-relative" ng-show="!isLoading">
+            <div>
+                <div class="text-center" id="popup">
+
+                    <h3 class="hint-title" ng-if="!isExpaired">
+                        <!--     <span ng-if="isFromTrial && !hasPromoCode">BusyKid is free for {{subscriptionDuration}}!</span> Trial Plan-->
+                        <!--   <span ng-if="!isFromTrial && !hasPromoCode">Subscription</span> Annual Plan-->
+                        <!--  <span ng-if="hasPromoCode && selectedPromoCode.Duration!=0">BusyKid is free for {{subscriptionDuration}}!</span> Promo Plan-->
+                        Link Your Bank Account
+                    </h3>
+
+                    <p class="bank-info hint-medium text-center" style="padding-bottom:20px;">
+                        Congratulations, you are one step away from becoming a BusyKid family! Using BusyKid requires a parent to securely link a bank account in order to move allowance quickly and seamlessly.
+                        Learn more about why your information is secure by visiting our <a href="http://busykid.com/#faq" target="_blank">FAQ's</a>.
+                    </p>
+
+
+                    <h3 class="hint-title" ng-if="isExpaired">Welcome Back!</h3>
+                    <p class="bank-info hint-medium text-center" ng-if="!isExpaired">
+                        <span ng-if="isFromTrial || (hasPromoCode && selectedPromoCode.Duration!=0)" style="display:inline-block; margin-bottom:15px;">
+                            BusyKid is free for {{subscriptionDuration}}! After your {{hasPromoCode && selectedPromoCode.Duration!=0 ?'promo period' : 'trial'}} ends, you will be enrolled into yearly subscription of $12/year.<br />
+                            You can cancel this any time.
+                        </span> <!--Trial Plan-->
+                        <span ng-if="!isFromTrial && !hasPromoCode" style="display:inline-block; margin-bottom:15px;">
+                            You will be enrolled into yearly subscription of $12/year.<br />
+                            You can cancel this any time.
+                        </span> <!--Annual Plan-->
+                        <span ng-if="hasPromoCode  &&  selectedPromoCode.Duration==0" style="display:inline-block; margin-bottom:15px;">
+                            You will be enrolled into yearly subscription of $12/year.<br />
+                            You can cancel this any time.
+                        </span> <!--Promo Plan-->
+                    </p>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+        <!--<div class="text-center" id="popup">
+            <h3 class="hint-title">Link Your Bank Account</h3>
+            <p class="bank-info hint-medium text-center">
+                BusyKid uses advanced technology that allows parents to pay allowance each week. It's very safe and easy to use.
+            </p>
+        </div>-->
+        <!--<div class="margin-top-25">
+            <div class="text-center margin-top-10" ng-repeat="bankDocument in bankDocuments">
+                <a class="link-md font-size-16" ng-href="{{bankDocument.DownloadUrl}}" target="_blank">{{bankDocument.Title}}</a>
+            </div>
+        </div>-->
+        <div class="text-center margin-top-120">
+
+            <button class="btn mjc-btn bac-color-67c152" ng-click="selectVerificationType();">Pay allowance for free using any bank account</button>
+            <br />
+            <br />
+            <button class="btn mjc-btn bac-color-67c152" ng-click="enterCreditCardDetails();">Pay allowance using any major credit at just 3%</button>
+        </div>
+    </div>
+</div>

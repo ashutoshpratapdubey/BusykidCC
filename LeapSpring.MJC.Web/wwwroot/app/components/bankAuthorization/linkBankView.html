@@ -1,0 +1,27 @@
+﻿<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <div ng-show="isSignUpProgress.response" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="isSignUpProgress.response">
+        <!--<div class="text-center" id="popup">
+            <h3 class="hint-title">Link Your Bank Account </h3>
+        </div>
+
+        <div id="iavContainer">-->
+            <div ng-show="isLoading" class="center-loading">
+                <div class="loading-top-div">
+                    <div class="loading-middle-div">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+        <!--</div>-->
+    </div>
+</div>

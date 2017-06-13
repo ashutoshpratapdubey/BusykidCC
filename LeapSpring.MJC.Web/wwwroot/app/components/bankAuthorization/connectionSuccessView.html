@@ -1,0 +1,33 @@
+﻿<div class="app-width" ng-init="loadPromocodePlaid()">
+    <div class="success-box" ng-class="{'active':isConnectionSuccess}">
+        <div class="success-content">
+            <div ng-show="isLoading" class="center-loading" style="background-color: #67c152;">
+                <div class="loading-top-div">
+                    <div class="loading-middle-div">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+            <h3 class="hint-title" ng-if="!isMicroDepositAccount">Connection Successful!</h3>
+            <h3 class="hint-title" ng-if="isMicroDepositAccount">Pending Verification!</h3>
+            <div ng-if="!isMicroDepositAccount">
+                <img class="row add-photo-image img-circle inline-block img-success " src="../../../images/success.png" />
+            </div>
+
+            <!--<p class="bank-info hint-medium text-center" ng-if="!isMicroDepositAccount">
+                Congratulations! Now you are ready
+                to full use BusyKid and help your children
+                develop work ethic and learn to manage money.
+            </p>-->
+
+            <p class="bank-info hint-medium text-center" ng-if="isMicroDepositAccount">
+                In 1-3 business days, we'll make two &#60;50¢ deposits into the {{linkedBankDetails.BankName}} account. Please note the amounts,
+                Return to my account page, and click "Verify Micro Deposit" to enter the two amounts.
+            </p>
+
+            <div class="text-center button-center inline-block" ng-class="{'margin-top-120':!isMicroDepositAccount}">
+                <button class="btn mjc-btn btn-tranparent button" ng-click="moveToNextPage()">Continue to Dashboard</button>
+            </div>
+        </div>
+    </div>
+</div>

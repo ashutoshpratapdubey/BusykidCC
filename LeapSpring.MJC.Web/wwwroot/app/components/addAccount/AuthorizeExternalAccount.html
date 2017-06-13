@@ -1,0 +1,147 @@
+﻿<!--Audio for send bonus-->
+<audio id="audioSendBonus1" hidden preload="auto">
+    <source src="../../../sounds/Send%20a%20Bonus_parent.mp3" type="audio/mpeg" />
+</audio>
+
+<style>
+    body {
+        color: #333;
+    }
+
+    .popupForm .col-sm-4 {
+        padding: 0px 5px;
+    }
+
+    .popupForm {
+    }
+
+        .popupForm label {
+            font-size: 12px;
+            color: #333;
+            font-weight: bold;
+            float: left;
+        }
+
+        .popupForm p {
+            font-family: "tosia-regular";
+            font-size: 11px;
+        }
+
+        .popupForm .img-dropdown .btn-drop-down {
+            font-size: 14px;
+            width: 110px;
+            padding: 7px 0;
+        }
+
+            .popupForm .img-dropdown .btn-drop-down .glyphicon-triangle-bottom {
+                margin-top: 5px;
+            }
+
+        .popupForm .img-dropdown .dropdown-menu li:not(:last-child) {
+            font-size: 14px;
+        }
+
+        .popupForm .img-dropdown .dropdown-menu li {
+            cursor: pointer;
+            font-size: 14px;
+            height: 29px;
+            padding: 3px 0;
+        }
+
+        .popupForm input.mjc-input {
+            border-radius: 0;
+            border-width: 0 0 1px;
+            font-size: 14px;
+            height: 36px;
+            padding: 4px 0;
+            text-align: left;
+            box-shadow:none;
+        }
+
+        .popupForm .signup-btn-margins {
+            margin: 10px 0;
+        }
+
+    .pText {
+        font-size: 16px !important;
+        line-height: 21px; 
+        margin: 0px;
+    }
+    .pText p{
+        font-size: 16px !important;
+        line-height: 21px;
+        padding: 10px 0px;
+        margin: 0px;
+    }
+
+    .btnMjc {
+       margin: 0 5px;
+        width: 46%;
+        min-height: auto;
+        padding: 7px 30px 8px;
+        box-sizing: border-box;
+    }
+
+    .addyourAcc {
+        font-weight: bold;
+        font-size: 24px;
+        padding-bottom: 25px;
+        color: #666;
+    }
+</style>
+
+<div class="box-content text-center" ng-class="{'background-green': showSuccessMessage }" ng-init="loadPromocode()">
+    <div class="main-content remove-padding text-center" >
+        <form name="AddExternalAccountForm1" class="position-relative" role="form" novalidate>
+            <div>
+                <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+                <div ng-cloak class="text-center send-bonus-body popupForm">
+                    <div class="row input-margin-bottom">
+                        <div class="col-sm-12"><div class="addyourAcc">
+    Authorization
+</div>
+                            <div class="pText">
+                                
+                                    <p>
+                                        You are authorizing us to link your BusyKid account to your bank account ending in {{ Lastdigit }} for easy cash transfers.
+                                    </p>
+                                    <p>
+                                        To verify that the bank account is yours, we will deposit two small amounts from "Busykid" to your bank account and ask you to tell us what they are. Look for our email in about three business days asking you to check your banks account for these amounts.
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="text-center signup-btn-margins">
+                            <button class="btn btnMjc mjc-btn bac-color-67c152" ng-disabled="isProcessing" ng-click="authorizeAccount()">{{isProcessing?"Processing...":"Authorize"}}</button>
+                            <button class="btn btnMjc button mjc-btn bac-color-db402e " ng-disabled="isProcessing" ng-click="cancelBankAuthorzation()">Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="send-bonus-success" ng-show="showSuccessMessage">
+                    <div class="middle-div">
+                        <div class="row">
+                            <img class="row add-photo-image img-circle inline-block img-success" src="../../../images/success.png" />
+                        </div>
+                        <div>
+                            <div class="success-message ">
+                                <p class="bonus-success">Success! Your bonus was sent!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="cancelBankAuthorzation()">
+                    <span class="glyphicon glyphicon-remove btn-close-text" />
+                </div>
+        </form>
+    </div>
+</div>

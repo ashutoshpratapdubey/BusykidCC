@@ -1,0 +1,61 @@
+﻿<style>
+    .subscription-sec .hint-title {
+        margin-top: 0;
+    }
+
+    .subscription-sec .hint-medium {
+        color: #000;
+        font-size: 16px;
+        font-family: tosia-regular;
+        text-align: left;
+        padding: 0;
+    }
+
+    .subscription-sec .margin-top-10 {
+        margin-top: 10px !important;
+    }
+
+    .subscription-sec ul {
+        list-style-type: disc;
+        margin: 0;
+        padding-left: 20px;
+    }
+</style>
+
+<div class="box-content text-center purchase-stock-sec position-relative" ng-class="{'background-green': showSuccessMessage }">
+    <div class="main-content remove-padding text-center scroll-popup position-relative">
+        <form name="donateForm" class="position-relative" role="form" novalidate>
+            <div class="padding-20">
+                <div class="subscription-sec position-relative" ng-show="!isLoading">
+                    <div>
+                        <div>
+                            <h3 class="hint-title">Subscription</h3>
+
+                            <ul class="row remove-margin" type="disc">
+                                <!--<li ng-repeat="message in listMessage"><p class="bank-info hint-medium">{{message}}</p></li>-->
+
+                                <li class="bank-info hint-medium" ng-repeat="message in listMessage">{{message}}</li>
+                            </ul>
+                        </div>
+
+                        <div class="text-center button-center margin-top-25 inline-block">
+                            <button class="btn mjc-btn button bac-color-67c152" tabindex="15" ng-disabled="isCancelling" ng-click="cancelSubscription();">{{isCancelling ?'Cancelling subscription...':'Cancel Subscription'}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="isLoading" class="center-loading">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="hideModal()">
+        <span class="glyphicon glyphicon-remove btn-close-text" />
+    </div>
+</div>

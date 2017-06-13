@@ -1,0 +1,25 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+    <form name="creditCardEntry" role="form" novalidate>
+        <div class="text-center">
+            <p class="hint-title phone-hint-title">Enter your credit card number</p>
+
+            <div class="row form-group margin-bottom-20" show-errors>
+                <input type="text" inputmode="numeric" ng-pattern="/^[0-9]*$/" name="card" class="form-control phone-text inline-block remove-margin" autocomplete="off" ng-model="cardNumber" ng-minlength="15" ng-maxlength="19" required />
+                <p class="help-block" ng-if="creditCardEntry.card.$error.required">Enter credit card number.</p>
+                <p class="help-block" ng-if="creditCardEntry.card.$error.minlength">Card number must be between 15-19 digits.</p>
+                <p class="help-block" ng-if="creditCardEntry.card.$error.pattern">Please enter numbers only.</p>
+
+            </div>
+            <div class="row text-center" ng-if="CardType == 'undefined'">
+                <p class="help-block text-nowrap">This Credit Card is not valid.</p>
+            </div>
+
+            <div class="text-center button-center margin-top-111 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" tabindex="5" ng-disabled="isContinue" ng-click="goToNext()">{{btnContinue}}</button>
+            </div>
+        </div>
+    </form>
+</div>

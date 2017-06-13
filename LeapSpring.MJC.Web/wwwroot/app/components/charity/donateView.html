@@ -1,0 +1,146 @@
+﻿<style>
+    .purchase-stock-sec .add-photo-image {
+        max-width: 350px;
+    }
+
+    .purchase-stock-sec .stock-image {
+        width: 80% !important;
+    }
+
+    .purchase-stock-sec .stock-details-sec {
+        padding: 10px 0 25px 0;
+    }
+
+        .purchase-stock-sec .stock-details-sec .hint-title {
+            text-align: left;
+            margin-top: 5px !important;
+        }
+
+    .charity-description {
+        white-space: pre-line;
+    }
+
+    .stock-details-sec .stock-name {
+        font-size: 25px;
+    }
+
+    .scroll-popup {
+        max-height: 85vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #scrolling {
+        max-width: Calc(100vw - 50px);
+    }
+
+        #scrolling .charity-image {
+            max-width: 230px;
+            height: 145px;
+            border: none;
+            padding: 10px;
+        }
+
+        #scrolling .charity-image-border {
+            border: 2px solid #e6e6e6;
+        }
+
+    .purchase-stock-sec #scrolling {
+        padding: 0;
+    }
+</style>
+
+<div class="box-content text-center purchase-stock-sec position-relative" ng-class="{'background-green': showSuccessMessage }">
+    <div class="main-content remove-padding text-center scroll-popup position-relative">
+        <form name="donateForm" class="position-relative" role="form" novalidate>
+            <div>
+
+                <div class="text-center">
+                    <div class="row remove-margin">
+                        <div class="col-lg-12" id="scrolling" ng-if="charities.length > 1">
+                            <div class="inner-panel">
+                                <ul ng-class="{'single-slider':charities.length===1}">
+                                    <li ng-repeat="charity in charities" ng-class="{'itemslide-active':charities.length===1}">
+                                        <div class="tran-color"></div>
+                                        <div ng-cloak class="text-center">
+                                            <div ng-cloak class="text-center stock-sec">
+                                                <div class="row stock-image-sec">
+                                                    <div class="inline-block charity-image-border">
+                                                        <img class="charity-image add-photo-image inline-block pointer" ng-src="{{charity.ImageUrl}}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-cloak class="text-center" id="scrolling" ng-if="charities.length <= 1">
+                        <div ng-cloak class="text-center">
+                            <div ng-cloak class="text-center stock-sec">
+                                <div class="row stock-image-sec">
+                                    <div class="inline-block charity-image-border">
+                                        <img class="charity-image add-photo-image inline-block pointer" ng-src="{{charity.ImageUrl}}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div ng-cloak class="text-center">
+                    <div ng-cloak class="text-center stock-sec">
+                        <div class="row stock-image-sec">
+                            <div class="inline-block">
+                                <img class="add-photo-image stock-image inline-block remove-margin" ng-src="{{charity.ImageUrl}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="text-center">
+
+                    <div class="row remove-margin margin-top-10">
+                        <div class="numeric-updown-group">
+                            <button class="btn mjc-btn numeric-updown-button negative-icon" ng-disabled="donation.Amount==minAmount" ng-click="donation.Amount=donation.Amount-1"><span class="glyphicon glyphicon-minus btn-negative-icon"></span></button>
+                            <button class="numeric-updown-button numeric-updown-value" ng-disabled="true"><div class="dollor-symbol">$</div><div class="inline-block">{{donation.Amount}}</div></button>
+                            <button class="btn mjc-btn numeric-updown-button" ng-disabled="donation.Amount==maxAmount" ng-click="donation.Amount=donation.Amount+1"><span class="glyphicon glyphicon-plus"></span></button>
+                        </div>
+                    </div>
+
+                    <div class="row remove-margin text-center">
+                        <button class="back-color-save btn-donate" ng-disabled="isDonating" ng-click="sendDonation()">{{isDonating?'Donating...' :'Donate'}}</button>
+                    </div>
+                </div>
+
+                <div class="stock-details">
+                    <div class="row remove-margin stock-details-sec">
+                        <p class="hint-title phone-hint-title remove-margin stock-name">{{charity.Name}}</p>
+                        <div class="about-collapse">
+                            <a class="collapse-tab" data-toggle="collapse" data-target="#about">
+                                About Us
+                            </a>
+                            <div id="about" class="collapse-content collapse">
+                                <p class="hint-title phone-hint-title remove-margin stock-desc-text charity-description">{{charity.Description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                <div class="loading-top-div">
+                    <div class="loading-middle-div">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="hideModal()">
+        <span class="glyphicon glyphicon-remove btn-close-text" />
+    </div>
+</div>

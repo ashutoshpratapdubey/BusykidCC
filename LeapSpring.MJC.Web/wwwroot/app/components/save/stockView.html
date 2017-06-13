@@ -1,0 +1,224 @@
+﻿<style>
+    .container {
+        padding: 0;
+    }
+
+    .save-sec .gift-card-image {
+        padding: 5px;
+    }
+
+    .tab-header-line {
+        height: 2px;
+    }
+
+    .search-box {
+        max-width: 100%;
+        margin: 20px 0;
+        border: 2px solid #abaaac !important;
+        font-size: 14px;
+        height: 42px !important;
+    }
+
+    .search-icon {
+        color: #e6e6e6;
+        font-size: 22px;
+        transform: rotate(90deg);
+        position: absolute;
+        display: block;
+        right: 10px;
+        top: 30px;
+    }
+
+    .dashboard-content .chore-items {
+        margin: 0 -7px;
+    }
+
+    .dashboard-content li {
+        padding: 0 7px;
+    }
+
+    .center-image {
+        display: table;
+        height: 100%;
+    }
+
+        .center-image .center {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+    .stock-quote-symbol {
+        margin-left: 3px !important;
+        font-size: 18px;
+    }
+
+    @media screen and (min-width : 768px) {
+
+        html {
+            overflow-y: scroll !important;
+        }
+
+        .modal-open {
+            overflow-y: hidden;
+        }
+
+        /*Old Styles*/
+        .save-content {
+            height: 100%;
+        }
+
+        .image-bottom-border {
+            border: none;
+        }
+
+        /*.save-sec .dashboard-chore:hover .image-bottom-border {
+            border: none;
+        }*/
+
+        .dashboard-content .chore-items {
+            margin: 0 -15px;
+        }
+
+        .dashboard-content li {
+            padding: 0 15px;
+        }
+
+            .dashboard-content li.chore-item {
+                width: 50% !important;
+                padding: 0 15px 0 15px;
+            }
+
+        .dashboard-content {
+            padding: 25px 0;
+        }
+
+        .nav-tabs.dashboard-header-tabs {
+            margin-top: 30px;
+        }
+
+            .nav-tabs.dashboard-header-tabs > li {
+                max-width: 250px;
+            }
+
+                .nav-tabs.dashboard-header-tabs > li > a {
+                    font-size: 20px;
+                }
+
+        .dashboard-text-medium {
+            font-size: 20px;
+        }
+
+        /*.save-sec .chore-text {
+            white-space: normal;
+        }*/
+
+        .gift-card-image {
+            max-height: 130px;
+        }
+
+        .save-sec .gift-card-image {
+            max-height: inherit;
+        }
+
+        .stock-tile {
+            display: table;
+        }
+
+        .save-sec .chore-image-sec {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        /*Old Styles*/
+
+        .stock-sec .chore-image-sec {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .child-dashboard-sec .text-small {
+            font-size: 14px !important;
+        }
+
+        .search-box {
+            font-size: 20px !important;
+            margin: 30px 0 20px 0;
+            height: 52px !important;
+        }
+
+        .search-icon {
+            font-size: 31px !important;
+            top: 42px;
+        }
+    }
+</style>
+
+<div class="app-width">
+    <div class="child-dashboard-sec">
+        <div class="text-center">
+            <ul class="nav nav-tabs dashboard-header-tabs">
+                <li class="active" ng-click="toggleHomeTab()"><a data-toggle="tab" data-target="#home">Home</a></li>
+                <li ng-click="toggleActivityTab()"><a data-toggle="tab" data-target="#activity">Activity</a></li>
+            </ul>
+
+            <div class="dashboard-content dropdown-item">
+
+                <div class="save-sec spend-gift margin-bottom-20">
+                    <div>
+                        <div class="full-screen">
+                            <div class="app-width tab-header-line"></div>
+                        </div>
+
+                        <div class="row remove-margin position-relative">
+                            <input type="text" name="searchQuery" class="form-control mjc-input search-box" placeholder="Search For New Stocks" ng-model="query" autocomplete="off" />
+                            <span class="glyphicon glyphicon-search search-icon"></span>
+                        </div>
+
+                        <div class="row remove-margin stock-header">
+                            <p class="text-small">POPULAR STOCKS</p>
+                        </div>
+
+                        <div class="choreDue gift-card-sec remove-margin position-relative">
+                            <div ng-show="isStockGiftCardsLoading" class="center-loading">
+                                <div class="loading-top-div">
+                                    <div class="loading-middle-div">
+                                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="chore-items" ng-if="!isStockGiftCardsLoading && stockGiftCards.length!=0">
+                                <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chor" ng-repeat="stockGiftCard in stockGiftCards | searchStock:query">
+                                    <div class="dashboard-chore">
+                                        <div class="row remove-margin stock-tile">
+                                            <div class="position-relative chore-image-sec">
+                                                <!-- Stock Gift cards section -->
+                                                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 remove-padding image-bottom-border center-image">
+                                                    <div class="position-relative center pointer" ng-click="showStockModal($event, stockGiftCard)">
+                                                        <img class="add-photo-image gift-card-image" ng-src="{{stockGiftCard.LogoUrl}}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 remove-padding save-content">
+                                                    <div class="save-name-section">
+                                                        <div>
+                                                            <span class="remove-margin dashboard-text-medium chore-text stock-name">{{ stockGiftCard.CompanyPopularName}}</span>
+                                                            <span class="remove-margin dashboard-text-medium chore-text stock-symbol">{{ stockGiftCard.StockSymbol}}</span>
+                                                        </div>
+
+                                                        <button class="btn mjc-btn btn-chore-done back-color-save pointer" style="margin-top:5px;" ng-click="purchase(stockGiftCard)">Buy Stock</button>
+                                                    </div>
+                                                </div>
+                                                <!-- Stock Gift cards ended -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <p class="choredue-empty chore-line" ng-if="!isStockGiftCardsLoading && stockGiftCards.length==0">No stock gift cards available!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

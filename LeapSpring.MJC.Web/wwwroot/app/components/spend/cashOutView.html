@@ -1,0 +1,59 @@
+﻿<style>
+    .cashout-sec .numeric-updown-group {
+        margin: 22px 0 0 0;
+    }
+</style>
+<div class="box-content text-center cashout-sec">
+    <div class="main-content remove-padding text-center">
+
+        <form name="getCashForm" class="position-relative" role="form" novalidate>
+
+            <div>
+                <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-cloak class="text-center send-bonus-body">
+                    <div ng-cloak class="text-center">
+                        <div class="row">
+                            <div class="remove-margin">
+                                <p class="hint-title phone-hint-title remove-margin margin-bottom-12">Hi {{childName}}!</p>
+                                <img class="add-photo-image img-profile img-circle inline-block pointer" ng-class="{'border-white':(profileUrl != '../../../images/Avatar.png')}" ng-src="{{profileUrl}}" err-src="../../../images/Avatar.png" />
+                            </div>
+                        </div>
+
+
+                        <div class="text-center">
+                            <div class="row remove-margin margin-top-10">
+                                <div class="numeric-updown-group">
+                                    <button class="btn mjc-btn numeric-updown-button negative-icon" ng-disabled="cashOut.Amount==minAmount" ng-click="cashOut.Amount=cashOut.Amount-1"><span class="glyphicon glyphicon-minus btn-negative-icon"></span></button>
+                                    <button class="numeric-updown-button numeric-updown-value" ng-disabled="true"><div class="dollor-symbol">$</div><div class="inline-block">{{cashOut.Amount}}</div></button>
+                                    <button class="btn mjc-btn numeric-updown-button" ng-disabled="cashOut.Amount==maxAmount" ng-click="cashOut.Amount=cashOut.Amount+1"><span class="glyphicon glyphicon-plus"></span></button>
+                                </div>
+                            </div>
+
+                            <div class="row remove-margin text-center">
+                                <button class="back-color-save btn-donate" ng-disabled="isProcessing" ng-click="cashOutRequest()">{{isProcessing?'Processing...' :'Get Cash'}}</button>
+                            </div>
+                        </div>
+
+                        <!--<div class="text-center">
+                            <div class="row remove-margin text-center">
+                                <button class="btn mjc-btn btn-alocation-settings back-color-spend" ng-disabled="isProcessing" ng-click="cashOutRequest()">{{isProcessing?'Processing...':'Get Cash'}}</button>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="hideModal()">
+                <span class="glyphicon glyphicon-remove btn-close-text" />
+            </div>
+        </form>
+    </div>
+</div>

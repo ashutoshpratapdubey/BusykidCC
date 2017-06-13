@@ -1,0 +1,57 @@
+﻿<style>
+    .modal .dialog-body {
+        color: #000;
+        font-size: 16px;
+        font-family: tosia-regular;
+    }
+
+    .modal-backdrop.in {
+        opacity: .2;
+    }
+
+    .modal .modal-dialog.modal-md {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .modal .btn {
+        font-family: tosia-regular;
+    }
+
+        .modal .btn:hover {
+            color: #fff;
+        }
+</style>
+
+<div id="modalPopup" class="modal fade dialog alert">
+    <div class="alert-outter">
+        <div class="alert-middle">
+            <div class="alert-inner">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content" ng-show="isAlert">
+                        <div class="modal-body dialog-body">
+                            <div class="message" ng-if="listMessage.length>0">
+                                <ul style="list-style:disc;padding-left:18px;">
+                                    <li ng-repeat="message in listMessage">{{message}}</li>
+                                </ul>
+                            </div>
+                            <div class="message">{{message}}</div>
+                        </div>
+                        <div class="modal-footer dialog-footer">
+                            <button type="button" ng-click="close(true)" class="btn mjc-md-btn bac-color-67c152" data-dismiss="modal">{{yesText}}</button>
+                            <button type="button" ng-click="close(false)" class="btn mjc-md-btn border-0491d3 color-0491d3" data-dismiss="modal">{{noText}}</button>
+                        </div>
+                    </div>
+                    <div class="modal-content" ng-show="isInfo">
+                        <div class="modal-body dialog-body">
+                            <div class="message row">{{message}}</div>
+                        </div>
+                        <div class="modal-footer dialog-footer">
+                            <button type="button" ng-click="close(false)" class="btn mjc-md-btn bac-color-0491d3" data-dismiss="modal">{{yesText}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

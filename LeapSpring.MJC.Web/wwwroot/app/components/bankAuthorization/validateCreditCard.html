@@ -1,0 +1,75 @@
+﻿<style>
+    .my-account .profile-sec .profile-detail {
+        margin-top: 50px;
+    }
+</style>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+
+
+
+
+    <div class="profile-detail credircrd-cont">
+        <div ng-if="CardType=='Visa' || CardType=='Visa Electron'" class="cardImage">
+            <i class="fa fa-cc-visa" style="color:black"></i>
+        </div>
+        <div ng-if="CardType=='American Express'" class="cardImage">
+            <i class="fa fa-cc-amex" style="color:black"></i>
+        </div>
+        <div ng-if="CardType=='MasterCard'" class="cardImage">
+            <i class="fa fa-cc-mastercard" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='Diners Club enRoute' || CardType=='Diners Club Carte Blanche' || CardType=='Diners Club International'">
+            <i class="fa fa-cc-diners-club" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='Discover Card'">
+            <i class="fa fa-cc-discover" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='JCB'">
+            <i class="fa fa-cc-jcb" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='Laser'">
+            <i class="fa fa-cc-paypal" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='Maestro'">
+            <i class="fa fa-cc-stripe" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='undefined'">
+            <i class="fa fa-cc-credit-card" style="color:black"></i>
+        </div>
+        <div class="cardImage" ng-if="CardType=='Google Wallet'">
+            <i class="fa fa-cc-google-wallet" style="color:black"></i>
+        </div>
+        <label class="choredue-task no-wrap">
+            {{ CardDigit }}
+        </label>
+        <form form name="creditForm" role="form" novalidate>
+            <input type="text" name="MMYY" class="mjc-input-lite sm" placeholder="MM/YY" minlength="0" maxlength="5" ng-model="MonthYear" ng-change="change();" move-to-next autocomplete="off" required />
+            <input type="text" inputmode="numeric" name="CVV" class="mjc-input-lite sm" placeholder="CVV" minlength="3" maxlength="4" ng-model="CVV" move-to-next autocomplete="off" ng-pattern="[0-9]*" required />
+            <input type="text" inputmode="numeric" name="Zip" class="mjc-input-lite sm" placeholder="ZIP" minlength="5" maxlength="5" ng-model="Zip" move-to-next autocomplete="off" ng-pattern="[0-9]*" required />
+        </form>
+    </div>
+    <div class="row text-center" ng-if="isShowAllError==true">
+        <p class="help-block text-nowrap">All Entries are required.</p>
+    </div>
+    <div class="row text-center" ng-if="isShowValidityError==true">
+        <p class="help-block text-nowrap">Please Enter valid period of Time.</p>
+    </div>
+    <div class="row text-center" ng-if="isShowRegExpError==true">
+        <p class="help-block text-nowrap">Please Enter all inputs in number mode only.</p>
+    </div>
+    <div class="text-center button-center margin-top-111 inline-block">
+        <button class="btn mjc-btn button bac-color-67c152" tabindex="5" ng-disabled="isContinue " ng-click="goToNext()">{{btnContinue}}</button>
+        <br />
+        <br />
+        <br />
+        <button class="btn mjc-btn button bac-color-db402e" tabindex="5" ng-disabled="isContinue" ng-click="goBack()">{{btnBack}}</button>
+    </div>
+
+
+</div>

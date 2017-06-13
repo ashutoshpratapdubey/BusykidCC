@@ -1,0 +1,52 @@
+﻿<style>
+    .accountTypePage .note.note-text {
+        margin: 0 0 10px 0 !important;
+    }
+
+    .accountTypePage, .accountTypePage .radio-label {
+        color: #000;
+    }
+
+    .modal-width {
+        max-width: 380px;
+    }
+
+    .accountTypePage {
+        padding: 10px 10px 20px 10px;
+        background-color: #fff;
+    }
+
+        .accountTypePage .radiobtn-account-type {
+            margin-top: 20px;
+            text-align: left;
+            width: 150px;
+        }
+
+        .accountTypePage .mjc-lg-btn {
+            margin-top: 20px;
+        }
+</style>
+<div class="app-width modal-width accountTypePage">
+    <div class="margin-top-10">
+        <p class="note text-center note-text">
+            Select Verification Type
+        </p>
+    </div>
+
+    <div class="text-center row remove-margin">
+        <label>
+            <input type="radio" value="0" name="quality" id="instantAccount" ng-model="selectedAccountType"><span id="account-type-span"></span>
+            <p class="color-555 radiobtn-account-type">Instant Verification</p>
+        </label>
+    </div>
+    <div class="text-center row remove-margin">
+        <label>
+            <input type="radio" value="1" name="quality" id="microDeposit" ng-model="selectedAccountType"><span id="account-type-span"></span>
+            <p class="color-555 radiobtn-account-type">Micro Deposit</p>
+        </label>
+    </div>
+
+    <div class="text-center row remove-margin">
+        <button type="button" class="btn mjc-lg-btn bac-color-67c152 margin-top-10" ng-click="gotoLinkBankPage();">Continue</button>
+    </div>
+</div>

@@ -1,0 +1,136 @@
+﻿<!--Audio for added suggested chore-->
+<audio id="audioAddChore" hidden preload="auto">
+    <source src="../../../sounds/Added%20a%20Chore_parent.mp3" type="audio/mpeg" />
+</audio>
+<div class="app-width suggested-chore-sec">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+    <div ng-show="isSignUpProgress.response" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+    <div ng-hide="isSignUpProgress.response">
+        <div ng-show="isLoading" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                </div>
+            </div>
+        </div>
+        <div ng-hide="isLoading">
+            <p class="row hint-title text-center margin-top-25 lg-row">Chore Ideas</p>
+            <p class="row hint-medium text-center margin-bottom-25 lg-row">
+                Here are some chores/activities {{calculateAge(child.DateOfBirth)}} <br />
+                year olds are doing inside<br />
+                BusyKid.Add one by tapping the green box.<br />
+                Add your own at the bottom.
+            </p>
+            <p class="text-center color-0491d3 font-size-18">SUGGESTED CHORES FOR {{child.Firstname | uppercase}}</p>
+            <div class="row chore-line lg-row"></div>
+            <div class="row chore-scroll lg-row">
+                <!--Added Chores-->
+                <div class="text-center padding-top-bottom-4 chore-line" ng-repeat="chore in Chores" ng-click="editChore(chore)">
+                    <div class="added-chore inline-block">
+                        <div class="row remove-margin lg-row">
+                            <!--<img class="col-xs-2 col-sm-2 col-md-2 col-lg-2 remove-padding text-left" ng-src="../../../images/BusyKidLogo.png" style="width: 30px; margin-top: 7px;" />-->
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 added-chore-content no-wrap text-left">{{chore.Name}}</div>
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 added-chore-content text-right" ng-bind="chore.Value | currency:USD$:2"></div>
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 added-chore-content text-right">{{chore.Frequency}}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Suggested chore block -->
+                <div class="position-relative suggested-chore-margin chore-line animation" ng-repeat="suggestedChore in suggestedChores">
+                    <!-- Add chore success animation block -->
+                    <div class="suggested-animation add" ng-class="{'active':suggestedChore.isAddSuccess}">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 remove-padding text-left">
+                            <img src="../../../images/icons/Success.png" />
+                        </div>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 remove-padding-left text-left">
+                            <div class="suggested-message">
+                                <div class="suggested-message-content">
+                                    This has been added.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Block chore success animation block -->
+                    <div class="suggested-animation remove" ng-class="{'active':suggestedChore.isBlockSuccess}">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 remove-padding text-left">
+                            <img src="../../../images/icons/Failure.png" />
+                        </div>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 remove-padding-left text-left">
+                            <div class="suggested-message">
+                                <div class="suggested-message-content">
+                                    This has been deleted.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add suggested chore button block -->
+                    <!--<div class="position-absolute suggestedChore-add left-0 bac-color-67c152" ng-click="addSuggestedChore(suggestedChore)">
+                        <img src="../../../images/icons/add.png" class="suggested-add-img" ng-if="!suggestedChore.isAdding" />
+                        <img src="../../../images/white-loader.gif" class="suggested-loading" ng-if="suggestedChore.isAdding" />
+                    </div>-->
+                    <!-- Suggested chore content -->
+                    <div class="text-center">
+                        <textarea type="text" name="name" class="form-control mjc-input add-chore-multiline-input msd-elastic text-center" maxlength="29" ng-model="suggestedChore.Name" autocomplete="off" />
+                        <div class="row">
+                            <div class="max-width-50 inline-block margin-right-11">
+                                <span class="color-555 text-left full-width input-lbl">VALUE</span>
+                                <div class="position-relative">
+                                    <span class="input-group-addon us-dollor">$</span>
+                                    <input type="text" name="value" class="form-control dollor-input inline-block chore-input remove-padding-top remove-padding-bottom font-size-14 height-25 text-left bottom-border-1px"
+                                           ng-model="suggestedChore.Value" required autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="max-width-90 inline-block">
+                                <span class="color-555 text-left full-width input-lbl">FREQUENCY</span>
+                                <div ng-class="$last?'dropup':'dropdown'">
+                                    <button class="btn-drop-down dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{suggestedChore.FrequencyType}}
+                                        <span class="caret pull-right"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li ng-repeat="frequency in suggestedChore.Frequencies" ng-click="frequecyChanged(frequency.Name, suggestedChore)"><a>{{frequency.Name}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="toggle-week toggle chore-frequency">
+                            <ul ng-if="suggestedChore.FrequencyType!='Once'">
+                                <li class="pointer inline-block" ng-click="toggleWeekDay(weekDay, suggestedChore)" ng-repeat="weekDay in suggestedChore.WeekDays">
+                                    <button class="btn-week-days suggested-chore-frequency" ng-class="{'active': weekDay.IsSelected }">{{weekDay.Name | limitTo : 1}}</button>
+                                </li>
+                            </ul>
+                            <ul ng-if="suggestedChore.FrequencyType=='Once'">
+                                <li class="pointer inline-block" ng-click="changeDueDate(dueDate, suggestedChore)" ng-repeat="dueDate in suggestedChore.DueDates">
+                                    <button class="btn-week-days suggested-chore-frequency" ng-class="{'active': dueDate.IsSelected }">{{dueDate.Name | limitTo : 1}}</button>
+                                </li>
+                            </ul>
+                            <!--<p ng-if="!hasDueDate" class="help-block text-nowrap">Due date is required.</p>-->
+                        </div>
+                    </div>
+                    <!-- Remove suggested chore button block -->
+                    <!--<div class="position-absolute suggestedChore-remove right-0 top-0 bac-color-db402e" ng-click="blockSuggestedChore(suggestedChore)">
+                        <img src="../../../images/icons/delete.png" class="suggested-remove-img" ng-if="!suggestedChore.isBlocking" />
+                        <img src="../../../images/white-loader.gif" class="suggested-loading" ng-if="suggestedChore.isBlocking" />
+                    </div>-->
+                    <div class="position-absolute suggestedChore-add right-0 bac-color-67c152" ng-click="addSuggestedChore(suggestedChore)">
+                        <img src="../../../images/icons/add.png" class="suggested-add-img" ng-if="!suggestedChore.isAdding" />
+                        <img src="../../../images/white-loader.gif" class="suggested-loading" ng-if="suggestedChore.isAdding" />
+                    </div>
+                </div>
+                <div class="row text-center color-0491d3 font-size-18 padding-10 lg-row" style="cursor:pointer" ng-if="isLoadMore" ng-click="loadMore()">{{lblLoadMore}} <span><img ng-if="isLoadMoreProgress" class="loading-icon suggested-loading" src="../../../images/black-loader.gif" /></span></div>
+            </div>
+
+            <div class="text-center button-center inline-block margin-top-25">
+                <button class="btn mjc-lg-btn bac-color-0491d3 margin-bottom-12" tabindex="5" ng-disabled="isContinue" ng-click="showAddChoreModal()">Add My Own Chores</button>
+                <button class="btn mjc-lg-btn bac-color-0491d3 margin-bottom-12" ui-sref="addChild">Add New Child</button>
+                <button class="btn mjc-lg-btn bac-color-67c152 margin-bottom-12" ng-click="gotoNextPage()">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>

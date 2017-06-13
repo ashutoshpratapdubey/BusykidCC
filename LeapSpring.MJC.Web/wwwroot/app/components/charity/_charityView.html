@@ -1,0 +1,59 @@
+﻿<style>
+    .charity-sec .chore-name-sec {
+        padding: 20px 0 0 0;
+    }
+
+    .charity-sec .chore-tile {
+        padding: 42px 0 0 0 !important;
+    }
+
+    @media only screen and (min-width : 320px) and (max-width : 450px) {
+        .charity-sec .chore-text {
+            color: #fff;
+        }
+
+        .charity-sec .dashboard-text-medium {
+            font-size: 7px;
+        }
+    }
+</style>
+<div class="position-relative charity-sec">
+    <div>
+        <p class="text-small text-left">CHARITIES</p>
+
+        <p class="text-list-hint remove-padding" ng-if="charities.length==0 && !isCharitiesLoading">No charities found!</p>
+
+        <ul class="chore-items" ng-if="charities.length!=0">
+            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chore-item" ng-repeat="charity in charities">
+                <div class="charity dashboard-chore">
+                    <div class="row remove-margin">
+                        <!--<div class="position-relative chore-image-sec">-->
+                        <!-- Chore section -->
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding">
+                            <div class="position-relative">
+                                <img class="add-photo-image chore-image" ng-src="{{charity.ImageUrl}}" err-src="../../../images/DefaultChore.png" />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding chore-tile chore-name-sec">
+                            <!--<p class="dashboard-text-medium chore-text">{{charity.Name}} </p>-->
+                            <button class="btn mjc-btn btn-chore-done back-color-share" ng-click="donate(charity)">Donate Here</button>
+                        </div>
+                        <!-- Chore section ended-->
+                        <!--</div>-->
+                    </div>
+                    <!-- Chore completed section end-->
+                </div>
+            </li>
+        </ul>
+
+        <div class="text-small dashboard-dropdown-list" ng-if="charities.length==0 && !isCharitiesLoading"></div>
+    </div>
+
+    <div ng-if="isCharitiesLoading" class="center-loading chore-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,402 @@
+﻿using LeapSpring.MJC.Core.Domain.Chore;
+using LeapSpring.MJC.Core.Domain.Earnings;
+using LeapSpring.MJC.Core.Domain.Settings;
+using LeapSpring.MJC.Core.Dto;
+using LeapSpring.MJC.Core.Enums;
+using LeapSpring.MJC.Data.Repository;
+using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using LeapSpring.MJC.BusinessLogic.Services.Banking;
+using LeapSpring.MJC.Core.Domain.Family;
+using LeapSpring.MJC.BusinessLogic.Services.Account;
+using LeapSpring.MJC.Core.Filters;
+using LeapSpring.MJC.Core.Domain.Bonus;
+using LeapSpring.MJC.Core.Domain.Banking;
+using LeapSpring.MJC.BusinessLogic.Services.Sms;
+using System.Web;
+using LeapSpring.MJC.BusinessLogic.Services.Settings;
+using LeapSpring.MJC.Core;
+
+namespace LeapSpring.MJC.BusinessLogic.Services.Earnings
+{
+    /// <summary>
+    /// Represents a earnings service
+    /// </summary>
+    public class EarningsService : ServiceBase, IEarningsService
+    {
+        private IBankService _bankService;
+        private ITransactionService _transactionService;
+        private ICurrentUserService _currentUserService;
+        private ITextMessageService _textMessageService;
+        private IAppSettingsService _appSettingsService;
+
+
+        /// <param name="bankService">Bank authorize service</param>
+        /// <param name="transactionService">Transaction service</param>
+        public EarningsService(IRepository repository, IBankService bankService, ITransactionService transactionService,
+            ICurrentUserService currentUserService, ITextMessageService textMessageService, IAppSettingsService appSettingsService) : base(repository)
+        {
+            _bankService = bankService;
+            _transactionService = transactionService;
+            _currentUserService = currentUserService;
+            _textMessageService = textMessageService;
+            _appSettingsService = appSettingsService;
+        }
+
+        #region Methods
+
+        /// <summary>
+        /// Add child earnings
+        /// </summary>
+        /// <param name="childEarnings">Child earnings</param>
+        public void Add(ChildEarnings childEarnings)
+        {
+            Repository.Insert(childEarnings);
+        }
+
+        /// <summary>
+        /// Update child earnings
+        /// </summary>
+        /// <param name="childEarnings">Child earnings</param>
+        public void Update(ChildEarnings childEarnings)
+        {
+            Repository.Update(childEarnings);
+        }
+
+        /// <summary>
+        /// Create new child earnings
+        /// </summary>
+        /// <param name="familyMemberId">Family member identifier</param>
+        public void CreateNew(int familyMemberId)
+        {
+            var childEarings = new ChildEarnings
+            {
+                FamilyMemberID = familyMemberId
+            };
+
+            Repository.Insert(childEarings);
+        }
+
+        /// <summary>
+        /// Get child earnings by family member identifier
+        /// </summary>
+        /// <param name="familyMemberId">Family member identifier</param>
+        /// <returns>Child earnings</returns>
+        public ChildEarnings GetByMemberId(int familyMemberId)
+        {
+            return Repository.Table<ChildEarnings>().SingleOrDefault(m => m.FamilyMemberID == familyMemberId);
+        }
+
+        /// <summary>
+        /// Pay chores payment
+        /// </summary>
+        public void Pay()
+        {
+            var nextPayDate = DateTime.UtcNow.ToLocalTime().GetNextPayDay().ToPayDayTime();
+            var startDate = nextPayDate.AddDays(-14);
+
+            var groupedChoresByFamily = Repository.Table<Chore>().Include(m => m.FamilyMember).Include(m => m.FamilyMember.User)
+                                        .Where(m => m.ChoreStatus == ChoreStatus.CompletedAndApproved
+                                        && DbFunctions.TruncateTime(m.CompletedOn) >= startDate.Date
+                                        && m.CompletedOn <= nextPayDate.Date
+                                         && !m.BankTransactionID.HasValue && !m.IsDeleted && !m.FamilyMember.IsDeleted).ToList()
+                                        .GroupBy(m => m.FamilyMember.User.FamilyID);
+
+            foreach (var familyChores in groupedChoresByFamily)
+            {
+                var totalPayment = familyChores.Sum(m => m.Value);
+                var adminMember = Repository.Table<FamilyMember>().FirstOrDefault(m => m.User.FamilyID == familyChores.Key && m.MemberType == MemberType.Admin);
+                try
+                {
+                    if (!_bankService.IsBankLinked(adminMember.Id))
+                        throw new InvalidOperationException("Bank is not linked or verified!");
+
+                    // Tranfer amount to corepro account
+                    var transactionResult = _transactionService.Transfer(adminMember.Id, totalPayment, PaymentType.Chore, TransferType.ExternalToInetrnalAccount);
+
+                    // If transaction failure, continue to next family
+                    if (!transactionResult.HasValue)
+                        continue;
+
+                    foreach (var chore in familyChores)
+                    {
+                        chore.BankTransactionID = transactionResult;
+                        Repository.Update(chore);
+                    }
+
+                    var choresByfamilyMembers = familyChores.GroupBy(p => p.FamilyMemberID).ToList();
+                    foreach (var childChores in choresByfamilyMembers)
+                    {
+                        var totalChorePayment = childChores.Sum(m => m.Value);
+                        var child = childChores.FirstOrDefault().FamilyMember;
+
+                        if (!string.IsNullOrEmpty(child.PhoneNumber))
+                        {
+                            var message = $"It's payday! you have been sent ${totalChorePayment:N2}. This will be processed in 1-2 days.";
+                            _textMessageService.Send(child.PhoneNumber, message);
+                        }
+                        else
+                        {
+                            var message = $"It's payday for {child.Firstname.FirstCharToUpper()}! Let them know they've received ${totalChorePayment:N2}. It will be processed in 1-2 days.";
+                            if (adminMember != null && !string.IsNullOrEmpty(adminMember.PhoneNumber))
+                                _textMessageService.Send(adminMember.PhoneNumber, message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _transactionService.SaveTransactionLog(adminMember.Id, ex.Message, totalPayment);
+                    continue;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the financial overview of a child.
+        /// </summary>
+        /// <param name="weekDay">The weekday name</param>
+        /// <param name="familyMemberId">The family member identifier.</param>
+        public ChildFinancialOverview GetChildFinancialOverview(DayOfWeek weekDay, int? familyMemberId = null)
+        {
+            //weekDay = DayOfWeek.Friday;
+
+            var memberId = familyMemberId ?? _currentUserService.MemberID;
+            // Get date of next pay day
+            var nextPayDate = DateTime.UtcNow.ToLocalTime().GetNextPayDay();
+            var payDayTime = Extension.GetPaydayTime();
+            if (weekDay == DayOfWeek.Thursday && nextPayDate.TimeOfDay >= payDayTime)
+                nextPayDate = nextPayDate.AddDays(7);
+
+            var startDate = nextPayDate.AddDays(-14);
+
+            // Computes the amount to be paid on next pay day
+            var completedChores = Repository.Table<Chore>().Where(p => p.FamilyMemberID == memberId &&
+                                                        DbFunctions.TruncateTime(p.CompletedOn) >= startDate.Date && DbFunctions.TruncateTime(p.CompletedOn) <= nextPayDate.Date
+                                                        && (p.ChoreStatus == ChoreStatus.Completed || p.ChoreStatus == ChoreStatus.CompletedAndApproved)
+                                                        && !p.BankTransactionID.HasValue && !p.IsDeleted && !p.FamilyMember.IsDeleted).Select(p => p.Value);
+
+            string completedChoresStatus = Repository.Table<Chore>().Where(p => p.FamilyMemberID == memberId &&
+                                                       DbFunctions.TruncateTime(p.CompletedOn) >= startDate && DbFunctions.TruncateTime(p.CompletedOn) <= nextPayDate
+                                                       && (p.ChoreStatus == ChoreStatus.Completed || p.ChoreStatus == ChoreStatus.CompletedAndApproved)
+                                                       && !p.BankTransactionID.HasValue && !p.IsDeleted && !p.FamilyMember.IsDeleted).Select(p => p.ChoreStatus).FirstOrDefault().ToString();
+
+            var nextPayAmount = decimal.Zero;
+            if (completedChores.Any())
+                nextPayAmount = completedChores.Sum();
+
+            // Gets the allocation settings of current child
+            var allocationSettings = Repository.Table<AllocationSettings>().SingleOrDefault(p => p.FamilyMemberID.Equals(memberId));
+
+            // Get expected earnings
+            var nextPayDistribution = new ChildEarnings();
+            if (allocationSettings != null)
+            {
+                nextPayDistribution.Save = (nextPayAmount * (allocationSettings.Save / 100));
+                nextPayDistribution.Share = (nextPayAmount * (allocationSettings.Share / 100));
+                nextPayDistribution.Spend = (nextPayAmount * (allocationSettings.Spend / 100));
+            }
+
+            // Gets child earnings
+            var earnings = Repository.Table<ChildEarnings>().SingleOrDefault(p => p.FamilyMemberID.Equals(memberId));
+
+            // Prepare child financial overview
+            var childFinancialOverview = new ChildFinancialOverview
+            {
+                NextPayDate = nextPayDate,
+                NextPayAmount = nextPayAmount,
+                RemainingDays = nextPayDate.Day - DateTime.Now.Day,
+                AllocationSettings = allocationSettings != null ? allocationSettings : new AllocationSettings(),
+                Earnings = earnings != null ? earnings : new ChildEarnings(),
+                NextPayDistribution = nextPayDistribution,
+                choreStatus = completedChoresStatus
+            };
+            return childFinancialOverview;
+        }
+
+        public static DateTime GetNextWeekday(DateTime start, DayOfWeek day)
+        {
+            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
+            int daysToAdd = ((int)day - (int)start.DayOfWeek + 7) % 7;
+            return start.AddDays(daysToAdd);
+        }
+
+        /// <summary>
+        /// Gets the total earnigs of all childrens of the family
+        /// </summary>
+        /// <param name="familyId">The family identifier.</param>
+        /// <returns>The total amount in  buckets.</returns>
+        public decimal GetTotalEarningsByFamily(int familyId)
+        {
+            var totalEarnings = Repository.Table<ChildEarnings>().Where(p => p.FamilyMember.User.FamilyID == familyId).ToList();
+            return totalEarnings.Any() ? totalEarnings.Sum(p => p.Save) + totalEarnings.Sum(p => p.Share) + totalEarnings.Sum(p => p.Spend) : 0;
+        }
+
+        /// <summary>
+        /// Resets the all child's buckets of the family
+        /// </summary>
+        /// <param name="familyId">The family identifier.</param>
+        public void ResetChildEarningsByFamily(int familyId)
+        {
+            // Update the child earnings
+            var childEarnings = Repository.Table<ChildEarnings>()
+                .Where(p => p.FamilyMember.User.FamilyID == familyId)
+                .ToList();
+
+            foreach (var childEarning in childEarnings)
+            {
+                childEarning.Save = 0;
+                childEarning.Share = 0;
+                childEarning.Spend = 0;
+                Repository.Update(childEarning);
+            }
+        }
+
+        /// <summary>
+        /// Move money
+        /// </summary>
+        /// <param name="sourceBucket">Source bucket</param>
+        /// <param name="destinationBucket">Destination bucket</param>
+        /// <param name="amount">Amount</param>
+        /// <returns>Child earnings</returns>
+        public ChildEarnings MoveMoney(EarningsBucketType sourceBucket, EarningsBucketType destinationBucket, decimal amount)
+        {
+            if (sourceBucket == destinationBucket)
+                throw new InvalidParameterException("You can't move same bucket");
+
+            // Gets child earnings
+            var earnings = Repository.Table<ChildEarnings>().SingleOrDefault(p => p.FamilyMemberID.Equals(_currentUserService.MemberID));
+            if (earnings == null) throw new ObjectNotFoundException("Child earnings is empty");
+
+            var insufBalanceMsg = "Insufficient balance to complete the transfer";
+            // Reduce amount from source bucket
+            switch (sourceBucket)
+            {
+                case EarningsBucketType.Save:
+                    if (earnings.Save < amount) throw new InvalidOperationException(insufBalanceMsg);
+
+                    earnings.Save -= amount;
+                    break;
+                case EarningsBucketType.Share:
+                    if (earnings.Share < amount) throw new InvalidOperationException(insufBalanceMsg);
+
+                    earnings.Share -= amount;
+                    break;
+                case EarningsBucketType.Spend:
+                    if (earnings.Spend < amount) throw new InvalidOperationException(insufBalanceMsg);
+
+                    earnings.Spend -= amount;
+                    break;
+            }
+
+            // Add amount to desination
+            switch (destinationBucket)
+            {
+                case EarningsBucketType.Save:
+                    earnings.Save += amount;
+                    break;
+                case EarningsBucketType.Share:
+                    earnings.Share += amount;
+                    break;
+                case EarningsBucketType.Spend:
+                    earnings.Spend += amount;
+                    break;
+            }
+
+            Repository.Update<ChildEarnings>(earnings);
+            return earnings;
+        }
+
+        /// <summary>
+        /// Send bonus to the child
+        /// </summary>
+        /// <param name="bonus">The bonus.</param>
+        public void SendBonus(ChildBonus bonus, int? familyMemberId = null)
+        {
+            var memberId = familyMemberId ?? _currentUserService.MemberID;
+
+            // Gets current authenticated member
+            var member = Repository.Table<FamilyMember>().Include(p => p.User).SingleOrDefault(p => p.Id == memberId);
+
+            // Gets the admin id of the family if current member type is parent
+            if (member.MemberType != MemberType.Admin)
+            {
+                member = Repository.Table<FamilyMember>().FirstOrDefault(m => m.User.FamilyID == member.User.FamilyID && m.MemberType == MemberType.Admin);
+            }
+
+            // Checks whether the member has linked thier bank account or not
+            if (!_bankService.IsBankLinked(member.Id))
+                throw new InvalidOperationException("Bank is not linked or verified!");
+
+            try
+            {
+                // Tranfer amount to corepro account
+                var transactionResult = _transactionService.Transfer(member.Id, bonus.Amount, PaymentType.Bonus, TransferType.ExternalToInetrnalAccount);
+
+                // If transaction failure, skips the process
+                if (!transactionResult.HasValue)
+                    throw new InvalidOperationException("Unable to process the transaction. Please contact bank or mail to us!");
+
+                // Insert bonus
+                bonus.Date = DateTime.UtcNow;
+                bonus.ContributorID = memberId;
+                bonus.BankTransactionID = transactionResult.Value;
+                Repository.Insert(bonus);
+
+                // Sms receive bonus message to child
+                var child = Repository.Table<FamilyMember>().Include(m => m.User).Include(m => m.User.Family).SingleOrDefault(p => p.Id == bonus.ChildID && !p.IsDeleted);
+                if (child != null)
+                {
+                    if (!string.IsNullOrEmpty(child.PhoneNumber))
+                    {
+                        var message = string.Format(_appSettingsService.ChildHasPhoneReceiveBonusMessage,
+                            child.Firstname, bonus.Amount, bonus.Contributor.Firstname);
+                        _textMessageService.Send(child.PhoneNumber, message);
+                    }
+                    else
+                    {
+                        var admin = Repository.Table<FamilyMember>().SingleOrDefault(m => m.Id == memberId);
+                        if (admin != null && !string.IsNullOrEmpty(admin.PhoneNumber))
+                        {
+                            var message = string.Format(_appSettingsService.ChildHasNoPhoneReceiveBonusMessage,
+                                admin.Firstname, child.Firstname, bonus.Amount);
+                            _textMessageService.Send(admin.PhoneNumber, message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _transactionService.SaveTransactionLog(memberId, ex.Message, bonus.Amount);
+                throw new InvalidOperationException(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Can transact from earnings bucket
+        /// </summary>
+        /// <param name="bucketType">Earnings bucket type</param>
+        /// <param name="amount">Amount</param>
+        /// <param name="familyMemberId">The family member identifier.</param>
+        /// <returns>Result</returns>
+        public bool CanTransact(EarningsBucketType bucketType, decimal amount, int? familyMemberId = null)
+        {
+            var memberId = familyMemberId ?? _currentUserService.MemberID;
+
+            switch (bucketType)
+            {
+                case EarningsBucketType.Save:
+                    return Repository.Table<ChildEarnings>().Any(m => m.FamilyMemberID == memberId && m.Save >= amount);
+                case EarningsBucketType.Share:
+                    return Repository.Table<ChildEarnings>().Any(m => m.FamilyMemberID == memberId && m.Share >= amount);
+                case EarningsBucketType.Spend:
+                    return Repository.Table<ChildEarnings>().Any(m => m.FamilyMemberID == memberId && m.Spend >= amount);
+                default:
+                    return false;
+            }
+        }
+
+        #endregion
+    }
+}

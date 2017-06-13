@@ -1,0 +1,56 @@
+﻿<style>
+    input {
+        max-width: 330px;
+    }
+</style>
+<div>
+    <div class="app-width">
+        <p class="admin-dashboard-title text-center">Add a New User</p>
+
+        <p class="hint-medium text-center margin-bottom-25">
+            Grandmas, Grandpas, Uncles, Aunts, and Cousins…if your child is important to them, they’re important to us. Fill out as much as you can below and we’ll send off an invite!
+        </p>
+
+        <form name="invitationForm" role="form" novalidate>
+            <div class="signup remove-padding">
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 input-lbl color-555">FIRST NAME*</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="text" name="firstName" class="form-control mjc-input" placeholder="First Name" ng-model="invitation.Firstname" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                        <p class="help-block" ng-if="invitationForm.firstName.$error.required">FirstName is required.</p>
+                        <p class="help-block" ng-if="invitationForm.firstName.$error.pattern">Name must be in alphabets.</p>
+                    </div>
+                </div>
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 input-lbl color-555">LAST NAME*</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="text" name="lastName" class="form-control mjc-input" placeholder="Last Name" ng-model="invitation.Lastname" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                        <p class="help-block" ng-if="invitationForm.lastName.$error.required">LastName is required.</p>
+                        <p class="help-block" ng-if="invitationForm.lastName.$error.pattern">Name must be in alphabets.</p>
+                    </div>
+                </div>
+                
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 input-lbl color-555">PHONE NUMBER*</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="tel" name="phone" class="form-control mjc-input"
+                               placeholder="Phone Number" ng-model="invitation.PhoneNumber" required phone-input-formatter autocomplete="off" />
+                        <p class="help-block" ng-if="invitationForm.phone.$error.required ">Enter phone number.</p>
+                    </div>
+                </div>
+
+                <div class="form-group signup-input-margin-bottom" show-errors>
+                    <div class="cols-sm-2 input-lbl color-555">EMAIL</div>
+                    <div class="cols-sm-10 mjc-input-group">
+                        <input type="email" name="email" inputmode="email" class="form-control mjc-input" placeholder="Email Address" ng-model="invitation.Email" autocomplete="off" />
+                        <p class="help-block" ng-if="invitationForm.email.$error.email">Valid Email is required.</p>
+                    </div>
+                </div>
+
+                <div class="text-center signup-btn-margins">
+                    <button class="btn mjc-lg-btn bac-color-0491d3" ng-disabled="isContinue" ng-click="SendInvite()">{{btnSendInvite}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿<style>
+    .purchase-stock-sec .stock-details-sec .hint-title {
+        text-align: center;
+    }
+
+    .stock-details-sec .stock-price-text {
+        font-size: 10px;
+        font-weight: normal;
+    }
+</style>
+<div class="box-content text-center purchase-stock-sec" ng-class="{'background-green': showSuccessMessage }">
+    <div class="main-content remove-padding text-center">
+
+        <form name="purchaseStockForm" class="position-relative" role="form" novalidate>
+
+            <div>
+                <div ng-show="isLoading" class="center-loading send-bonus-body" ng-class="{'edit-chore-loading':isLoading}" style="z-index:11;">
+                    <div class="loading-top-div">
+                        <div class="loading-middle-div">
+                            <img class="loading-icon" src="../../../images/black-loader.gif" />
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-cloak class="text-center">
+                    <div ng-cloak class="text-center stock-sec">
+                        <div class="row stock-image-sec">
+                            <div class="inline-block">
+                                <img class="add-photo-image stock-image inline-block remove-margin" ng-src="{{stock.LogoUrl}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+
+                    <!--<p class="row remove-margin bonus-text">How much would you like to purchase?</p>-->
+                    <div class="row remove-margin margin-top-10">
+                        <div class="numeric-updown-group">
+                            <button class="btn mjc-btn numeric-updown-button negative-icon" ng-disabled="stock.Amount==minAmount" ng-click="stock.Amount=stock.Amount-1"><span class="glyphicon glyphicon-minus btn-negative-icon"></span></button>
+                            <button class="numeric-updown-button numeric-updown-value" ng-disabled="true"><div class="dollor-symbol">$</div><div class="inline-block">{{stock.Amount}}</div></button>
+                            <button class="btn mjc-btn numeric-updown-button" ng-disabled="stock.Amount==maxAmount" ng-click="stock.Amount=stock.Amount+1"><span class="glyphicon glyphicon-plus"></span></button>
+                        </div>
+                    </div>
+
+                    <div class="row remove-margin text-center">
+                        <button class="back-color-save btn-donate" ng-disabled="isPurchasing" ng-click="purchaseStock()">{{isPurchasing?'Buying...' :'Buy Stock'}}</button>
+                    </div>
+                </div>
+
+                <div class="stock-details">
+                    <div class="row remove-margin stock-details-sec">
+                        <p class="hint-title phone-hint-title remove-margin stock-price-text"> A $2.99 fee will be added to the purchase.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-popup-close img-circle text-center pointer btn-close" ng-click="hideModal()">
+                <span class="glyphicon glyphicon-remove btn-close-text" />
+            </div>
+        </form>
+    </div>
+</div>

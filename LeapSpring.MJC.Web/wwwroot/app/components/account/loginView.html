@@ -1,0 +1,82 @@
+﻿<style>
+    body {
+        background-color: #0491d3 !important;
+    }
+
+    input {
+        max-width: 330px;
+    }
+
+    .remember-me-sec label {
+        transform: scale(1.5);
+        margin: 0 0 0 3px;
+        outline: none;
+        display: inline-block;
+    }
+
+    .remember-me-sec p {
+        font-size: 13px;
+        font-family: 'tosia-light';
+        margin-left: 20px !Important;
+    }
+
+    .remeber-me-check-box {
+        margin: 5px 0 0 0 !important;
+    }
+</style>
+
+<div class="app-width">
+
+    <!--Login start-->
+
+    <div class="login">
+
+        <p class="note text-center padding-left-right-20 remove-margin">
+            Welcome Back!
+        </p>
+        <p class="note text-center padding-left-right-20">
+            Please Sign In Below
+        </p>
+        <form name="loginForm" role="form" novalidate ng-submit="login()">
+            <div class="remove-padding">
+                <div>
+                    <div class="form-group signup-input-margin-bottom" show-errors>
+                        <div class="cols-sm-2 signup-input-lbl">EMAIL ADDRESS</div>
+                        <div class="cols-sm-10 mjc-input-group">
+                            <input id="firstTxtInput" type="email" name="email" inputmode="email" class="form-control mjc-input" placeholder="Email Address" ng-model="loginCredential.Email"
+                                   required autocomplete="off" autofocus />
+                            <p class="help-block" ng-if="loginForm.email.$error.required">Email is required.</p>
+                            <p class="help-block" ng-if="loginForm.email.$error.email">Valid Email is required.</p>
+                        </div>
+                    </div>
+                    <div class="form-group signup-input-margin-bottom" show-errors>
+                        <div class="cols-sm-2 signup-input-lbl">PASSWORD</div>
+                        <div class="cols-sm-10 mjc-input-group">
+                            <input id="txtPassword" type="{{inputType}}" name="password" class="form-control mjc-input" placeholder="Enter Password" ng-model="loginCredential.Password" required autocomplete="off" />
+                            <img class="icon-btn" src="../../../images/icons/eye.png" style="width: 8%;" ng-click="showPassword()" />
+                            <p class="help-block" ng-if="loginForm.password.$error.required">Password is required.</p>
+                        </div>
+                    </div>
+
+                    <div class="row remove-margin remember-me-sec inline-block pointer" ng-click="remember=!remember">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 remove-padding">
+                            <label class="accept-checkbox pointer"><input type="checkbox" class="remeber-me-check-box" ng-model="remember"></label>
+                        </div>
+                        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 remove-padding">
+                            <p class="remove-margin inline-block pointer"> Remember me </p>
+                        </div>
+                    </div>
+
+                    <div class="text-center signup-btn-margins">
+                        <button type="submit" class="btn button mjc-btn bac-color-67c152" ng-disabled="isLogging">{{btnLoginTxt}}</button>
+                        <div class="hav-acc">
+                            <span><a ui-sref="forgotPassword">Forgot your password?</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--Login end-->
+</div>

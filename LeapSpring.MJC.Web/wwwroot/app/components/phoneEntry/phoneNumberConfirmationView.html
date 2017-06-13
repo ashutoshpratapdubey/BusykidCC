@@ -1,0 +1,33 @@
+﻿<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <form name="phoneConfirmation" role="form" novalidate>
+        <div class="text-center">
+
+            <p class="row hint-title phone-hint-title remove-margin-bottom">Check Your Messages</p>
+            <p class="row hint-title sm-phone-hint-title remove-margin">Please submit the confirmation code we've sent to:</p>
+
+            <h2 class="row phone-number-title"> {{phoneNumber | phoneNumber}}</h2>
+
+            <div class="row form-group margin-bottom-20" show-errors>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" name="verificationCode" class="form-control phone-text inline-block remove-margin" tabindex="1" maxlength="6" placeholder="Confirmation Code" autocomplete="off" ng-model="VerificationCode" ng-minlength="6" ng-maxlength="6" required />
+                <p class="help-block" ng-if="phoneConfirmation.verificationCode.$error.required ">Enter verification code.</p>
+                <p class="help-block" ng-if="phoneConfirmation.verificationCode.$error.pattern ">Invalid verification code.</p>
+                <p class="help-block" ng-if="phoneConfirmation.verificationCode.$error.minlength">Verification code must be in 6 digits.</p>
+                <p class="help-block" ng-if="phoneConfirmation.verificationCode.$error.maxlength">Verification code must be in 6 digits.</p>
+            </div>
+            
+            <div class="text-center button-center margin-top-111 margin-bottom-40 inline-block">
+                <button class="btn mjc-btn button bac-color-67c152" tabindex="5" ng-disabled="isConfirm" ng-click="confirmOTP()">{{btnConfirm}}</button>
+            </div>
+
+            <p class="row hint-medium text-center phone-hint-medium">
+                Not your correct phone number?
+            </p>
+
+            <div class="row text-center">
+                <a class="link" ng-click="goBack()">Go back and enter a new number</a>
+            </div>
+        </div>
+    </form>
+</div>

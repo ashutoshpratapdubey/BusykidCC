@@ -1,0 +1,88 @@
+﻿<style>
+    body {
+        background-color: #0491d3 !important;
+    }
+
+    input {
+        max-width: 330px;
+    }
+</style>
+<div class="app-width">
+    <div ng-show="isLoading" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+    <div ng-hide="isLoading">
+        <div ng-if="invitationAccepted!=undefined" class="center-loading">
+            <div class="loading-top-div">
+                <div class="loading-middle-div">
+                    <p class="inv-alr-accpt remove-padding">{{invitationAccepted}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="invitationAccepted===undefined">
+            <p class="text-center contributor-note">
+                Hello! You Must Know the {{invitation.Family!=null ? invitation.Family.Name : ""}} Family.
+            </p>
+            <p class="text-center contributor-hint-medium">
+                Welcome to BusyKid. To get started, let’s
+                make an account. Fill out your info below.
+            </p>
+            <form name="parentForm.parentSignupForm" role="form" novalidate>
+                <div class="signup remove-padding">
+                    <div>
+                        <div class="form-group signup-input-margin-bottom" show-errors>
+                            <div class="cols-sm-2 signup-input-lbl">EMAIL ADDRESS</div>
+                            <div class="cols-sm-10 mjc-input-group">
+                                <input type="email" name="email" inputmode="email" class="form-control mjc-input" placeholder="Email Address" ng-model="member.Email" required autocomplete="off" />
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.email.$error.required">Email is required.</p>
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.email.$error.email">Valid Email is required.</p>
+                            </div>
+                        </div>
+                        <div class="form-group signup-input-margin-bottom" show-errors>
+                            <div class="cols-sm-2 signup-input-lbl">ACCOUNT PASSWORD <div class="signup-questionmark-oval">?</div></div>
+                            <div class="cols-sm-10 mjc-input-group">
+                                <input type="{{inputType}}" name="password" class="form-control mjc-input" placeholder="Account Password" ng-model="member.Password" required autocomplete="off" />
+                                <img class="icon-btn" src="../../../images/icons/eye.png" style="width: 8%;" ng-click="showPassword()" />
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.password.$error.required">Password is required.</p>
+                            </div>
+                        </div>
+                        <div class="form-group signup-input-margin-bottom" show-errors>
+                            <div class="cols-sm-2 signup-input-lbl">FIRST NAME</div>
+                            <div class="cols-sm-10 mjc-input-group">
+                                <input type="text" name="firstName" class="form-control mjc-input" placeholder="First Name" ng-model="member.FirstName" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.firstName.$error.required">FirstName  is required.</p>
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.firstName.$error.pattern">Name must be in alphabets.</p>
+                            </div>
+                        </div>
+                        <div class="form-group signup-input-margin-bottom" show-errors>
+                            <div class="cols-sm-2 signup-input-lbl">LAST NAME</div>
+                            <div class="cols-sm-10 mjc-input-group">
+                                <input type="text" name="lastName" class="form-control mjc-input" placeholder="Last Name" ng-model="member.LastName" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.lastName.$error.required">LastName is required.</p>
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.lastName.$error.pattern">Name must be in alphabets.</p>
+                            </div>
+                        </div>
+                        <div class="form-group signup-input-margin-bottom" show-errors>
+                            <div class="cols-sm-2 signup-input-lbl">ZIP CODE</div>
+                            <div class="cols-sm-10 mjc-input-group">
+                                <input type="text" inputmode="numeric" pattern="[0-9]*" name="zipCode" class="form-control mjc-input" placeholder="Zip Code" ng-model="member.ZipCode" ng-pattern="/^[0-9]*$/" ng-minlength="5" ng-maxlength="5" maxlength="5" required autocomplete="off" />
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.zipCode.$error.required">Zipcode is required.</p>
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.zipCode.$error.pattern">Zipcode must be in numbers.</p>
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.zipCode.$error.minlength">Zipcode must be in 5 digits.</p>
+                                <p class="help-block" ng-if="parentForm.parentSignupForm.zipCode.$error.maxlength">Zipcode must be in 5 digits.</p>
+                            </div>
+                        </div>
+                        <div class="text-center signup-btn-margins">
+                            <button class="btn mjc-btn bac-color-2b79a9" ng-disabled="isSignUp" ng-click="parentSignUp()">{{btnSignUp}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿<style>
+    @media screen and (min-width : 768px) {
+        .spend-gift .dashboard-chore-value {
+            right: auto;
+            left: 0;
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div class="spend-gift margin-bottom-20">
+
+    <div ng-show="isShowBuyGiftCards">
+        <div class="row remove-margin stock-header">
+            <p class="text-small">GIFT CARDS</p>
+            <a class="link-sm pull-right" ng-click="toggleShowGiftCard();">My Cards</a>
+        </div>
+        <div class="choreDue gift-card-sec remove-margin position-relative">
+            <div ng-show="isGettingGiftCards" class="center-loading">
+                <div class="loading-top-div">
+                    <div class="loading-middle-div">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+            <ul class="chore-items" ng-if="giftCards.length!=0">
+                <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chor" ng-repeat="giftCard in featuredGiftCards">
+                    <div class="dashboard-chore pointer" ng-click="purchase(giftCard);">
+                        <div class="row remove-margin">
+                            <div class="position-relative chore-image-sec">
+                                <!-- Gift cards section -->
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding">
+                                    <div class="position-relative lg-text-left">
+                                        <img class="add-photo-image gift-card-image" ng-src="{{giftCard.CoverImageUrl}}" err-src="../../../images/DefaultChore.png" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 gift-card" ng-class="giftCard.Disclosure==null ?'chore-name-sec':'remove-padding'">
+                                    <div ng-class="{'disclosure-sec': giftCard.Disclosure!=null}">
+                                        <p class="dashboard-text-medium gift-name-text">{{giftCard.Name}} </p>
+                                        <div class="gift-disclosure" ng-bind-html="giftCard.Disclosure"></div>
+                                    </div>
+
+                                    <!--<p class="dashboard-text-medium gift-val-text">{{giftCard.MinAmount | currency:USD$:2}}-{{giftCard.MaxAmount | currency:USD$:2}} </p>-->
+                                </div>
+
+                                <!-- Gift cards ended -->
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <a class="link-sm pull-right" ng-if="giftCards.length!=0" ui-sref="buygiftcard">More</a>
+            <p class="choredue-empty chore-line" ng-if="!isGettingGiftCards && giftCards.length==0">No gift cards available!</p>
+        </div>
+    </div>
+
+    <div ng-hide="isShowBuyGiftCards">
+        <div class="row remove-margin stock-header">
+            <p class="text-small">MY GIFT CARDS</p>
+            <a class="link-sm pull-right" ng-click="toggleShowGiftCard();">Buy Gift Cards</a>
+        </div>
+        <div class="choreDue remove-margin">
+            <div ng-show="isGettingPurchased" class="center-loading">
+                <div class="loading-top-div">
+                    <div class="loading-middle-div">
+                        <img class="loading-icon" src="../../../images/black-loader.gif" />
+                    </div>
+                </div>
+            </div>
+            <ul class="chore-items" ng-if="purchasedGiftCards.length!=0">
+                <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 chor" ng-repeat="giftCard in purchasedGiftCards">
+                    <div class="dashboard-chore">
+                        <div class="row remove-margin">
+                            <div class="position-relative chore-image-sec">
+                                <!-- Gift cards section -->
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding">
+                                    <div class="position-relative lg-text-left">
+                                        <img class="add-photo-image gift-card-image" ng-src="{{giftCard.CoverImageUrl}}" err-src="../../../images/DefaultChore.png" />
+                                        <!--<p class="dashboard-chore-value remove-margin">{{giftCard.Amount | currency:USD$:2}}</p>-->
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding">
+                                    <p class="dashboard-text-medium chore-text" ng-click="openGiftCardLink(giftCard.GiftCardUrl)">{{giftCard.Name}} </p>
+                                    <p class="dashboard-text-medium gift-val-text">{{giftCard.Amount | currency:USD$:2}}</p>
+                                    <button class="btn mjc-btn btn-chore-done back-color-save" ng-disabled="giftCard.isDeleting || giftCard.GiftCardUrl==null"
+                                            ng-click="openGiftCardLink(giftCard.GiftCardUrl)">
+                                        <span>Use Card</span>
+                                    </button>
+
+                                    <!--<button class="btn mjc-btn btn-chore-done back-color-save" ng-disabled="giftCard.isDeleting" ng-click="deletepurchaseGiftCard(giftCard, $index)">
+                                        <span ng-if="!giftCard.isDeleting">Remove</span>
+                                        <span ng-if="giftCard.isDeleting">Removing</span>
+                                        <img src="../../../images/white-loader.gif" ng-if="giftCard.isDeleting" class="progress-complete-chore suggested-loading" />
+                                    </button>-->
+
+                                </div>
+
+                                <p class="dashboard-chore-value remove-margin back-color-save" ng-if="giftCard.Status=='PendingApproval'">PENDING</p>
+                                <p class="dashboard-chore-value remove-margin back-color-reject" ng-if="giftCard.Status=='Rejected'">Rejected</p>
+                                <!-- Gift cards ended-->
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <p class="choredue-empty chore-line" ng-if="!isGettingPurchased && purchasedGiftCards.length==0">No gift cards purchased!</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,313 @@
+﻿<style>
+    .container {
+        padding: 0;
+    }
+
+    .chores-heading {
+        font-size: 14px;
+    }
+    /* Styles for device with the min-width of 768 pixels*/
+    @media screen and (min-width : 768px) {
+        html {
+            overflow-y: scroll !important;
+        }
+
+        .modal-open {
+            overflow-y: hidden;
+        }
+    }
+</style>
+<!--Audio for chore completed-->
+<audio id="audioChoreCompleted" controls="controls" hidden preload="auto">
+    <source src="../../../sounds/Chore%20I%20did%20it_kid.mp3" type="audio/mpeg" />
+</audio>
+<div class="app-width admin-dashboard-sec">
+    <div class="child-dashboard-sec">
+        <div class="text-center">
+            <ul class="nav nav-tabs dashboard-header-tabs">
+                <li id="hometab" ng-class="{'active': !showActivity}" ng-click="gotoChildDashboard()"><a data-toggle="tab" data-target="#home">Home</a></li>
+                <li id="activitytab" ng-class="{'active': showActivity}" ng-click="getAllTransactions()"><a data-toggle="tab" data-target="#activity">Activity</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="home" class="tab-pane dashboard-header-content fade in" ng-class="{'active': !showActivity}">
+                    <div class="full-screen">
+                        <div class="app-width">
+                            <div class="row remove-margin child-info">
+                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 text-left">
+                                    <img class="dashboard-image img-circle" ng-class="{'border-white':(profileUrl != '../../../images/Avatar.png')}" ng-src="{{profileUrl}}" err-src="../../../images/Avatar.png" />
+                                </div>
+                                <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9 text-left">
+                                    <div class="row padding-left-10">
+                                        <p class="dashboard-text-title pull-left">Hi, {{username}}!</p>
+                                    </div>
+                                    <div class="row pull-left padding-left-4">
+                                        <p class="dashboard-text-medium text-center">
+                                            A BusyKid Update
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color: #fff;">
+                        <div ng-show="!isLoading">
+                            <!-- My Allowance -->
+                            <div class="dashboard-content">
+                                <!--<div>
+                                    <p class="text-small text-left">MY ALLOWANCE</p>
+                                </div>-->
+                                <div class="my-allowance">
+                                    <div class="allowance">
+                                        <!--<p class="next-payday-amount">
+                                            {{(FinancialOverview.NextPayAmount == undefined || FinancialOverview.NextPayAmount==null)?0: FinancialOverview.NextPayAmount | currency:USD:2}}
+                                        </p>
+                                        <p class="next-payday-hint">Only {{daysRemain}} more {{daysRemain>1?'days':'day'}} until PayDay!</p>-->
+                                        <p class="next-payday-amount" ng-if="FinancialOverview.NextPayAmount < 0">
+                                            {{(FinancialOverview.NextPayAmount == undefined || FinancialOverview.NextPayAmount==null)?0: FinancialOverview.NextPayAmount | currency:USD:2}}
+                                        </p>
+                                        <p class="next-payday-amount" ng-if="FinancialOverview.NextPayAmount >= 0.00">
+                                            {{(FinancialOverview.NextPayAmount == undefined || FinancialOverview.NextPayAmount==null)?0: FinancialOverview.NextPayAmount | currency:USD:2}}
+                                            <span class="chores-heading" style="color: #67c152;">to be paid,&nbsp;{{FinancialOverview.NextPayDate}}</span>
+                                        </p>
+                                        <!--<p class="next-payday-amount">
+                                            {{(FinancialOverview.NextPayAmount == undefined || FinancialOverview.NextPayAmount==null)?0: FinancialOverview.NextPayAmount | currency:USD:2}}
+                                            <span class="chores-heading" style="color: #67c152;">to be paid,&nbsp;{{FinancialOverview.NextPayDate}}</span>
+                                        </p>-->
+                                        <p style="text-align:center" class="next-payday-amount-child" ng-if="FinancialOverview.pendingPaydayAmount!=0.00">
+                                            {{(FinancialOverview.pendingPaydayAmount == undefined || FinancialOverview.pendingPaydayAmount==null)?0: FinancialOverview.pendingPaydayAmount | currency:USD:2}}
+                                            {{FinancialOverview.pendingChoreStatus}}
+                                        </p>
+                                    </div>
+                                    <div class="row remove-margin">
+                                        <div class="row remove-margin pay-distribution">
+                                            <button class="btn mjc-btn btn-alocation-settings back-color-spend btn-move-money" ng-click="showMoveMoneyModal();">Move Money</button>
+                                        </div>
+                                    </div>
+                                    <!-- Allocation settings -->
+                                    <div class="allocation-settings">
+                                        <!-- Allocation settings tabs -->
+                                        <div>
+                                            <ul class="row nav nav-tabs allocation-settings-tab">
+                                                <li id="spend-tab" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 back-color-spend navbar-toggle" ng-click="toggleBucket('Spend')">
+                                                    <a class="back-color-spend" data-toggle="collapse" data-target="#spend" ng-class="{'collapsed':selectedBucket=='Spend', 'collapse':selectedBucket!='Spend' }">
+                                                        <div class="back-color-spend">
+                                                            <p class="remove-margin allocation-settings-text">SPEND</p>
+                                                            <p class="remove-margin allocation-settings-value">{{FinancialOverview.Earnings.Spend | currency:USD:2}}</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li id="share-tab" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 back-color-share navbar-toggle" ng-click="toggleBucket('Share')">
+                                                    <a class="back-color-share" data-toggle="collapse" data-target="#share" aria-expanded="{selectedBucket=='Share'}">
+                                                        <div class="back-color-share">
+                                                            <p class="remove-margin allocation-settings-text">SHARE</p>
+                                                            <p class="remove-margin allocation-settings-value">{{FinancialOverview.Earnings.Share | currency:USD:2}}</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li id="save-tab" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 back-color-save navbar-toggle" ng-click="toggleBucket('Save')">
+                                                    <a class="back-color-save" data-toggle="collapse" data-target="#save" aria-expanded="{selectedBucket=='Save'}">
+                                                        <div class="back-color-save">
+                                                            <p class="remove-margin allocation-settings-text">SAVE</p>
+                                                            <p class="remove-margin allocation-settings-value">{{FinancialOverview.Earnings.Save | currency:USD:2}}</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- Allocation settings tab contents -->
+                                        <!-- Save Tab -->
+                                        <div id="save" class="allocation-settings-tab-content collapse">
+                                            <div class="row remove-margin back-color-save allocation-settings-selected" />
+                                            <div class="padding-20">
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Saving %:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right save-text-color">{{FinancialOverview.AllocationSettings.Save}}%</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Total:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right save-text-color">{{FinancialOverview.Earnings.Save | currency:USD:2}}</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Next Pay Day:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right save-text-color">{{FinancialOverview.NextPayDistribution.Save | currency:USD:2}}</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <button class="btn mjc-btn btn-alocation-settings back-color-save" ui-sref="buystock">Buy Stock</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Share Tab -->
+                                        <div id="share" class="allocation-settings-tab-content collapse">
+                                            <div class="row remove-margin back-color-share allocation-settings-selected" />
+                                            <div class="padding-20">
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Sharing %:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right share-text-color">{{FinancialOverview.AllocationSettings.Share}}%</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Total:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right share-text-color">{{FinancialOverview.Earnings.Share | currency:USD:2}}</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Next Pay Day:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right share-text-color">{{FinancialOverview.NextPayDistribution.Share | currency:USD:2}}</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <button class="btn mjc-btn btn-alocation-settings back-color-share" ng-click="donate();">Donate Here</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Spend Tab -->
+                                        <div id="spend" class="allocation-settings-tab-content collapse">
+                                            <div class="row remove-margin back-color-spend allocation-settings-selected" />
+                                            <div style="padding: 16px;">
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Spending %:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right spend-text-color">{{FinancialOverview.AllocationSettings.Spend}}%</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Total:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right spend-text-color">{{FinancialOverview.Earnings.Spend | currency:USD:2}}</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-left">Next Pay Day:</span>
+                                                    <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6 content-right spend-text-color">{{FinancialOverview.NextPayDistribution.Spend | currency:USD:2}}</span>
+                                                </div>
+                                                <div class="row remove-margin pay-distribution">
+                                                    <div class="row remove-margin" ng-if="creditcard != 1">
+                                                        <ul class="nav nav-tabs spend-tab-button">
+                                                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 active" ui-sref="buygiftcard"><a data-toggle="tab">Shop</a></li>
+                                                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-click="cashOut()"><a data-toggle="tab">Get Cash</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="row remove-margin" ng-if="creditcard == 1">
+                                                        <ul class="nav nav-tabs spend-tab-button">
+                                                            <li class="col-xs-6 col-sm-6 col-md-6 col-lg-6 active" ui-sref="buygiftcard"><a data-toggle="tab">Shop</a></li>                                                           
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Distributions (Chores, Save, Share and Spend dropdowns) -->
+                            <table class="table table-condensed remove-margin table-layout-fixed">
+                                <tbody ng-repeat="dropdownHeader in dropdownHeaders" class="dropdown dropdown-shadow" on-finish-render>
+                                    <tr data-toggle="collapse" data-target="#{{dropdownHeader.Id}}">
+                                        <td class="dropdown-header-border" ng-click="toggleBucket(dropdownHeader.Name)">
+                                            <div id="chore-dropdown">
+                                                <div class="row remove-margin dashboard-content dropdown">
+                                                    <a data-toggle="collapse" data-target="#chores" aria-expanded="false" aria-controls="collapseChores" ng-click="dropdownHeader.IsSelected = !dropdownHeader.IsSelected">
+                                                        <div class="row remove-margin">
+                                                            <div class="img-circle inline-block dropdown-chore pull-left back-color-chore"
+                                                                 ng-class="{'back-color-chore':dropdownHeader.Id==0,'back-color-save':dropdownHeader.Id==1,'back-color-share':dropdownHeader.Id==2,'back-color-spend':dropdownHeader.Id==3}">
+                                                                <span class="glyphicon glyphicon-star img-star"></span>
+                                                            </div>
+                                                            <div>
+                                                                <p class="dropdown-header text-left remove-margin pull-left">{{dropdownHeader.Name}}</p>
+                                                                <span class="glyphicon pull-right dropdown-caret" ng-class="{'glyphicon-triangle-top':dropdownHeader.Name==selectedBucket, 'glyphicon-triangle-bottom':dropdownHeader.Name!=selectedBucket}"></span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hiddenRow">
+                                            <!-- Chores & Activities -->
+                                            <div id="{{dropdownHeader.Id}}" ng-if="dropdownHeader.Id==0"
+                                                 ng-class="{'dashboard-content dropdown-item collapse in':selectedBucket=='Chores & Activities', 'dashboard-content dropdown-item collapse':selectedBucket!='Chores & Activities'}">
+                                                <!-- Chores List-->
+                                                <div>
+                                                    <div class="row" style="margin-bottom:7px;">
+                                                        <ul class="text-center week-days">
+                                                            <li class="pointer inline-block remove-padding" ng-click="toggleWeekDay(weekDay)" ng-repeat="weekDay in weekDays">
+                                                                <button class="btn-week-days chore-buttons" ng-class="{'active': weekDay.IsDaySelected, 'today':weekDay.IsToday }">{{weekDay.Name | limitTo : 1}}</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="choreDue remove-margin position-relative">
+                                                        <div ng-show="isChoresLoading" class="center-loading">
+                                                            <div class="loading-top-div">
+                                                                <div class="loading-middle-div">
+                                                                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="chore-items" ng-if="Chores.length!=0">
+                                                            <li class="col-xs-12 col-sm-6 col-md-6 col-lg-6 chore-item" ng-repeat="chore in Chores">
+                                                                <div class="dashboard-chore chore-sec">
+                                                                    <div class="row remove-margin">
+                                                                        <div class="position-relative chore-image-sec">
+                                                                            <!-- Chore section -->
+                                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding"> <!-- Saurabh Shukla col-xs-12 -->
+                                                                                <div class="position-relative">
+                                                                                    <img class="add-photo-image chore-image" ng-class="{'custom-chore-image': chore.ImageUrl === defaultChoreImage}" ng-src="{{chore.ImageUrl}}" err-src="{{defaultChoreImage}}" />
+                                                                                    <p class="dashboard-chore-value remove-margin">{{chore.Value | currency:USD$:2}}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding chore-tile chore-name-sec">
+                                                                                <p class="dashboard-text-medium chore-text">{{chore.Name}} </p>
+                                                                                <button class="btn mjc-btn btn-chore-done back-color-chore" ng-disabled="chore.IsProcessing" ng-click="completeChore(chore)">I Did It! <img src="../../../images/white-loader.gif" ng-if="chore.IsProcessing" class="progress-complete-chore suggested-loading" /></button>
+                                                                            </div>
+                                                                            <!-- Chore section ended-->
+                                                                        </div>
+                                                                        <!-- Chore completed section -->
+                                                                        <div class="dashboard-chore-done text-center" ng-if="chore.IsChoreCompleted">
+                                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding position-relative">
+                                                                                <img class="row add-photo-image success-image img-circle inline-block margin-top-25" src="../../../images/success.png" />
+                                                                            </div>
+                                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 remove-padding position-relative msg-done">
+                                                                                <p class="row dashboard-text-medium margin-top-25">Done!</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Chore completed section end-->
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                        <p class="choredue-empty chore-line" ng-if="Chores.length==0">No chores found{{selectedWeekDay.IsToday?' today':'' }}!</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Save - Stockpile -->
+                                            <div id="{{dropdownHeader.Id}}" ng-if="dropdownHeader.Id==1"
+                                                 ng-class="{'dashboard-content dropdown-item collapse in':selectedBucket=='Save', 'dashboard-content dropdown-item collapse':selectedBucket!='Save'}">
+                                                <div ng-include src="'/app/components/save/_saveView.html'" ng-controller="saveController"></div>
+                                            </div>
+                                            <!-- Share - Charities-->
+                                            <div id="{{dropdownHeader.Id}}" ng-if="dropdownHeader.Id==2"
+                                                 ng-class="{'dashboard-content dropdown-item collapse in':selectedBucket=='Share', 'dashboard-content dropdown-item collapse':selectedBucket!='Share'}">
+                                                <div ng-include src="'/app/components/charity/_charityView.html'" ng-controller="charityController"></div>
+                                            </div>
+                                            <!-- Spend - Gift Cards -->
+                                            <div id="{{dropdownHeader.Id}}" ng-if="dropdownHeader.Id==3"
+                                                 ng-class="{'dashboard-content dropdown-item collapse in':selectedBucket=='Spend', 'dashboard-content dropdown-item collapse':selectedBucket!='Spend'}">
+                                                <div ng-include src="'/app/components/spend/_spendView.html'" ng-controller="spendController">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-show="isLoading" class="center-loading">
+                            <div class="loading-top-div">
+                                <div class="loading-middle-div">
+                                    <img class="loading-icon" src="../../../images/black-loader.gif" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Activity Tabs -->
+                <div id="activity" class="tab-pane dashboard-header-content fade in" ng-class="{'active': showActivity}">
+                    <div ng-include src="'/app/components/dashboard/_childActivity.html'" ng-controller="childActivityController"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

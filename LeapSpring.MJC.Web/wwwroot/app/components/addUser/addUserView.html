@@ -1,0 +1,47 @@
+﻿<div>
+    <div class="app-width">
+        <p class="row admin-dashboard-title text-center lg-row">Add New User</p>
+
+        <p class="row hint-medium text-center margin-bottom-25 lg-row">
+            Adding a new user is as simple. Just<br />
+            select the type of account and once<br />
+            they confirm, they are added.
+        </p>
+
+        <div class="padding-10">
+            <div id="hintaccounttype" class="newuser-input-lbl position-relative">
+                <div class="cols-sm-2 color-666" ng-click="toggleAccountType()">SELECT ACCOUNT TYPE <div class="questionmark-oval">?</div></div>
+
+                <div class="account-type-hint padding-10" ng-class="{'show':isShowHint, 'hide':!isShowHint}">
+                    <p class="remove-margin-top">
+                        <span>Kids</span> can do chores, save<br />
+                        money, and collect allowance<br />
+                        on PayDay!
+                    </p>
+                    <div class="chore-line"></div>
+                    <p>
+                        <span>Parents</span> can add new users,<br />
+                        create new chores, and approve<br />
+                        payment requests.
+                    </p>
+                </div>
+            </div>
+
+            <div class="chore-line"></div>
+            <label>
+                <input type="radio" value="0" name="quality" id="kidAccount" ng-model="selectedAccountType"><span id="account-type-span"></span>
+                <p class="color-555 radiobtn-account-type">Kid</p>
+            </label>
+            <div class="chore-line"></div>
+            <label>
+                <input type="radio" value="1" name="quality" id="parentAccount" ng-model="selectedAccountType"><span id="account-type-span"></span>
+                <p class="color-555 radiobtn-account-type">Parent</p>
+            </label>
+            <div class="chore-line"></div>
+        </div>
+
+        <div class="text-center signup-btn-margins">
+            <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue" ng-click="selectAccountType()">{{btnContinue}}</button>
+        </div>
+    </div>
+</div>

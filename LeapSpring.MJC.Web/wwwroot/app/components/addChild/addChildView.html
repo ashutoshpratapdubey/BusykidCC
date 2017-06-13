@@ -1,0 +1,86 @@
+﻿<div class="app-width">
+    <div ng-include src="'/app/shared/directives/signUp/signUpProgressBar.html'" ng-controller="signUpProgressBarController"></div>
+
+    <div ng-show="isSignUpProgress.response" class="center-loading">
+        <div class="loading-top-div">
+            <div class="loading-middle-div">
+                <img class="loading-icon" src="../../../images/black-loader.gif" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="isSignUpProgress.response">
+        <form name="childForm" role="form" novalidate>
+            <div>
+                <p class="row hint-title add-child-title text-center">Tell Us About Your Child</p>
+
+                <div class="row text-center">
+                    <button class="add-photo-shape inline-block pointer margin-bottom-20" type="file" ngf-select="uploadImage($file)" accept="image/*" ngf-resize="{width: 200, height: 200, centerCrop: true}" ngf-capture="camera" ngf-pattern="image/*" ngf-fix-orientation="true">
+                        <div ng-if="!hasImage">
+                            <img src="../../../images/icons/camera.png" class="default-camera" />
+                            <div class="add-photo">
+                                Add<br />Photo
+                            </div>
+                        </div>
+                        <img class="row add-photo-image img-circle inline-block pointer" ng-if="hasImage" ng-src="{{imageSource}}" err-src="../../../images/Avatar.png" />
+                    </button>
+
+                </div>
+
+                <p class="row hint-medium text-center margin-bottom-20">
+                    Before you get to chores, we need<br />
+                    you to answer some simple questions<br />
+                    about your child. Feel free to add a<br />
+                    picture or avatar at any time.
+                </p>
+
+                <div class="row form-group text-center remove-margin-bottom" show-errors>
+                    <div class="col-sm-12 mjc-input-group margin-auto">
+                        <span class="color-555 max-width-300 inline-block text-left full-width input-lbl">CHILD’S NAME</span>
+                        <input type="text" name="firstName" class="form-control mjc-input remove-margin margin-auto" placeholder="First Name" ng-model="member.FirstName" ng-pattern="/^[a-z A-Z]*$/" required autocomplete="off" />
+                        <p class="help-block" ng-if="childForm.firstName.$error.required">FirstName is required.</p>
+                        <p class="help-block" ng-if="childForm.firstName.$error.pattern">Name must be in alphabets.</p>
+                    </div>
+                </div>
+
+                <div class="row form-group text-center margin-top-10 margin-bottom-20" show-errors>
+                    <div class="col-sm-12 mjc-input-group margin-auto" id="dobSection">
+                        <div id="hintdob" class="max-width-300 text-left position-relative margin-auto">
+                            <div class="color-555 text-left full-width input-lbl" ng-click="toggleDobHint()">DATE OF BIRTH (MM/DD/YY) <div class="questionmark-oval">?</div></div>
+
+                            <div class="dob-hint padding-10" ng-class="{'show':isShowHint, 'hide':!isShowHint}">
+                                <p class="remove-margin-top">
+                                    DOB is used to suggest chores and allocation of funds based on the age of the child. It will never be shared.
+                                </p>
+                            </div>
+                        </div>
+                        <input type="text" inputmode="numeric" name="dob" class="form-control input-group mjc-input remove-margin margin-auto"
+                               placeholder="{{dobPlaceHolder | date:'MM/dd/yy'}}" ng-model="member.Dob" required date-input-formatter autocomplete="off"
+                               ng-pattern="/^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/[0-9]{2}|[0-9]{4}$/gm" ng-change="validateDOB()" ng-class="{'error-input':isFeatureDate}" />
+                        <p class="help-block" ng-if="childForm.dob.$error.required">Date of birth is required.</p>
+                        <p class="help-block" ng-if="childForm.dob.$error.pattern">Invalid date format.</p>
+                        <p class="help-block" style="display:block;" ng-if="isFeatureDate">Invalid date.</p>
+                    </div>
+                </div>
+
+                <div class="text-center margin-bottom-40">
+                    <p class="input-lbl color-555 text-center">CHILD’S GENDER</p>
+                    <label>
+                        <input type="radio" value="0" name="quality" id="male" ng-model="gender"><span></span>
+                        <p class="color-555 radiobtn-male">Male</p>
+                    </label>
+
+                    <label>
+                        <input type="radio" value="1" name="quality" ng-model="gender" id="female"><span></span>
+                        <p class="color-555 radiobtn-female">Female</p>
+                    </label>
+                </div>
+
+                <div class="text-center button-center margin-bottom-40 inline-block">
+                    <button class="btn mjc-btn button bac-color-67c152" ng-disabled="isContinue" ng-click="addChild()">{{btnContinue}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
